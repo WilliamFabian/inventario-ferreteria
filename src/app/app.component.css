@@ -1,0 +1,9 @@
+:host {
+    display: block;
+  }
+  
+  .main-content {
+    margin-left: 250px; /* El ancho que tiene tu sidebar */
+    padding: 2rem;
+  }
+  

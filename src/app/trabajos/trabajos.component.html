@@ -1,0 +1,97 @@
+<div class="container mt-3">
+
+  <div class="titulo-cuadro d-flex align-items-center">
+    <img src="/trabajos.svg" alt="Trabajos" class="title-icon">
+    <span class="texto-titulo">Trabajos</span>
+  </div>
+
+  <div class="container w-100">
+
+    <div class="d-flex justify-content-end mb-3 mt-5">
+      <button class="btn btn-success" (click)="mostrarFormulario = true">
+        Agregar Trabajo
+      </button>
+    </div>
+  
+  <div *ngIf="mostrarFormulario" class="modal-flotante">
+    <div class="modal-contenido p-4 rounded">
+      <button class="btn-close float-end" (click)="mostrarFormulario = false"></button>
+      <h2 class="text-center mb-4">Agregar Trabajo</h2>
+  
+      <form [formGroup]="trabajoForm" (ngSubmit)="agregarRegistro()">
+        <div class="mb-3">
+          <label class="form-label">ID Trabajo</label>
+          <input type="text" formControlName="idTrabajo" class="form-control" />
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Descripción</label>
+          <input type="text" formControlName="descripcion" class="form-control" />
+        </div>
+      
+        <div class="mb-3">
+          <label class="form-label">Valor</label>
+          <input type="number" formControlName="valor" class="form-control" />
+        </div>
+  
+        <button type="submit" class="btn btn-primary w-100" [disabled]="!trabajoForm.valid">Agregar Trabajo</button>
+      </form>
+    </div>
+  </div>
+  
+</div>
+
+<div class="container d-flex justify-content-center w-100">
+<table class="table table-striped table-secondary table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>Id Trabajo</th>
+        <th>Descripción</th>
+        <th>Valor</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let trabajo of registros">
+        <td>{{ trabajo.idTrabajo }}</td>
+        <td>
+          <input *ngIf="trabajoEditando?.idTrabajo === trabajo.idTrabajo"
+                 [(ngModel)]="trabajoEditando.descripcion"
+                 class="form-control" />
+          <span *ngIf="!trabajoEditando || trabajoEditando.idTrabajo !== trabajo.idTrabajo">
+            {{ trabajo.descripcion }}
+          </span>
+        </td>
+        <td>
+          <input *ngIf="trabajoEditando?.idTrabajo === trabajo.idTrabajo"
+                 [(ngModel)]="trabajoEditando.valor"
+                 class="form-control" />
+          <span *ngIf="!trabajoEditando || trabajoEditando.idTrabajo !== trabajo.idTrabajo">
+            {{ trabajo.valor }}
+          </span>
+        </td>
+        <td>{{ trabajo.fechaTrabajo | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td class="acciones-cell">
+          <div class="d-flex align-items-center">
+            <button *ngIf="trabajoEditando?.idTrabajo === trabajo.idTrabajo"
+                    (click)="guardarEdicion()"
+                    class="btn btn-success btn-sm me-2">Guardar</button>
+            <button *ngIf="trabajoEditando?.idTrabajo === trabajo.idTrabajo"
+                    (click)="cancelarEdicion()"
+                    class="btn btn-secondary btn-sm me-2">Cancelar</button>
+        
+            <button *ngIf="!trabajoEditando || trabajoEditando.idTrabajo !== trabajo.idTrabajo"
+                    (click)="iniciarEdicion(trabajo)"
+                    class="btn btn-warning btn-sm me-2">Editar</button>
+            <button *ngIf="!trabajoEditando || trabajoEditando.idTrabajo !== trabajo.idTrabajo"
+                    (click)="eliminarRegistro(trabajo.idTrabajo)"
+                    class="btn btn-danger btn-sm">Eliminar</button>
+          </div>
+        </td>
+        
+      </tr>
+    </tbody>
+  </table>
+</div>
+  

@@ -1,0 +1,54 @@
+<nav class="sidebar-nav">
+
+  <div class="menu-line"></div>
+
+  <div class="icono-container d-flex align-items-center m-3">
+    <ion-icon class="icon" name="hammer-outline"></ion-icon>
+    <span class="menu-title">Todo en Gas & Algo Más</span>
+  </div>
+
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/menu" routerLinkActive="active">
+        <img src="/dashboard.svg" alt="Dashboard" class="nav-icon"> DashBoard
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/productos" routerLinkActive="active" (click)="onUserSelection('todo')">
+        <img src="/productos.svg" alt="Productos" class="nav-icon"> Productos
+      </a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="categoriasDropdown" role="button" data-bs-toggle="dropdown"
+         aria-expanded="false">
+        <img src="/categorias.svg" alt="Categorías" class="nav-icon"> Categorías
+      </a>
+      <ul class="dropdown-menu minimal-dropdown dropdown-size" aria-labelledby="categoriasDropdown">
+        <li class="item-dropdown" *ngFor="let categoria of categorias">
+          <a class="dropdown-item custom-item" 
+             [routerLink]="'/productos'"
+             (click)="onUserSelection(categoria.valor)">
+            {{ categoria.nombre }}
+          </a>
+        </li>
+      </ul>      
+    </li>
+    
+    
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/ventas" routerLinkActive="active">
+        <img src="/venta.svg" alt="Ventas" class="nav-icon"> Ventas
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/trabajos" routerLinkActive="active">
+        <img src="/trabajos.svg" alt="Trabajos" class="nav-icon"> Trabajos
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/reportes" routerLinkActive="active">
+        <img src="/ventas.svg" alt="Reportes" class="nav-icon"> Reportes
+      </a>
+    </li>
+  </ul>
+</nav>
