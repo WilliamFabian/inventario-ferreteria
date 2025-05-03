@@ -1,13 +1,14 @@
 {
   "name": "inventario-ferreteria",
   "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "node backend/server.js",
-    "build": "ng build --configuration production",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
-  },
+"scripts": {
+  "ng": "ng",
+  "postinstall": "npm run build",
+  "start": "node backend/server.js",
+  "build": "ng build --configuration production",
+  "watch": "ng build --watch --configuration development",
+  "test": "ng test"
+},
   "private": true,
   "dependencies": {
     "@angular/common": "^19.2.0",
