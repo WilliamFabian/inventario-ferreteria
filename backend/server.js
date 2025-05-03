@@ -50,6 +50,8 @@ function validarTabla(req, res, next) {
 
 // Definimos una ruta base para la API
 const apiRouter = express.Router();
+// Montamos el router de la API en la ruta /api
+app.use('/api', apiRouter);
 
 // 📌 Obtener todos los registros (productos o ventas)
 apiRouter.get('/:tabla', validarTabla, (req, res) => {
@@ -207,8 +209,7 @@ apiRouter.delete('/:tabla/:id', validarTabla, (req, res) => {
     });
 });
 
-// Montamos el router de la API en la ruta /api
-app.use('/api', apiRouter);
+
 
 app.use(express.static(path.join(__dirname, 'dist/inventario-ferreteria/browser')));
 
