@@ -200,11 +200,11 @@ apiRouter.delete('/:tabla/:id', validarTabla, (req, res) => {
 // Montamos el router de la API en la ruta /api
 app.use('/api', apiRouter);
 
-app.use(express.static(path.join(__dirname, './dist/inventario-ferreteria')));
+app.use(express.static(path.join(__dirname, '/dist/inventario-ferreteria')));
 
 // Redirigir cualquier ruta desconocida al index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, './dist/inventario-ferreteria/index.html'));
+  res.sendFile(path.join(__dirname, '/dist/inventario-ferreteria/index.html'));
 });
 
 app.listen(port, () => {
