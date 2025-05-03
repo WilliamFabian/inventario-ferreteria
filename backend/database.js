@@ -1,13 +1,13 @@
 const mysql = require('mysql2');
 
 //Configuración de la conexión a MySQL.
-const connection = mysql.createConnection(
-    {host: 'localhost',
-        user: 'root',
-        password: '', //No hay contraseña configurada en MySQL, entonces se pone cadena vacía.
-        database: 'inventario-ferreteria'
-    }
-);
+const connection = mysql.createConnection({
+    host: 'turntable.proxy.rlwy.net',
+    port: 35160,
+    user: 'root',
+    password: 'QnAwFgZIOBSJlmkJNqZLYDzmGeEzMtVZ',
+    database: 'railway'
+});
 
 //Conectar a la base de datos.
 
