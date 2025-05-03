@@ -1,5 +1,13 @@
 //Importamos módulos necesarios.
 
+const fs = require('fs');
+console.log("Directorio actual:", __dirname);
+console.log("¿Existe dist/inventario-ferreteria?", fs.existsSync(path.join(__dirname, 'dist/inventario-ferreteria')));
+if (fs.existsSync(path.join(__dirname, 'dist/inventario-ferreteria'))) {
+  console.log("Contenido de dist/inventario-ferreteria:", fs.readdirSync(path.join(__dirname, 'dist/inventario-ferreteria')));
+  console.log("¿Existe index.html?", fs.existsSync(path.join(__dirname, 'dist/inventario-ferreteria/index.html')));
+}
+
 //Framework para crear servidorse web en Node.js.
 const express = require('express');
 
@@ -16,7 +24,7 @@ const app = express();
 const path = require('path'); //Railway.
 
 //Definimos el puerto en el que se ejecutará el servidor.
-const port = process.env.PORT || 8080; //RailWay.
+const port = process.env.PORT || 3000; //RailWay.
 
 //Middlewares.
 
