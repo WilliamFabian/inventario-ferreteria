@@ -48,10 +48,11 @@ function validarTabla(req, res, next) {
     next();
 }
 
-
+// Definimos una ruta base para la API
+const apiRouter = express.Router();
 
 // 📌 Obtener todos los registros (productos o ventas)
-app.get('/:tabla', validarTabla, (req, res) => {
+apiRouter.get('/:tabla', validarTabla, (req, res) => {
     const { tabla } = req.params;
     const sql = `SELECT * FROM ${tabla}`;
 
@@ -64,7 +65,7 @@ app.get('/:tabla', validarTabla, (req, res) => {
 });
 
 // 📌 Obtener registros por tipo (solo para productos)
-app.get('/:tabla/:tipo', validarTabla, (req, res) => {
+apiRouter.get('/:tabla/:tipo', validarTabla, (req, res) => {
     const { tabla, tipo } = req.params;
 
     if (tabla !== 'productos') {
@@ -82,7 +83,7 @@ app.get('/:tabla/:tipo', validarTabla, (req, res) => {
 });
 
 // 📌 Obtener un registro por ID
-app.get('/:tabla/id/:id', validarTabla, (req, res) => {
+apiRouter.get('/:tabla/id/:id', validarTabla, (req, res) => {
     const { tabla, id } = req.params;
     const sql = `SELECT * FROM ${tabla} WHERE idProducto = ?`;
 
@@ -95,7 +96,7 @@ app.get('/:tabla/id/:id', validarTabla, (req, res) => {
 });
 
 // 📌 Obtener un registro por Nombre
-app.get('/:tabla/nombre/:nombre', validarTabla, (req, res) => {
+apiRouter.get('/:tabla/nombre/:nombre', validarTabla, (req, res) => {
     const { tabla, nombre } = req.params;
     const sql = `SELECT * FROM ${tabla} WHERE TRIM(LOWER(nombre)) = TRIM(LOWER(?))`;
 
@@ -108,7 +109,7 @@ app.get('/:tabla/nombre/:nombre', validarTabla, (req, res) => {
 });
 
 // 📌 Agregar un registro (productos o ventas)
-app.post('/:tabla/agregar', validarTabla, (req, res) => {
+apiRouter.post('/:tabla/agregar', validarTabla, (req, res) => {
     const { tabla } = req.params;
     const datos = req.body;
 
@@ -127,7 +128,7 @@ app.post('/:tabla/agregar', validarTabla, (req, res) => {
 });
 
 // 📌 Editar un registro
-app.put('/:tabla/editar', validarTabla, (req, res) => {
+apiRouter.put('/:tabla/editar', validarTabla, (req, res) => {
     const { tabla } = req.params;
     const { idVenta, idProducto, idTrabajo, ...datos } = req.body;
 
@@ -176,7 +177,7 @@ app.put('/:tabla/editar', validarTabla, (req, res) => {
 
 
 // 📌 Eliminar un registro
-app.delete('/:tabla/:id', validarTabla, (req, res) => {
+apiRouter.delete('/:tabla/:id', validarTabla, (req, res) => {
     const { tabla, id } = req.params;
 
     // Determinar el nombre correcto de la clave primaria según la tabla
@@ -206,7 +207,8 @@ app.delete('/:tabla/:id', validarTabla, (req, res) => {
     });
 });
 
-
+// Montamos el router de la API en la ruta /api
+app.use('/api', apiRouter);
 
 app.use(express.static(path.join(__dirname, 'dist/inventario-ferreteria/browser')));
 
