@@ -1,13 +1,13 @@
 {
   "name": "inventario-ferreteria",
   "version": "0.0.0",
-"scripts": {
-  "ng": "ng",
-  "start": "node backend/server.js",
-  "build": "ng build --configuration production",
-  "watch": "ng build --watch --configuration development",
-  "test": "ng test"
-},
+  "scripts": {
+    "ng": "ng",
+    "start": "node backend/server.js",
+    "build": "ng build --configuration production",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test"
+  },
   "private": true,
   "dependencies": {
     "@angular/common": "^19.2.0",
@@ -20,6 +20,7 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.9",
+    "mysql2": "^3.14.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
