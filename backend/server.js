@@ -25,7 +25,7 @@ console.log("Directorio actual:", __dirname);
 console.log("¿Existe dist/inventario-ferreteria?", fs.existsSync(path.join(__dirname, 'dist/inventario-ferreteria')));
 if (fs.existsSync(path.join(__dirname, 'dist/inventario-ferreteria'))) {
   console.log("Contenido de dist/inventario-ferreteria:", fs.readdirSync(path.join(__dirname, 'dist/inventario-ferreteria')));
-  console.log("¿Existe index.html?", fs.existsSync(path.join(__dirname, 'dist/inventario-ferreteria/index.html')));
+  console.log("¿Existe index.html?", fs.existsSync(path.join(__dirname, 'dist/inventario-ferreteria/browser/index.html')));
 }
 
 //Middlewares.
