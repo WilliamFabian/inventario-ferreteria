@@ -13,6 +13,8 @@ const connection = require('./database');
 //Creamos una instancia de la aplicación Express.
 const app = express();
 
+const path = require('path'); //Railway.
+
 //Definimos el puerto en el que se ejecutará el servidor.
 const port = process.env.PORT || 3000; //RailWay.
 
