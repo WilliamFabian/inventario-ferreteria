@@ -14,7 +14,7 @@ const connection = require('./database');
 const app = express();
 
 //Definimos el puerto en el que se ejecutará el servidor.
-const port = 3000;
+const port = process.env.PORT || 3000; //RailWay.
 
 //Middlewares.
 
