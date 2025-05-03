@@ -18,14 +18,6 @@ const path = require('path'); //Railway.
 //Definimos el puerto en el que se ejecutará el servidor.
 const port = process.env.PORT || 3000; //RailWay.
 
-// Servir el frontend Angular desde la carpeta dist
-app.use(express.static(path.join(__dirname, '../dist/inventario-ferreteria')));
-
-// Redirigir cualquier ruta desconocida al index.html
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist/inventario-ferreteria/index.html'));
-});
-
 //Middlewares.
 
 //Habilitamos CORS para permitir peticiones desde otros dominios (como el Frotnend).
