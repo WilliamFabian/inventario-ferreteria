@@ -2,7 +2,7 @@ const mysql = require('mysql2');
 
 //Configuración de la conexión a MySQL.
 const connection = mysql.createConnection({
-    host: 'mysql.railway.internal',
+    host: 'turntable.proxy.rlwy.net:35160',
     port: 3306,
     user: 'root',
     password: 'QnAwFgZIOBSJlmkJNqZLYDzmGeEzMtVZ',
