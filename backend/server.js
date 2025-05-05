@@ -9,7 +9,7 @@ const app = express();
 
 const path = require('path');
 
-const port = 8080;
+const port = process.env.PORT || 3000;
 
 
 app.use(cors());
