@@ -105,7 +105,7 @@ export class VentasComponent {
       delete datosVenta.descuento;
       
       console.log('Datos a enviar:', datosVenta);
-      
+      console.log('Probando');
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
@@ -123,7 +123,7 @@ export class VentasComponent {
       
       // Volvemos a deshabilitar los campos
       this.ventaForm.get('valorUnitario')?.disable();
-      console.log('Probando');
+
     } else {
       alert('Por favor, completa todos los campos obligatorios.');
     }
