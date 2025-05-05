@@ -61,14 +61,14 @@ export class TrabajosComponent implements OnInit {
         .agregarRegistro(this.tablaSeleccionada, datosTrabajo)
         .subscribe({
           next: () => {
-            alert('Trabajo agregado con éxito.');
+            alert('Trabajo agregado con exito.');
             this.obtenerRegistros(); // Recargar la lista
             this.trabajoForm.reset();
             this.mostrarFormulario = false;
           },
           error: (err) => {
             alert('No se pudo guardar el trabajo.');
-            console.error('Error en la petición:', err);
+            console.error('Error en la peticion:', err);
           },
         });
     } else {
@@ -93,7 +93,7 @@ export class TrabajosComponent implements OnInit {
             console.error('Error al actualizar el trabajo', err);
           },
         });
-      alert('Trabajo editado con éxito.');
+      alert('Trabajo editado con exito.');
     }
   }
 
@@ -107,7 +107,7 @@ export class TrabajosComponent implements OnInit {
         .eliminarRegistro(this.tablaSeleccionada, id)
         .subscribe({
           next: () => {
-            alert('Trabajo eliminado con éxito.');
+            alert('Trabajo eliminado con exito.');
             this.obtenerRegistros(); // Recargar la lista de trabajos
           },
           error: (err) => {
