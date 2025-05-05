@@ -95,16 +95,19 @@ export class VentasComponent {
 
   agregarRegistro() {
     if (this.ventaForm.valid) {
+      // Primero habilitamos los campos para obtener sus valores
       this.ventaForm.get('valorUnitario')?.enable();
       this.ventaForm.get('precioTotal')?.enable();
-
+      
+      // Obtenemos todos los valores del formulario
       let datosVenta = this.ventaForm.getRawValue();
-
-
+      
+      // Eliminamos los campos que no deben enviarse al backend
       delete datosVenta.descuento;
-
+      delete datosVenta.precioTotal; // Eliminar precioTotal ya que es una columna generada
+      
       console.log('Datos a enviar:', datosVenta);
-
+      
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
@@ -119,7 +122,8 @@ export class VentasComponent {
             console.error('Error en la petición:', err);
           },
         });
-
+      
+      // Volvemos a deshabilitar los campos
       this.ventaForm.get('valorUnitario')?.disable();
       this.ventaForm.get('precioTotal')?.disable();
     } else {
