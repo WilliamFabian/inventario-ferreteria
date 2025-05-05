@@ -95,17 +95,16 @@ export class VentasComponent {
 
   agregarRegistro() {
     if (this.ventaForm.valid) {
-      // Habilitamos valorUnitario para poder obtener su valor
       this.ventaForm.get('valorUnitario')?.enable();
-      
+      this.ventaForm.get('precioTotal')?.enable();
+
       let datosVenta = this.ventaForm.getRawValue();
-      
-      // Eliminamos precioTotal y descuento
-      delete datosVenta.precioTotal;
+
+
       delete datosVenta.descuento;
-      console.log('Probando');
+
       console.log('Datos a enviar:', datosVenta);
-      
+
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
@@ -120,9 +119,9 @@ export class VentasComponent {
             console.error('Error en la petición:', err);
           },
         });
-      
-      // Volvemos a deshabilitar
+
       this.ventaForm.get('valorUnitario')?.disable();
+      this.ventaForm.get('precioTotal')?.disable();
     } else {
       alert('Por favor, completa todos los campos obligatorios.');
     }
