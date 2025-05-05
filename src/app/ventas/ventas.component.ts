@@ -103,9 +103,9 @@ export class VentasComponent {
       
       // Eliminamos los campos que no deben enviarse al backend
       delete datosVenta.descuento;
-      
-      console.log('Datos a enviar:', datosVenta);
       console.log('Probando');
+      console.log('Datos a enviar:', datosVenta);
+      
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
