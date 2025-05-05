@@ -38,7 +38,6 @@ export class VentasComponent {
       idProducto: ['', Validators.required],
       cantidad: ['', [Validators.required, Validators.min(1)]],
       valorUnitario: [{ value: '', disabled: true }],
-      precioTotal: [{ value: '', disabled: true }],
       descuento: [false],
     });
   }
@@ -97,14 +96,13 @@ export class VentasComponent {
     if (this.ventaForm.valid) {
       // Primero habilitamos los campos para obtener sus valores
       this.ventaForm.get('valorUnitario')?.enable();
-      this.ventaForm.get('precioTotal')?.enable();
+
       
       // Obtenemos todos los valores del formulario
       let datosVenta = this.ventaForm.getRawValue();
       
       // Eliminamos los campos que no deben enviarse al backend
       delete datosVenta.descuento;
-      delete datosVenta.precioTotal; // Eliminar precioTotal ya que es una columna generada
       
       console.log('Datos a enviar:', datosVenta);
       
@@ -125,7 +123,7 @@ export class VentasComponent {
       
       // Volvemos a deshabilitar los campos
       this.ventaForm.get('valorUnitario')?.disable();
-      this.ventaForm.get('precioTotal')?.disable();
+      console.log('Probando');
     } else {
       alert('Por favor, completa todos los campos obligatorios.');
     }
