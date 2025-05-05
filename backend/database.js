@@ -9,7 +9,6 @@ const connection = mysql.createConnection({
     database: process.env.MYSQL_DATABASE || 'railway'
 });
 
-//Conectar a la base de datos.
 
 connection.connect(err => {
     if(err){
@@ -18,7 +17,5 @@ connection.connect(err => {
     }
     console.log("Conectado a MySQL.");
 });
-
-//Exportar la conexión para usarla en otros archivos.
 
 module.exports = connection;
