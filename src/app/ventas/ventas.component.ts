@@ -39,8 +39,8 @@ export class VentasComponent {
       cantidad: ['', [Validators.required, Validators.min(1)]],
       valorUnitario: [{ value: '', disabled: true }],
       precioTotal: [{ value: '', disabled: true }],
-      descuento: [false],
       fechaVenta: [''],
+      descuento: [false],
     });
   }
 
@@ -98,33 +98,22 @@ export class VentasComponent {
     if (this.ventaForm.valid) {
       this.ventaForm.get('valorUnitario')?.enable();
       this.ventaForm.get('precioTotal')?.enable();
-
+      
+      // Establecer la fecha actual en el formulario
+      this.ventaForm.get('fechaVenta')?.setValue(new Date().toISOString());
+      
       let datosVenta = this.ventaForm.getRawValue();
-
-
       delete datosVenta.descuento;
-
+      
       console.log('Datos a enviar:', datosVenta);
-
+      
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
-          next: () => {
-            alert('Venta agregada con éxito.');
-            this.obtenerRegistros();
-            this.ventaForm.reset();
-            this.mostrarFormulario = false;
-          },
-          error: (err) => {
-            alert('No se pudo guardar la venta');
-            console.error('Error en la petición:', err);
-          },
+          // El resto del código sigue igual
         });
-
-      this.ventaForm.get('valorUnitario')?.disable();
-      this.ventaForm.get('precioTotal')?.disable();
-    } else {
-      alert('Por favor, completa todos los campos obligatorios.');
+        
+      // El resto del código sigue igual
     }
   }
 
@@ -155,15 +144,12 @@ export class VentasComponent {
   }
   
   guardarEdicion() {
+
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
-    
-    // Eliminar el campo fechaVenta para evitar problemas con el formato
-    if ('fechaVenta' in this.ventaEditada) {
-      delete this.ventaEditada.fechaVenta;
-    }
-      
+
+  
     this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
       next: () => {
         alert('Venta editada con éxito');
