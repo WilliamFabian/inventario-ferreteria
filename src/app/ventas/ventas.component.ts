@@ -150,7 +150,12 @@ export class VentasComponent {
 
   editarVenta(venta: any) {
     this.ventaEditando = venta.idVenta;
-    this.ventaEditada = { ...venta, aplicarDescuento: false };
+    
+    // Desestructuración para extraer fechaVenta y quedarnos con el resto
+    const { fechaVenta, ...ventaSinFecha } = venta;
+    
+    // Crear ventaEditada sin incluir fechaVenta
+    this.ventaEditada = { ...ventaSinFecha, aplicarDescuento: false };
   }
   
   guardarEdicion() {
