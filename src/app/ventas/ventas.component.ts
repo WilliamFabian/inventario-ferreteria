@@ -160,15 +160,13 @@ export class VentasComponent {
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
-
+  
     if ('fechaVenta' in this.ventaEditada) {
-      // Convierte la fecha a formato adecuado para MySQL
-      this.ventaEditada.fechaVenta = this.datePipe.transform(
-        this.ventaEditada.fechaVenta,
-        'yyyy-MM-dd HH:mm:ss'
-      );
+      // Convierte la fecha a UTC sin el sufijo Z
+      const fechaUtc = new Date(this.ventaEditada.fechaVenta).toISOString().slice(0, 19).replace('T', ' ');  // Ajusta la fecha sin zona horaria
+      this.ventaEditada.fechaVenta = fechaUtc;
     }
-
+  
     this.productoServicio
       .editarRegistro(this.tablaSeleccionada, this.ventaEditada)
       .subscribe({
@@ -179,10 +177,11 @@ export class VentasComponent {
         },
         error: (err) => {
           alert('No se pudo guardar la venta editada');
-          console.error('Error en la petición:', err);
+          console.error('Error en la petición:', err, this.ventaEditando);
         },
       });
   }
+  
 
   cancelarEdicion() {
     this.ventaEditando = null;
