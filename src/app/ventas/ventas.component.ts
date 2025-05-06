@@ -154,15 +154,13 @@ export class VentasComponent {
   }
   
   guardarEdicion() {
+
+    alert('Llamamos edicion');
+
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
-  
-    if ('fechaVenta' in this.ventaEditada) {
-      delete this.ventaEditada.fechaVenta;
-    }
-  
-    console.log('Datos que se enviarán al backend (edición):', this.ventaEditada);
+
   
     this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
       next: () => {
@@ -176,7 +174,6 @@ export class VentasComponent {
       },
     });
   }
-  
   
   cancelarEdicion() {
     this.ventaEditando = null;
