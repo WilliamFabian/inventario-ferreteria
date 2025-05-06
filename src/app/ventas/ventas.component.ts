@@ -40,7 +40,7 @@ export class VentasComponent {
       valorUnitario: [{ value: '', disabled: true }],
       precioTotal: [{ value: '', disabled: true }],
       descuento: [false],
-      fechaVenta: [''],
+      
     });
   }
 
@@ -101,12 +101,14 @@ export class VentasComponent {
   
       let datosVenta = this.ventaForm.getRawValue();
   
-      // Agregar fecha actual manualmente
-      datosVenta.fechaVenta = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      // 🔥 Aquí agregas la fecha directamente:
+      const ahora = new Date();
+      const fechaFormateada = ahora.toISOString().slice(0, 19).replace('T', ' ');
+      datosVenta.fechaVenta = fechaFormateada;
   
       delete datosVenta.descuento;
   
-      console.log('Datos a enviar:', datosVenta);
+      console.log('Datos a enviar:', datosVenta); // Asegúrate que aquí salga fechaVenta
   
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
@@ -129,6 +131,7 @@ export class VentasComponent {
       alert('Por favor, completa todos los campos obligatorios.');
     }
   }
+  
 
   eliminarRegistro(id: string) {
     if (
