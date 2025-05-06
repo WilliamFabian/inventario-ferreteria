@@ -48,8 +48,16 @@ export class ProductosService {
   }
 
   editarRegistro(tabla: string, registro: any): Observable<any> {
+    // Si estamos editando una venta, eliminamos la fechaVenta
+    if (tabla === 'ventas' && 'fechaVenta' in registro) {
+      const { fechaVenta, ...registroSinFecha } = registro;
+      return this.http.put<any>(`${this.apiUrl}/${tabla}/editar`, registroSinFecha);
+    }
+  
+    // Para cualquier otra tabla, enviar el registro completo
     return this.http.put<any>(`${this.apiUrl}/${tabla}/editar`, registro);
   }
+  
 
   eliminarRegistro(tabla: string, id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${tabla}/${id}`);
