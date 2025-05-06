@@ -95,27 +95,20 @@ export class VentasComponent {
 
   agregarRegistro() {
     if (this.ventaForm.valid) {
-      // Habilitar campos deshabilitados para que se incluyan en los datos
       this.ventaForm.get('valorUnitario')?.enable();
       this.ventaForm.get('precioTotal')?.enable();
-      
-      // Obtener los valores actuales del formulario
+
       let datosVenta = this.ventaForm.getRawValue();
-      
-      // Eliminar campos innecesarios
+
+
       delete datosVenta.descuento;
-      
-      // SOLUCIÓN: Crear objeto de fecha directamente en JavaScript
-      // MySQL lo interpretará correctamente en el formato YYYY-MM-DD HH:MM:SS
-      datosVenta.fechaVenta = new Date();
-      
-      console.log('Datos a enviar (con fecha):', datosVenta);
-      
+
+      console.log('Datos a enviar:', datosVenta);
+
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
-          next: (respuesta) => {
-            console.log('Respuesta del servidor:', respuesta);
+          next: () => {
             alert('Venta agregada con éxito.');
             this.obtenerRegistros();
             this.ventaForm.reset();
@@ -126,8 +119,7 @@ export class VentasComponent {
             console.error('Error en la petición:', err);
           },
         });
-      
-      // Volver a deshabilitar los campos
+
       this.ventaForm.get('valorUnitario')?.disable();
       this.ventaForm.get('precioTotal')?.disable();
     } else {
