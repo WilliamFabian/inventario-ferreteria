@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductosService } from '../../../services/productos.service';
 import { NgFor, NgIf } from '@angular/common';
-import { CommonModule } from '@angular/common'; 
+import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
@@ -39,7 +39,6 @@ export class VentasComponent {
       cantidad: ['', [Validators.required, Validators.min(1)]],
       valorUnitario: [{ value: '', disabled: true }],
       precioTotal: [{ value: '', disabled: true }],
-      fechaVenta: [new Date().toISOString().split('T')[0]],
       descuento: [false],
     });
   }
@@ -103,6 +102,23 @@ export class VentasComponent {
       this.ventaForm.get('precioTotal')?.enable();
 
       let datosVenta = this.ventaForm.getRawValue();
+
+      // Crear formato DATETIME completo: YYYY-MM-DD HH:MM:SS
+      const fechaActual = new Date();
+      const fechaFormateada =
+        fechaActual.getFullYear() +
+        '-' +
+        String(fechaActual.getMonth() + 1).padStart(2, '0') +
+        '-' +
+        String(fechaActual.getDate()).padStart(2, '0') +
+        ' ' +
+        String(fechaActual.getHours()).padStart(2, '0') +
+        ':' +
+        String(fechaActual.getMinutes()).padStart(2, '0') +
+        ':' +
+        String(fechaActual.getSeconds()).padStart(2, '0');
+
+      datosVenta.fechaVenta = fechaFormateada;
 
       delete datosVenta.descuento;
 
