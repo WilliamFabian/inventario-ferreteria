@@ -150,12 +150,7 @@ export class VentasComponent {
 
   editarVenta(venta: any) {
     this.ventaEditando = venta.idVenta;
-    
-    // Crear una copia de la venta sin el campo fechaVenta
-    const { fechaVenta, ...ventaSinFecha } = venta;
-    
-    // Asignar a ventaEditada sin incluir el campo fechaVenta
-    this.ventaEditada = { ...ventaSinFecha, aplicarDescuento: false };
+    this.ventaEditada = { ...venta, aplicarDescuento: false };
   }
   
   guardarEdicion() {
