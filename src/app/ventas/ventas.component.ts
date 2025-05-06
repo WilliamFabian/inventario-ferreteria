@@ -59,7 +59,10 @@ export class VentasComponent {
 
   obtenerRegistros() {
     this.productoServicio.obtenerRegistros('ventas').subscribe((data) => {
-      this.registros = data.sort((a: any, b: any) => new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime());
+      this.registros = data.sort(
+        (a: any, b: any) =>
+          new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime()
+      );
     });
   }
   obtenerProductos() {
@@ -99,7 +102,6 @@ export class VentasComponent {
       this.ventaForm.get('precioTotal')?.enable();
 
       let datosVenta = this.ventaForm.getRawValue();
-
 
       delete datosVenta.descuento;
 
@@ -152,45 +154,50 @@ export class VentasComponent {
     this.ventaEditando = venta.idVenta;
     this.ventaEditada = { ...venta, aplicarDescuento: false };
   }
-  
+
   guardarEdicion() {
-
-    alert('Llamamos edicion');
-
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
 
-  
-    this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
-      next: () => {
-        alert('Venta editada con éxito');
-        this.ventaEditando = null;
-        this.obtenerRegistros();
-      },
-      error: (err) => {
-        alert('No se pudo guardar la venta editada');
-        console.error('Error en la petición:', err);
-      },
-    });
+    if ('fechaVenta' in this.ventaEditada) {
+      delete this.ventaEditada.fechaVenta;
+    }
+
+    this.productoServicio
+      .editarRegistro(this.tablaSeleccionada, this.ventaEditada)
+      .subscribe({
+        next: () => {
+          alert('Venta editada con éxito');
+          this.ventaEditando = null;
+          this.obtenerRegistros();
+        },
+        error: (err) => {
+          alert('No se pudo guardar la venta editada');
+          console.error('Error en la petición:', err);
+        },
+      });
   }
-  
+
   cancelarEdicion() {
     this.ventaEditando = null;
     this.ventaEditada = {};
   }
-  
+
   actualizarPrecioUnitarioEdicion() {
-    const productoSeleccionado = this.productos.find(p => p.idProducto === this.ventaEditada.idProducto);
+    const productoSeleccionado = this.productos.find(
+      (p) => p.idProducto === this.ventaEditada.idProducto
+    );
     if (productoSeleccionado) {
-      this.ventaEditada.valorUnitario = this.ventaEditada.aplicarDescuento 
-        ? productoSeleccionado.precioDescuento 
+      this.ventaEditada.valorUnitario = this.ventaEditada.aplicarDescuento
+        ? productoSeleccionado.precioDescuento
         : productoSeleccionado.precio;
       this.calcularPrecioTotalEdicion();
     }
   }
-  
+
   calcularPrecioTotalEdicion() {
-    this.ventaEditada.precioTotal = this.ventaEditada.cantidad * this.ventaEditada.valorUnitario;
+    this.ventaEditada.precioTotal =
+      this.ventaEditada.cantidad * this.ventaEditada.valorUnitario;
   }
 }
