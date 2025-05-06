@@ -157,7 +157,15 @@ export class VentasComponent {
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
-  
+    
+    // Eliminar cualquier campo de fecha que pueda estar causando problemas
+    if ('fechaVenta' in this.ventaEditada) {
+      delete this.ventaEditada.fechaVenta;
+    }
+        
+    // Imprime el objeto completo para ver qué se está enviando
+    console.log('Objeto a enviar:', JSON.stringify(this.ventaEditada, null, 2));
+      
     this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
       next: () => {
         alert('Venta editada con éxito');
@@ -167,6 +175,8 @@ export class VentasComponent {
       error: (err) => {
         alert('No se pudo guardar la venta editada');
         console.error('Error en la petición:', err);
+        // Imprimir detalles más específicos del error
+        console.error('Detalles del error:', JSON.stringify(err, null, 2));
       },
     });
   }
