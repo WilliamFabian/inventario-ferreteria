@@ -82,29 +82,22 @@ apiRouter.get("/:tabla/nombre/:nombre", validarTabla, (req, res) => {
   });
 });
 
-apiRouter.post("/:tabla/agregar", validarTabla, (req, res) => {
-  const { tabla } = req.params;
-  let datos = req.body;
+apiRouter.post('/:tabla/agregar', validarTabla, (req, res) => {
+    const { tabla } = req.params;
+    const datos = req.body;
 
-  // Si es la tabla de ventas, agregar automáticamente la fecha
-  if (tabla === "ventas") {
-    datos = {
-      ...datos,
-      fechaVenta: new Date(), // MySQL convertirá automáticamente esto al formato correcto
-    };
-  }
+    const columnas = Object.keys(datos).join(', ');
+    const valores = Object.values(datos);
+    const placeholders = valores.map(() => '?').join(', ');
 
-  const columnas = Object.keys(datos).join(", ");
-  const valores = Object.values(datos);
-  const placeholders = valores.map(() => "?").join(", ");
-  const query = `INSERT INTO ${tabla} (${columnas}) VALUES (${placeholders})`;
+    const query = `INSERT INTO ${tabla} (${columnas}) VALUES (${placeholders})`;
 
-  db.query(query, valores, (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.json({ message: "Registro agregado correctamente", results });
-  });
+    db.query(query, valores, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ message: 'Registro agregado correctamente', results });
+    });
 });
 
 apiRouter.put("/:tabla/editar", validarTabla, (req, res) => {
