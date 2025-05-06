@@ -162,6 +162,8 @@ export class VentasComponent {
       delete this.ventaEditada.fechaVenta;
     }
   
+    console.log('Datos que se enviarán al backend (edición):', this.ventaEditada);
+  
     this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
       next: () => {
         alert('Venta editada con éxito');
