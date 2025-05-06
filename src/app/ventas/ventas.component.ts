@@ -40,6 +40,7 @@ export class VentasComponent {
       valorUnitario: [{ value: '', disabled: true }],
       precioTotal: [{ value: '', disabled: true }],
       descuento: [false],
+      fechaVenta: [''],
     });
   }
 
@@ -154,12 +155,15 @@ export class VentasComponent {
   }
   
   guardarEdicion() {
-
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
-
-  
+    
+    // Eliminar el campo fechaVenta para evitar problemas con el formato
+    if ('fechaVenta' in this.ventaEditada) {
+      delete this.ventaEditada.fechaVenta;
+    }
+      
     this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
       next: () => {
         alert('Venta editada con éxito');
