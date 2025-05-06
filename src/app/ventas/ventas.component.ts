@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ProductosService } from '../../../services/productos.service';
 import { NgFor, NgIf } from '@angular/common';
-import { CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common'; 
 import {
   FormBuilder,
   FormGroup,
