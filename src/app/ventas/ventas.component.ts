@@ -25,6 +25,7 @@ export class VentasComponent {
   aplicarDescuento = false;
   ventaEditando: string | null = null;
   ventaEditada: any = {};
+  ventaSinFecha: any = {};
 
   ventaForm: FormGroup;
   productos: any[] = [];
@@ -59,7 +60,10 @@ export class VentasComponent {
 
   obtenerRegistros() {
     this.productoServicio.obtenerRegistros('ventas').subscribe((data) => {
-      this.registros = data.sort((a: any, b: any) => new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime());
+      this.registros = data.sort(
+        (a: any, b: any) =>
+          new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime()
+      );
     });
   }
   obtenerProductos() {
@@ -99,7 +103,6 @@ export class VentasComponent {
       this.ventaForm.get('precioTotal')?.enable();
 
       let datosVenta = this.ventaForm.getRawValue();
-
 
       delete datosVenta.descuento;
 
@@ -148,53 +151,102 @@ export class VentasComponent {
     }
   }
 
+  // Modifica el método editarVenta
   editarVenta(venta: any) {
-    this.ventaEditando = venta.idVenta;
-    
-    // Desestructuración para extraer fechaVenta y quedarnos con el resto
-    const { fechaVenta, ...ventaSinFecha } = venta;
-    
-    // Crear ventaEditada sin incluir fechaVenta
-    this.ventaEditada = { ...ventaSinFecha, aplicarDescuento: false };
-    console.error('Holaaaaaa');
-  }
-  
-  guardarEdicion() {
+    try {
+      // Almacenar el ID
+      this.ventaEditando = venta.idVenta;
 
-    if ('aplicarDescuento' in this.ventaEditada) {
-      delete this.ventaEditada.aplicarDescuento;
+      // Crear objeto manualmente sin fecha
+      this.ventaSinFecha = {
+        idVenta: venta.idVenta,
+        idProducto: venta.idProducto,
+        cantidad: venta.cantidad,
+        valorUnitario: venta.valorUnitario,
+        precioTotal: venta.precioTotal,
+      };
+
+      // Incluir aplicarDescuento
+      this.ventaEditada = {
+        ...this.ventaSinFecha,
+        aplicarDescuento: false,
+      };
+
+      // Forzar una alerta para verificar que esto se ejecuta
+      window.alert('Método editarVenta ejecutado');
+    } catch (error) {
+      window.alert('Error en editarVenta: ' + error);
     }
-
-  
-    this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
-      next: () => {
-        alert('Venta editada con éxito');
-        this.ventaEditando = null;
-        this.obtenerRegistros();
-      },
-      error: (err) => {
-        alert('No se pudo guardar la venta editada');
-        console.error('Error en la petición:', err);
-      },
-    });
   }
-  
+
+  // Modifica el método guardarEdicion
+  guardarEdicion() {
+    try {
+      // Eliminar aplicarDescuento si existe
+      if ('aplicarDescuento' in this.ventaEditada) {
+        delete this.ventaEditada.aplicarDescuento;
+      }
+
+      // Asegurarnos de usar ventaSinFecha para ventas
+      if (this.tablaSeleccionada === 'ventas') {
+        window.alert('Guardando venta sin fecha');
+
+        // Usar el objeto sin fecha
+        this.productoServicio
+          .editarRegistro(this.tablaSeleccionada, this.ventaSinFecha)
+          .subscribe({
+            next: () => {
+              window.alert('Venta editada con éxito');
+              this.ventaEditando = null;
+              this.obtenerRegistros();
+            },
+            error: (err) => {
+              window.alert(
+                'Error al guardar: ' + JSON.stringify(err).substring(0, 100)
+              );
+              console.error('Error en la petición:', err);
+            },
+          });
+      } else {
+        // Para otras tablas
+        this.productoServicio
+          .editarRegistro(this.tablaSeleccionada, this.ventaEditada)
+          .subscribe({
+            next: () => {
+              window.alert('Registro editado con éxito');
+              this.ventaEditando = null;
+              this.obtenerRegistros();
+            },
+            error: (err) => {
+              window.alert('Error: ' + JSON.stringify(err).substring(0, 100));
+              console.error('Error en la petición:', err);
+            },
+          });
+      }
+    } catch (error) {
+      window.alert('Error en guardarEdicion: ' + error);
+    }
+  }
+
   cancelarEdicion() {
     this.ventaEditando = null;
     this.ventaEditada = {};
   }
-  
+
   actualizarPrecioUnitarioEdicion() {
-    const productoSeleccionado = this.productos.find(p => p.idProducto === this.ventaEditada.idProducto);
+    const productoSeleccionado = this.productos.find(
+      (p) => p.idProducto === this.ventaEditada.idProducto
+    );
     if (productoSeleccionado) {
-      this.ventaEditada.valorUnitario = this.ventaEditada.aplicarDescuento 
-        ? productoSeleccionado.precioDescuento 
+      this.ventaEditada.valorUnitario = this.ventaEditada.aplicarDescuento
+        ? productoSeleccionado.precioDescuento
         : productoSeleccionado.precio;
       this.calcularPrecioTotalEdicion();
     }
   }
-  
+
   calcularPrecioTotalEdicion() {
-    this.ventaEditada.precioTotal = this.ventaEditada.cantidad * this.ventaEditada.valorUnitario;
+    this.ventaEditada.precioTotal =
+      this.ventaEditada.cantidad * this.ventaEditada.valorUnitario;
   }
 }
