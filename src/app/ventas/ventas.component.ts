@@ -39,7 +39,7 @@ export class VentasComponent {
       cantidad: ['', [Validators.required, Validators.min(1)]],
       valorUnitario: [{ value: '', disabled: true }],
       precioTotal: [{ value: '', disabled: true }],
-      fechaVenta: [''],
+      fechaVenta: [new Date().toISOString().split('T')[0]],
       descuento: [false],
     });
   }
@@ -60,7 +60,10 @@ export class VentasComponent {
 
   obtenerRegistros() {
     this.productoServicio.obtenerRegistros('ventas').subscribe((data) => {
-      this.registros = data.sort((a: any, b: any) => new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime());
+      this.registros = data.sort(
+        (a: any, b: any) =>
+          new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime()
+      );
     });
   }
   obtenerProductos() {
@@ -98,22 +101,32 @@ export class VentasComponent {
     if (this.ventaForm.valid) {
       this.ventaForm.get('valorUnitario')?.enable();
       this.ventaForm.get('precioTotal')?.enable();
-      
-      // Establecer la fecha actual en el formulario
-      this.ventaForm.get('fechaVenta')?.setValue(new Date().toISOString());
-      
+
       let datosVenta = this.ventaForm.getRawValue();
+
       delete datosVenta.descuento;
-      
+
       console.log('Datos a enviar:', datosVenta);
-      
+
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
-          // El resto del código sigue igual
+          next: () => {
+            alert('Venta agregada con éxito.');
+            this.obtenerRegistros();
+            this.ventaForm.reset();
+            this.mostrarFormulario = false;
+          },
+          error: (err) => {
+            alert('No se pudo guardar la venta');
+            console.error('Error en la petición:', err);
+          },
         });
-        
-      // El resto del código sigue igual
+
+      this.ventaForm.get('valorUnitario')?.disable();
+      this.ventaForm.get('precioTotal')?.disable();
+    } else {
+      alert('Por favor, completa todos los campos obligatorios.');
     }
   }
 
@@ -142,43 +155,46 @@ export class VentasComponent {
     this.ventaEditando = venta.idVenta;
     this.ventaEditada = { ...venta, aplicarDescuento: false };
   }
-  
-  guardarEdicion() {
 
+  guardarEdicion() {
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
 
-  
-    this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
-      next: () => {
-        alert('Venta editada con éxito');
-        this.ventaEditando = null;
-        this.obtenerRegistros();
-      },
-      error: (err) => {
-        alert('No se pudo guardar la venta editada');
-        console.error('Error en la petición:', err);
-      },
-    });
+    this.productoServicio
+      .editarRegistro(this.tablaSeleccionada, this.ventaEditada)
+      .subscribe({
+        next: () => {
+          alert('Venta editada con éxito');
+          this.ventaEditando = null;
+          this.obtenerRegistros();
+        },
+        error: (err) => {
+          alert('No se pudo guardar la venta editada');
+          console.error('Error en la petición:', err);
+        },
+      });
   }
-  
+
   cancelarEdicion() {
     this.ventaEditando = null;
     this.ventaEditada = {};
   }
-  
+
   actualizarPrecioUnitarioEdicion() {
-    const productoSeleccionado = this.productos.find(p => p.idProducto === this.ventaEditada.idProducto);
+    const productoSeleccionado = this.productos.find(
+      (p) => p.idProducto === this.ventaEditada.idProducto
+    );
     if (productoSeleccionado) {
-      this.ventaEditada.valorUnitario = this.ventaEditada.aplicarDescuento 
-        ? productoSeleccionado.precioDescuento 
+      this.ventaEditada.valorUnitario = this.ventaEditada.aplicarDescuento
+        ? productoSeleccionado.precioDescuento
         : productoSeleccionado.precio;
       this.calcularPrecioTotalEdicion();
     }
   }
-  
+
   calcularPrecioTotalEdicion() {
-    this.ventaEditada.precioTotal = this.ventaEditada.cantidad * this.ventaEditada.valorUnitario;
+    this.ventaEditada.precioTotal =
+      this.ventaEditada.cantidad * this.ventaEditada.valorUnitario;
   }
 }
