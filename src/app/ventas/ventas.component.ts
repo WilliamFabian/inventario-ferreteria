@@ -157,8 +157,10 @@ export class VentasComponent {
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
-
-    delete this.ventaEditada.fechaVenta;
+  
+    if ('fechaVenta' in this.ventaEditada) {
+      delete this.ventaEditada.fechaVenta;
+    }
   
     this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
       next: () => {
@@ -172,6 +174,7 @@ export class VentasComponent {
       },
     });
   }
+  
   
   cancelarEdicion() {
     this.ventaEditando = null;
