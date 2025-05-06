@@ -156,7 +156,7 @@ export class VentasComponent {
     
     // Crear ventaEditada sin incluir fechaVenta
     this.ventaEditada = { ...ventaSinFecha, aplicarDescuento: false };
-    console.log(this.ventaEditada);
+    console.error('Holaaaaaa');
   }
   
   guardarEdicion() {
