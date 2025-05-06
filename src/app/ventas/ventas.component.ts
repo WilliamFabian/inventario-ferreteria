@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ProductosService } from '../../../services/productos.service';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -30,6 +30,7 @@ export class VentasComponent {
   productos: any[] = [];
 
   constructor(
+    private datePipe: DatePipe,
     private fb: FormBuilder,
     private productoServicio: ProductosService
   ) {
@@ -161,7 +162,11 @@ export class VentasComponent {
     }
 
     if ('fechaVenta' in this.ventaEditada) {
-      delete this.ventaEditada.fechaVenta;
+      // Convierte la fecha a formato adecuado para MySQL
+      this.ventaEditada.fechaVenta = this.datePipe.transform(
+        this.ventaEditada.fechaVenta,
+        'yyyy-MM-dd HH:mm:ss'
+      );
     }
 
     this.productoServicio
