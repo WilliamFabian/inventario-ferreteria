@@ -40,6 +40,7 @@ export class VentasComponent {
       valorUnitario: [{ value: '', disabled: true }],
       precioTotal: [{ value: '', disabled: true }],
       descuento: [false],
+      fechaVenta: [''],
     });
   }
 
