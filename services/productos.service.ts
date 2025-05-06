@@ -6,11 +6,11 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class ProductosService {
-
-  private apiUrl = 'https://inventario-ferreteria-production-d9a8.up.railway.app/api';
+  private apiUrl =
+    'https://inventario-ferreteria-production-d9a8.up.railway.app/api';
   private productoCreadoSubject = new Subject<void>();
   private selectedOptionSource = new BehaviorSubject<string>('');
-  selectedOption$ = this.selectedOptionSource.asObservable(); 
+  selectedOption$ = this.selectedOptionSource.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -40,7 +40,9 @@ export class ProductosService {
 
   buscarRegistroPorNombre(tabla: string, nombre: string): Observable<any> {
     const nombreCodificado = encodeURIComponent(nombre);
-    return this.http.get<any>(`${this.apiUrl}/${tabla}/nombre/${nombreCodificado}`);
+    return this.http.get<any>(
+      `${this.apiUrl}/${tabla}/nombre/${nombreCodificado}`
+    );
   }
 
   agregarRegistro(tabla: string, registro: any): Observable<any> {
@@ -48,16 +50,19 @@ export class ProductosService {
   }
 
   editarRegistro(tabla: string, registro: any): Observable<any> {
-    // Si estamos editando una venta, eliminamos la fechaVenta
-    if (tabla === 'ventas' && 'fechaVenta' in registro) {
-      const { fechaVenta, ...registroSinFecha } = registro;
-      return this.http.put<any>(`${this.apiUrl}/${tabla}/editar`, registroSinFecha);
+    let datosParaEnviar = { ...registro };
+
+    if (tabla === 'ventas') {
+      delete datosParaEnviar.fechaVenta;
     }
-  
-    // Para cualquier otra tabla, enviar el registro completo
-    return this.http.put<any>(`${this.apiUrl}/${tabla}/editar`, registro);
+
+    console.log('Enviando al backend:', datosParaEnviar); // ⚠️ VERIFICAR esto
+
+    return this.http.put<any>(
+      `${this.apiUrl}/${tabla}/editar`,
+      datosParaEnviar
+    );
   }
-  
 
   eliminarRegistro(tabla: string, id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${tabla}/${id}`);
