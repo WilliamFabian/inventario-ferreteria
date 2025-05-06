@@ -102,7 +102,7 @@ apiRouter.post('/:tabla/agregar', validarTabla, (req, res) => {
 
 apiRouter.put("/:tabla/editar", validarTabla, (req, res) => {
   const { tabla } = req.params;
-  const { idVenta, idProducto, idTrabajo, fechaVenta, ...datos } = req.body;
+  const { idVenta, idProducto, idTrabajo, fechaVenta, fechaTrabajo, ...datos } = req.body;
 
   let idCampo;
   let idValor;
