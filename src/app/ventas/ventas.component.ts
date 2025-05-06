@@ -154,34 +154,43 @@ export class VentasComponent {
   }
   
   guardarEdicion() {
+    // Eliminar aplicarDescuento si existe
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
     
-    // Eliminar cualquier campo de fecha que pueda estar causando problemas
-    if ('fechaVenta' in this.ventaEditada) {
-      delete this.ventaEditada.fechaVenta;
+    // Crear un objeto para enviar dependiendo de la tabla
+    let datosParaEnviar: any;
+    
+    if (this.tablaSeleccionada === 'ventas') {
+      // Para ventas, crear un objeto nuevo con solo los campos necesarios
+      // esto evita enviar campos de fecha problemáticos
+      datosParaEnviar = {
+        idVenta: this.ventaEditada.idVenta,
+        idProducto: this.ventaEditada.idProducto,
+        cantidad: this.ventaEditada.cantidad,
+        valorUnitario: this.ventaEditada.valorUnitario,
+        precioTotal: this.ventaEditada.precioTotal
+        // No incluir fechaVenta ni ningún otro campo de tipo fecha
+      };
+    } else {
+      // Para otras tablas, usar el objeto completo
+      datosParaEnviar = this.ventaEditada;
     }
-        
-    // Imprime el objeto completo para ver qué se está enviando
-    console.log('Objeto a enviar:', JSON.stringify(this.ventaEditada, null, 2));
-      
-    this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
+    
+    // Usar el objeto adecuado según la tabla
+    this.productoServicio.editarRegistro(this.tablaSeleccionada, datosParaEnviar).subscribe({
       next: () => {
-        alert('Venta editada con éxito');
+        alert('Registro editado con éxito');
         this.ventaEditando = null;
         this.obtenerRegistros();
       },
       error: (err) => {
-        alert('No se pudo guardar la venta editada');
+        alert('No se pudo guardar el registro editado');
         console.error('Error en la petición:', err);
-        // Imprimir detalles más específicos del error
-        console.error('Detalles del error:', JSON.stringify(err, null, 2));
       },
     });
   }
-  
-  
   
   cancelarEdicion() {
     this.ventaEditando = null;
