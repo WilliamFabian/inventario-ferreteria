@@ -154,87 +154,23 @@ export class VentasComponent {
   }
   
   guardarEdicion() {
-    alert("Método guardarEdicion iniciado"); // Para verificar que el método se está ejecutando
-    
-    try {
-      // Para ventas, haremos algo completamente diferente
-      if (this.tablaSeleccionada === 'ventas') {
-        // Construir un objeto mínimo directamente desde los valores del formulario (si estás usando un formulario)
-        // o desde valores que sepamos con certeza
-        const ventaMinimaData = {
-          idVenta: this.ventaEditando, // Usamos el ID que guardamos al iniciar la edición
-          idProducto: typeof this.ventaEditada.idProducto === 'number' ? this.ventaEditada.idProducto : parseInt(this.ventaEditada.idProducto),
-          cantidad: typeof this.ventaEditada.cantidad === 'number' ? this.ventaEditada.cantidad : parseInt(this.ventaEditada.cantidad),
-          valorUnitario: typeof this.ventaEditada.valorUnitario === 'number' ? this.ventaEditada.valorUnitario : parseFloat(this.ventaEditada.valorUnitario),
-          precioTotal: typeof this.ventaEditada.precioTotal === 'number' ? this.ventaEditada.precioTotal : parseFloat(this.ventaEditada.precioTotal)
-        };
-        
-        alert("Objeto ventaMinimaData creado: " + JSON.stringify(ventaMinimaData));
-        
-        // Usar directamente una petición HTTP en lugar del servicio
-        // Esto nos permite verificar si el problema está en el servicio
-        const apiURL = 'https://inventario-ferreteria-production-d9a8.up.railway.app/api/ventas/' + ventaMinimaData.idVenta;
-        
-        // Si prefieres seguir usando el servicio, comenta la petición fetch y descomenta la línea del servicio
-        fetch(apiURL, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(ventaMinimaData)
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error en la respuesta: ' + response.status);
-          }
-          return response.json();
-        })
-        .then(data => {
-          alert('Venta editada con éxito');
-          this.ventaEditando = null;
-          this.obtenerRegistros();
-        })
-        .catch(error => {
-          alert('Error en fetch: ' + error.message);
-          console.error('Error en la petición fetch:', error);
-        });
-        
-        // Alternativa usando el servicio (descomenta si prefieres usar esto)
-        /*
-        this.productoServicio.editarRegistro(this.tablaSeleccionada, ventaMinimaData).subscribe({
-          next: () => {
-            alert('Venta editada con éxito usando servicio');
-            this.ventaEditando = null;
-            this.obtenerRegistros();
-          },
-          error: (err) => {
-            alert('Error usando servicio: ' + JSON.stringify(err));
-            console.error('Error en la petición servicio:', err);
-          },
-        });
-        */
-      } else {
-        // Para otras tablas, mantener el comportamiento original
-        if ('aplicarDescuento' in this.ventaEditada) {
-          delete this.ventaEditada.aplicarDescuento;
-        }
-        
-        this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
-          next: () => {
-            alert('Registro editado con éxito');
-            this.ventaEditando = null;
-            this.obtenerRegistros();
-          },
-          error: (err) => {
-            alert('No se pudo guardar el registro editado');
-            console.error('Error en la petición:', err);
-          },
-        });
-      }
-    } catch (error) {
-      alert("Error en guardarEdicion: " + error);
-      console.error("Error en guardarEdicion:", error);
+    if ('aplicarDescuento' in this.ventaEditada) {
+      delete this.ventaEditada.aplicarDescuento;
     }
+
+    delete this.ventaEditada.fechaVenta;
+  
+    this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
+      next: () => {
+        alert('Venta editada con éxito');
+        this.ventaEditando = null;
+        this.obtenerRegistros();
+      },
+      error: (err) => {
+        alert('No se pudo guardar la venta editada');
+        console.error('Error en la petición:', err);
+      },
+    });
   }
   
   cancelarEdicion() {
