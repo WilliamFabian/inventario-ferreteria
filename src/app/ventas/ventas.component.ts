@@ -40,7 +40,6 @@ export class VentasComponent {
       valorUnitario: [{ value: '', disabled: true }],
       precioTotal: [{ value: '', disabled: true }],
       descuento: [false],
-      fechaVenta: [''],
     });
   }
 
@@ -98,16 +97,14 @@ export class VentasComponent {
     if (this.ventaForm.valid) {
       this.ventaForm.get('valorUnitario')?.enable();
       this.ventaForm.get('precioTotal')?.enable();
-      
+
       let datosVenta = this.ventaForm.getRawValue();
-      
-      // Agregar la fecha actual
-      datosVenta.fechaVenta = new Date().toISOString();
-      
+
+
       delete datosVenta.descuento;
-      
+
       console.log('Datos a enviar:', datosVenta);
-      
+
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
@@ -122,7 +119,7 @@ export class VentasComponent {
             console.error('Error en la petición:', err);
           },
         });
-      
+
       this.ventaForm.get('valorUnitario')?.disable();
       this.ventaForm.get('precioTotal')?.disable();
     } else {
@@ -162,7 +159,7 @@ export class VentasComponent {
       delete this.ventaEditada.aplicarDescuento;
     }
 
-
+  
     this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
       next: () => {
         alert('Venta editada con éxito');
