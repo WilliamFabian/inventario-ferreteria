@@ -59,10 +59,7 @@ export class VentasComponent {
 
   obtenerRegistros() {
     this.productoServicio.obtenerRegistros('ventas').subscribe((data) => {
-      this.registros = data.sort(
-        (a: any, b: any) =>
-          new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime()
-      );
+      this.registros = data.sort((a: any, b: any) => new Date(b.fechaVenta).getTime() - new Date(a.fechaVenta).getTime());
     });
   }
   obtenerProductos() {
@@ -98,36 +95,27 @@ export class VentasComponent {
 
   agregarRegistro() {
     if (this.ventaForm.valid) {
+      // Habilitar campos deshabilitados para que se incluyan en los datos
       this.ventaForm.get('valorUnitario')?.enable();
       this.ventaForm.get('precioTotal')?.enable();
-
+      
+      // Obtener los valores actuales del formulario
       let datosVenta = this.ventaForm.getRawValue();
-
-      // Crear formato DATETIME completo: YYYY-MM-DD HH:MM:SS
-      const fechaActual = new Date();
-      const fechaFormateada =
-        fechaActual.getFullYear() +
-        '-' +
-        String(fechaActual.getMonth() + 1).padStart(2, '0') +
-        '-' +
-        String(fechaActual.getDate()).padStart(2, '0') +
-        ' ' +
-        String(fechaActual.getHours()).padStart(2, '0') +
-        ':' +
-        String(fechaActual.getMinutes()).padStart(2, '0') +
-        ':' +
-        String(fechaActual.getSeconds()).padStart(2, '0');
-
-      datosVenta.fechaVenta = fechaFormateada;
-
+      
+      // Eliminar campos innecesarios
       delete datosVenta.descuento;
-
-      console.log('Datos a enviar:', datosVenta);
-
+      
+      // SOLUCIÓN: Crear objeto de fecha directamente en JavaScript
+      // MySQL lo interpretará correctamente en el formato YYYY-MM-DD HH:MM:SS
+      datosVenta.fechaVenta = new Date();
+      
+      console.log('Datos a enviar (con fecha):', datosVenta);
+      
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
-          next: () => {
+          next: (respuesta) => {
+            console.log('Respuesta del servidor:', respuesta);
             alert('Venta agregada con éxito.');
             this.obtenerRegistros();
             this.ventaForm.reset();
@@ -138,7 +126,8 @@ export class VentasComponent {
             console.error('Error en la petición:', err);
           },
         });
-
+      
+      // Volver a deshabilitar los campos
       this.ventaForm.get('valorUnitario')?.disable();
       this.ventaForm.get('precioTotal')?.disable();
     } else {
@@ -171,46 +160,43 @@ export class VentasComponent {
     this.ventaEditando = venta.idVenta;
     this.ventaEditada = { ...venta, aplicarDescuento: false };
   }
-
+  
   guardarEdicion() {
+
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
 
-    this.productoServicio
-      .editarRegistro(this.tablaSeleccionada, this.ventaEditada)
-      .subscribe({
-        next: () => {
-          alert('Venta editada con éxito');
-          this.ventaEditando = null;
-          this.obtenerRegistros();
-        },
-        error: (err) => {
-          alert('No se pudo guardar la venta editada');
-          console.error('Error en la petición:', err);
-        },
-      });
+  
+    this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
+      next: () => {
+        alert('Venta editada con éxito');
+        this.ventaEditando = null;
+        this.obtenerRegistros();
+      },
+      error: (err) => {
+        alert('No se pudo guardar la venta editada');
+        console.error('Error en la petición:', err);
+      },
+    });
   }
-
+  
   cancelarEdicion() {
     this.ventaEditando = null;
     this.ventaEditada = {};
   }
-
+  
   actualizarPrecioUnitarioEdicion() {
-    const productoSeleccionado = this.productos.find(
-      (p) => p.idProducto === this.ventaEditada.idProducto
-    );
+    const productoSeleccionado = this.productos.find(p => p.idProducto === this.ventaEditada.idProducto);
     if (productoSeleccionado) {
-      this.ventaEditada.valorUnitario = this.ventaEditada.aplicarDescuento
-        ? productoSeleccionado.precioDescuento
+      this.ventaEditada.valorUnitario = this.ventaEditada.aplicarDescuento 
+        ? productoSeleccionado.precioDescuento 
         : productoSeleccionado.precio;
       this.calcularPrecioTotalEdicion();
     }
   }
-
+  
   calcularPrecioTotalEdicion() {
-    this.ventaEditada.precioTotal =
-      this.ventaEditada.cantidad * this.ventaEditada.valorUnitario;
+    this.ventaEditada.precioTotal = this.ventaEditada.cantidad * this.ventaEditada.valorUnitario;
   }
 }
