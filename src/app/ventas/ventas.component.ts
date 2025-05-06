@@ -97,14 +97,16 @@ export class VentasComponent {
     if (this.ventaForm.valid) {
       this.ventaForm.get('valorUnitario')?.enable();
       this.ventaForm.get('precioTotal')?.enable();
-
+  
       let datosVenta = this.ventaForm.getRawValue();
-
-
+  
+      // Agregar fecha actual manualmente
+      datosVenta.fechaVenta = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  
       delete datosVenta.descuento;
-
+  
       console.log('Datos a enviar:', datosVenta);
-
+  
       this.productoServicio
         .agregarRegistro(this.tablaSeleccionada, datosVenta)
         .subscribe({
@@ -119,7 +121,7 @@ export class VentasComponent {
             console.error('Error en la petición:', err);
           },
         });
-
+  
       this.ventaForm.get('valorUnitario')?.disable();
       this.ventaForm.get('precioTotal')?.disable();
     } else {
@@ -154,11 +156,11 @@ export class VentasComponent {
   }
   
   guardarEdicion() {
-
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
-
+  
+    // No tocar fechaVenta — se mantiene como estaba
     this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
       next: () => {
         alert('Venta editada con éxito');
@@ -171,6 +173,7 @@ export class VentasComponent {
       },
     });
   }
+  
   
   cancelarEdicion() {
     this.ventaEditando = null;
