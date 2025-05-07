@@ -122,10 +122,7 @@
     </thead>
     <tbody class="">
       <tr *ngFor="let producto of registros; let i = index" [class.bg-light]="i % 2 === 0">
-        <td>
-          <input *ngIf="producto.editando" [(ngModel)]="producto.idProducto" class="form-control" />
-          <span *ngIf="!producto.editando">{{ producto.idProducto }}</span>
-        </td>
+        <td>{{ producto.idProducto }}</td>
 
         <td>
           <input *ngIf="producto.editando" [(ngModel)]="producto.nombre" class="form-control" />

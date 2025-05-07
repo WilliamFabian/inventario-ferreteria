@@ -11,11 +11,9 @@ const path = require("path");
 
 const port = process.env.PORT;
 
-app.use(
-  cors({
-    origin: "https://inventario-ferreteria-production.up.railway.app",
-  })
-);
+app.use(cors({
+  origin: "https://inventario-ferreteria-production.up.railway.app"
+}));
 
 app.use(express.json());
 
@@ -86,28 +84,27 @@ apiRouter.get("/:tabla/nombre/:nombre", validarTabla, (req, res) => {
   });
 });
 
-apiRouter.post("/:tabla/agregar", validarTabla, (req, res) => {
-  const { tabla } = req.params;
-  const datos = req.body;
+apiRouter.post('/:tabla/agregar', validarTabla, (req, res) => {
+    const { tabla } = req.params;
+    const datos = req.body;
 
-  const columnas = Object.keys(datos).join(", ");
-  const valores = Object.values(datos);
-  const placeholders = valores.map(() => "?").join(", ");
+    const columnas = Object.keys(datos).join(', ');
+    const valores = Object.values(datos);
+    const placeholders = valores.map(() => '?').join(', ');
 
-  const query = `INSERT INTO ${tabla} (${columnas}) VALUES (${placeholders})`;
+    const query = `INSERT INTO ${tabla} (${columnas}) VALUES (${placeholders})`;
 
-  db.query(query, valores, (err, results) => {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.json({ message: "Registro agregado correctamente", results });
-  });
+    db.query(query, valores, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ message: 'Registro agregado correctamente', results });
+    });
 });
 
 apiRouter.put("/:tabla/editar", validarTabla, (req, res) => {
   const { tabla } = req.params;
-  const { idVenta, idTrabajo, fechaVenta, fechaTrabajo, ...datos } =
-    req.body;
+  const { idVenta, idProducto, idTrabajo, fechaVenta, fechaTrabajo, ...datos } = req.body;
 
   let idCampo;
   let idValor;
