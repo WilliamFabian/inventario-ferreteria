@@ -49,7 +49,7 @@ export class GraficoBarrasComponent {
   
     const cantidadPorNombre: { [idProducto: string]: number } = {};
     ventas.forEach((venta: any) => {
-      const nombre = productoNombreMap[venta.idProducto];
+      const nombre = productoNombreMap[venta.idProductoVenta];
       if (!nombre) return;
   
       if (!cantidadPorNombre[nombre]) cantidadPorNombre[nombre] = 0;
@@ -80,7 +80,7 @@ export class GraficoBarrasComponent {
   
     const cantidadPorCategoria: { [tipo: string]: number } = {};
     ventas.forEach((venta: any) => {
-      const tipo = productoCategoriaMap[venta.idProducto];
+      const tipo = productoCategoriaMap[venta.idProductoVenta];
       if (!tipo) return;
       if (!cantidadPorCategoria[tipo]) cantidadPorCategoria[tipo] = 0;
       cantidadPorCategoria[tipo] += Number(venta.cantidad);
