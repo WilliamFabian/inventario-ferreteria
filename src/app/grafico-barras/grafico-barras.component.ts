@@ -47,7 +47,7 @@ export class GraficoBarrasComponent {
       productoNombreMap[producto.idProducto] = producto.nombre;
     });
   
-    const cantidadPorNombre: { [idProducto: string]: number } = {};
+    const cantidadPorNombre: { [idProductoVenta: string]: number } = {};
     ventas.forEach((venta: any) => {
       const nombre = productoNombreMap[venta.idProductoVenta];
       if (!nombre) return;
