@@ -28,7 +28,7 @@
         <div class="form-group text-start">
           <label class="form-label fw-bold">Producto</label>
           <input type="text" class="form-control" [(ngModel)]="productoBusqueda" 
-                 (input)="filtrarProductos()" list="productosList" formControlName="idProducto" 
+                 (input)="filtrarProductos()" list="productosList" formControlName="idProductoVenta" 
                  (change)="actualizarPrecioUnitario()" />
           <datalist id="productosList">
             <option *ngFor="let producto of productosFiltrados" [value]="producto.idProducto">
@@ -88,9 +88,9 @@
       <tr *ngFor="let venta of registros">
         <td>{{ venta.idVenta }}</td>
         
-        <td *ngIf="ventaEditando !== venta.idVenta">{{ venta.idProducto }}</td>
+        <td *ngIf="ventaEditando !== venta.idVenta">{{ venta.idProductoVenta }}</td>
         <td *ngIf="ventaEditando === venta.idVenta">
-          <select [(ngModel)]="ventaEditada.idProducto" (change)="actualizarPrecioUnitarioEdicion()">
+          <select [(ngModel)]="ventaEditada.idProductoVenta" (change)="actualizarPrecioUnitarioEdicion()">
             <option *ngFor="let producto of productos" [value]="producto.idProducto">
               {{ producto.nombre }} - ${{ ventaEditada.aplicarDescuento ? producto.precioDescuento : producto.precio }}
             </option>

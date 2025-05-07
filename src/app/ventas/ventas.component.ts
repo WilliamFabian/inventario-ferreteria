@@ -69,8 +69,8 @@ export class VentasComponent {
   }
 
   actualizarPrecioUnitario() {
-    const idProducto = this.ventaForm.get('idProducto')?.value;
-    const producto = this.productos.find((p) => p.idProducto === idProducto);
+    const idProductoVenta = this.ventaForm.get('idProductoVenta')?.value;
+    const producto = this.productos.find((p) => p.idProducto === idProductoVenta);
     if (producto) {
       const precioSeleccionado = this.aplicarDescuento
         ? producto.precioDescuento
@@ -179,7 +179,7 @@ export class VentasComponent {
   }
   
   actualizarPrecioUnitarioEdicion() {
-    const productoSeleccionado = this.productos.find(p => p.idProducto === this.ventaEditada.idProducto);
+    const productoSeleccionado = this.productos.find(p => p.idProducto === this.ventaEditada.idProductoVenta);
     if (productoSeleccionado) {
       this.ventaEditada.valorUnitario = this.ventaEditada.aplicarDescuento 
         ? productoSeleccionado.precioDescuento 
