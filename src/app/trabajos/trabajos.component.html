@@ -68,7 +68,7 @@
                  [(ngModel)]="trabajoEditando.valor"
                  class="form-control" />
           <span *ngIf="!trabajoEditando || trabajoEditando.idTrabajo !== trabajo.idTrabajo">
-            {{ trabajo.valor }}
+            ${{ trabajo.valor | number:'1.0-0' }}
           </span>
         </td>
         <td>{{ trabajo.fechaTrabajo | date:'dd/MM/yyyy HH:mm' }}</td>
