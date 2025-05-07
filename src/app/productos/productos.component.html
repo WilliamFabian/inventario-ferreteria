@@ -145,7 +145,7 @@
           <td>
             <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.precioDescuento"
               class="form-control" />
-              <span *ngIf="!producto.editando">{{ producto.precioDescuento ? (producto.precioDescuento | number:'1.0-0') : 'N/A' }}</span>
+              <span *ngIf="!producto.editando">${{ producto.precioDescuento ? (producto.precioDescuento | number:'1.0-0') : 'N/A' }}</span>
           </td>
 
           <td>
