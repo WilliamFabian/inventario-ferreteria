@@ -175,7 +175,7 @@ export class VentasComponent {
           const diferencia = cantidadNueva - cantidadOriginal;
           
           // Obtenemos el producto para actualizar su cantidad
-          this.productoServicio.obtenerRegistroPorId('productos', idProducto).subscribe({
+          this.productoServicio.buscarRegistroPorId('productos', idProducto).subscribe({
             next: (producto) => {
               // Ajustamos la cantidad del producto
               // Si diferencia es positiva: restamos más del inventario
