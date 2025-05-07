@@ -25,7 +25,7 @@ export class VentasComponent {
   aplicarDescuento = false;
   ventaEditando: string | null = null;
   ventaEditada: any = {};
-  ventaOriginal: any = null;
+  cantidadOriginal: number = 0;
 
   ventaForm: FormGroup;
   productos: any[] = [];
@@ -151,67 +151,61 @@ export class VentasComponent {
 
   editarVenta(venta: any) {
     this.ventaEditando = venta.idVenta;
-    this.ventaOriginal = {...venta}; // Guardar la venta original
     this.ventaEditada = { ...venta, aplicarDescuento: false };
+    // Guardamos la cantidad original para comparar después
+    this.cantidadOriginal = venta.cantidad;
   }
   
   guardarEdicion() {
-    // Guardamos la cantidad original y nueva para calcular la diferencia
-    const cantidadOriginal = this.ventaOriginal ? this.ventaOriginal.cantidad : 0;
-    const cantidadNueva = this.ventaEditada.cantidad;
-    const idProducto = this.ventaEditada.idProducto; // Nombre correcto según tu tabla
-    
-    // Eliminamos el campo aplicarDescuento si existe
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
     
-    // Mantenemos la lógica original de edición de venta
+    // Calculamos la diferencia entre la cantidad nueva y la original
+    const diferenciaCantidad = this.ventaEditada.cantidad - this.cantidadOriginal;
+    
+    // Primero actualizamos la venta
     this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
       next: () => {
-        // Después de editar la venta con éxito, ajustamos el inventario
-        // Solo si hubo un cambio en la cantidad
-        if (cantidadOriginal !== cantidadNueva) {
-          const diferencia = cantidadNueva - cantidadOriginal;
-          
-          // Obtenemos el producto para actualizar su cantidad
-          this.productoServicio.buscarRegistroPorId('productos', idProducto).subscribe({
+        // Si la edición de la venta fue exitosa, actualizamos el inventario
+        if (diferenciaCantidad !== 0) {
+          // Obtenemos el producto asociado a la venta
+          this.productoServicio.buscarRegistroPorId('productos', this.ventaEditada.idProducto).subscribe({
             next: (producto) => {
-              // Ajustamos la cantidad del producto
-              // Si diferencia es positiva: restamos más del inventario
-              // Si diferencia es negativa: devolvemos al inventario
-              producto.cantidad = producto.cantidad - diferencia;
+              // Actualizamos la cantidad en el producto
+              // Si la diferencia es positiva, se vendió más, entonces restamos al inventario
+              // Si la diferencia es negativa, se vendió menos, entonces sumamos al inventario
+              const productoActualizado = {
+                ...producto,
+                cantidad: producto.cantidad - diferenciaCantidad
+              };
               
               // Actualizamos el producto en la base de datos
-              this.productoServicio.editarRegistro('productos', producto).subscribe({
+              this.productoServicio.editarRegistro('productos', productoActualizado).subscribe({
                 next: () => {
-                  alert('Venta editada con éxito y el inventario actualizado');
+                  alert('Venta e inventario actualizados con éxito');
                   this.ventaEditando = null;
-                  this.ventaOriginal = null; // Limpiamos la referencia
                   this.obtenerRegistros();
                 },
                 error: (err) => {
-                  alert('Venta editada pero no se pudo actualizar el inventario');
+                  alert('Se actualizó la venta pero no se pudo actualizar el inventario');
                   console.error('Error al actualizar inventario:', err);
                   this.ventaEditando = null;
-                  this.ventaOriginal = null;
                   this.obtenerRegistros();
                 }
               });
             },
             error: (err) => {
-              alert('Venta editada pero no se pudo obtener el producto para actualizar');
+              alert('No se pudo obtener información del producto para actualizar inventario');
               console.error('Error al obtener producto:', err);
               this.ventaEditando = null;
-              this.ventaOriginal = null;
               this.obtenerRegistros();
             }
           });
         } else {
-          // Si no hubo cambio en la cantidad, simplemente terminamos
+          // Si no hubo cambio en la cantidad, simplemente cerramos la edición
           alert('Venta editada con éxito');
           this.ventaEditando = null;
-          this.ventaOriginal = null;
           this.obtenerRegistros();
         }
       },
@@ -225,7 +219,7 @@ export class VentasComponent {
   cancelarEdicion() {
     this.ventaEditando = null;
     this.ventaEditada = {};
-    this.ventaOriginal = null;
+    this.cantidadOriginal = 0;
   }
   
   actualizarPrecioUnitarioEdicion() {
