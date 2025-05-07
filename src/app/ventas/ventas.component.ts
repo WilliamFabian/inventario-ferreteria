@@ -35,7 +35,7 @@ export class VentasComponent {
   ) {
     this.ventaForm = this.fb.group({
       idVenta: ['', Validators.required],
-      idProducto: ['', Validators.required],
+      idProductoVenta: ['', Validators.required],
       cantidad: ['', [Validators.required, Validators.min(1)]],
       valorUnitario: [{ value: '', disabled: true }],
       precioTotal: [{ value: '', disabled: true }],
