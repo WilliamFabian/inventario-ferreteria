@@ -128,62 +128,24 @@ apiRouter.put("/:tabla/editar", validarTabla, (req, res) => {
       .json({ error: `Se requiere ${idCampo} para actualizar` });
   }
 
-  // Si se está editando una venta, actualizamos también la cantidad del producto
-  if (tabla === "ventas") {
-    const nuevaCantidad = datos.cantidad;
+  const columnas = Object.keys(datos)
+    .map((col) => `${col} = ?`)
+    .join(", ");
+  const valores = [...Object.values(datos), idValor];
 
-    // Obtener la cantidad actual y el producto relacionado
-    db.query("SELECT cantidad, idProducto FROM ventas WHERE idVenta = ?", [idVenta], (err, results) => {
-      if (err || results.length === 0) {
-        return res.status(500).json({ error: "Error al obtener datos de la venta actual" });
-      }
+  const query = `UPDATE ${tabla} SET ${columnas} WHERE ${idCampo} = ?`;
 
-      const ventaActual = results[0];
-      const diferencia = nuevaCantidad - ventaActual.cantidad;
-
-      // Actualizar la venta
-      const columnas = Object.keys(datos).map((col) => `${col} = ?`).join(", ");
-      const valores = [...Object.values(datos), idVenta];
-      const query = `UPDATE ${tabla} SET ${columnas} WHERE ${idCampo} = ?`;
-
-      db.query(query, valores, (err, result) => {
-        if (err) {
-          return res.status(500).json({ error: err.message });
-        }
-
-        // Ajustar la cantidad del producto
-        db.query(
-          "UPDATE productos SET cantidad = cantidad - ? WHERE idProducto = ?",
-          [diferencia, ventaActual.idProducto],
-          (err2, result2) => {
-            if (err2) {
-              return res.status(500).json({ error: "Venta editada, pero error al actualizar producto" });
-            }
-
-            res.json({ message: "Venta y producto actualizados correctamente", result });
-          }
-        );
-      });
-    });
-  } else {
-    // Para productos y trabajos, sigue igual
-    const columnas = Object.keys(datos).map((col) => `${col} = ?`).join(", ");
-    const valores = [...Object.values(datos), idValor];
-    const query = `UPDATE ${tabla} SET ${columnas} WHERE ${idCampo} = ?`;
-
-    db.query(query, valores, (err, result) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      if (result.affectedRows > 0) {
-        res.json({ message: "Registro actualizado correctamente", result });
-      } else {
-        res.status(404).json({ error: "Registro no encontrado" });
-      }
-    });
-  }
+  db.query(query, valores, (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (result.affectedRows > 0) {
+      res.json({ message: "Registro actualizado correctamente", result });
+    } else {
+      res.status(404).json({ error: "Registro no encontrado" });
+    }
+  });
 });
-
 
 apiRouter.delete("/:tabla/:id", validarTabla, (req, res) => {
   const { tabla, id } = req.params;
