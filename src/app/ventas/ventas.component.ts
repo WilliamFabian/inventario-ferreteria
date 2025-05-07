@@ -25,7 +25,6 @@ export class VentasComponent {
   aplicarDescuento = false;
   ventaEditando: string | null = null;
   ventaEditada: any = {};
-  ventaOriginal: any = {};
 
   ventaForm: FormGroup;
   productos: any[] = [];
@@ -151,69 +150,32 @@ export class VentasComponent {
 
   editarVenta(venta: any) {
     this.ventaEditando = venta.idVenta;
-    this.ventaOriginal = { ...venta }; // <- esto es importante
     this.ventaEditada = { ...venta, aplicarDescuento: false };
   }
   
-  
   guardarEdicion() {
+
     if ('aplicarDescuento' in this.ventaEditada) {
       delete this.ventaEditada.aplicarDescuento;
     }
+
   
-    // Calcular la diferencia en cantidad
-    const cantidadAnterior = this.ventaOriginal.cantidad;
-    const cantidadNueva = this.ventaEditada.cantidad;
-    const diferencia = cantidadAnterior - cantidadNueva;
-  
-    const idProducto = this.ventaEditada.idProducto;
-  
-    // Primero obtener el producto por su ID
-    this.productoServicio.buscarRegistroPorId('productos', idProducto).subscribe({
-      next: (producto) => {
-        // Actualizar la cantidad del producto sumando la diferencia
-        const nuevaCantidad = producto.cantidad + diferencia;
-  
-        const productoActualizado = {
-          ...producto,
-          cantidad: nuevaCantidad,
-        };
-  
-        // Actualizar el producto en la base de datos
-        this.productoServicio.editarRegistro('productos', productoActualizado).subscribe({
-          next: () => {
-            // Luego actualizar la venta
-            this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
-              next: () => {
-                alert('Venta editada con éxito');
-                this.ventaEditando = null;
-                this.ventaOriginal = {};
-                this.obtenerRegistros();
-              },
-              error: (err) => {
-                alert('No se pudo guardar la venta editada');
-                console.error('Error en la petición de venta:', err);
-              },
-            });
-          },
-          error: (err) => {
-            alert('No se pudo actualizar el producto');
-            console.error('Error al actualizar producto:', err);
-          },
-        });
+    this.productoServicio.editarRegistro(this.tablaSeleccionada, this.ventaEditada).subscribe({
+      next: () => {
+        alert('Venta editada con éxito');
+        this.ventaEditando = null;
+        this.obtenerRegistros();
       },
       error: (err) => {
-        alert('No se encontró el producto para actualizar cantidad');
-        console.error('Error al obtener producto:', err);
+        alert('No se pudo guardar la venta editada');
+        console.error('Error en la petición:', err);
       },
     });
   }
   
-  
   cancelarEdicion() {
     this.ventaEditando = null;
     this.ventaEditada = {};
-    this.ventaOriginal = {};
   }
   
   actualizarPrecioUnitarioEdicion() {
