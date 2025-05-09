@@ -123,15 +123,15 @@ export class ProductosComponent {
               break;
             case 'idMenor':
               this.registros.sort((a, b) => {
-                const numA = parseInt(a.idProducto.split('-')[1]);
-                const numB = parseInt(b.idProducto.split('-')[1]);
+                const numA = parseInt(a.idProducto.split('-')[1], 10);
+                const numB = parseInt(b.idProducto.split('-')[1], 10);
                 return numA - numB;
               });
               break;
             case 'idMayor':
               this.registros.sort((a, b) => {
-                const numA = parseInt(a.idProducto.split('-')[1]);
-                const numB = parseInt(b.idProducto.split('-')[1]);
+                const numA = parseInt(a.idProducto.split('-')[1], 10);
+                const numB = parseInt(b.idProducto.split('-')[1], 10);
                 return numB - numA;
               });
               break;
@@ -160,7 +160,7 @@ export class ProductosComponent {
             case 'cantidadMayor':
               this.registros.sort((a, b) => b.cantidad - a.cantidad);
               break;
-                          case 'idMenor':
+            case 'idMenor':
               this.registros.sort((a, b) => {
                 const numA = parseInt(a.id.split('-')[1]);
                 const numB = parseInt(b.id.split('-')[1]);
