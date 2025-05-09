@@ -63,7 +63,9 @@ export class BuscarProductoComponent {
               .subscribe((productos) => {
                 if (productos && productos.length > 0) {
                   this.productos = productos;
-                  this.productosFiltrados = []; // ✅ limpiar productos filtrados anteriores
+                  setTimeout(() => {
+                    this.productosFiltrados = [];
+                  });
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
                   this.idProductoBuscar = '';
