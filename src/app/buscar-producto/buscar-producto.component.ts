@@ -46,41 +46,37 @@ export class BuscarProductoComponent {
   }
 
   buscarProducto() {
+
     const texto = this.idProductoBuscar.trim();
 
-    if (texto === '') {
+    if (this.idProductoBuscar !== '') {
+      this.productoServicio
+        .buscarRegistroPorId(this.tabla, this.idProductoBuscar)
+        .subscribe((producto) => {
+          if (producto && !producto.error && producto !== '') {
+            this.productoEncontrado = { ...producto, editando: false };
+            this.productoOriginal = { ...producto };
+            this.idProductoBuscar = '';
+            this.productosFiltrados = [];
+          } else {
+            this.productoServicio
+              .buscarRegistrosPorNombreInicio(this.tabla, texto)
+              .subscribe((productos) => {
+                if (productos && productos.length > 0) {
+                  this.productos = productos;
+                  this.mostrarTablaMultiple = true;
+                  this.productoEncontrado = null;
+                  this.idProductoBuscar = '';
+                  this.productosFiltrados = [];
+                } else {
+                  alert('Producto no encontrado.');
+                }
+              });
+          }
+        });
+    } else {
       alert('Introduzca el ID o Nombre del producto');
-      return;
     }
-
-    this.mostrarTablaMultiple = false;
-    // Primero intenta buscar por ID
-    this.productoServicio
-      .buscarRegistroPorId(this.tabla, texto)
-      .subscribe((producto) => {
-        if (producto && !producto.error && producto !== '') {
-          // Se encontró por ID
-          this.productoEncontrado = { ...producto, editando: false };
-          this.productoOriginal = { ...producto };
-          this.mostrarTablaMultiple = false;
-          this.idProductoBuscar = '';
-        } else {
-          // Si no se encuentra por ID, busca por nombre parcial
-          this.productoServicio
-            .buscarRegistrosPorNombreInicio(this.tabla, texto)
-            .subscribe((productos) => {
-              if (productos && productos.length > 0) {
-                this.productos = productos;
-                this.mostrarTablaMultiple = true;
-                this.productoEncontrado = null;
-                this.idProductoBuscar = '';
-              } else {
-                alert('Producto no encontrado.');
-              }
-            });
-        }
-        this.productosFiltrados = [];
-      });
   }
 
   cerrarTablaMultiple() {
