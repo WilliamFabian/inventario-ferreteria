@@ -84,6 +84,18 @@ apiRouter.get("/:tabla/nombre/:nombre", validarTabla, (req, res) => {
   });
 });
 
+//Buscar Nombre.
+apiRouter.get("/:tabla/nombre-inicia/:texto", validarTabla, (req, res) => {
+  const { tabla, texto } = req.params;
+  const sql = `SELECT * FROM ${tabla} WHERE LOWER(nombre) LIKE LOWER(?)`;
+
+  db.query(sql, [`${texto}%`], (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (results.length === 0) return res.status(404).json({ error: "No se encontraron coincidencias." });
+    res.json(results);
+  });
+});
+
 apiRouter.post('/:tabla/agregar', validarTabla, (req, res) => {
     const { tabla } = req.params;
     const datos = req.body;

@@ -1,18 +1,18 @@
 <div class="container mt-5 mb-5">
   <div class="row justify-content-center">
     <div class="col-md-8">
-  
+
       <div class="input-group search-bar">
         <span 
           class="input-group-text search-icon" 
           (click)="buscarProducto()">
           <img src="lupa.svg" alt="Buscar" class="icon-img" />
         </span>
-  
+
         <div class="separator-container">
           <div class="separator"></div>
         </div>
-  
+
         <input
           type="text"
           [(ngModel)]="idProductoBuscar"
@@ -23,16 +23,50 @@
           class="form-control search-input"
         />
       </div>
-  
+
       <datalist id="productosList">
         <option *ngFor="let producto of productosFiltrados" [value]="producto.idProducto">
           {{ producto.nombre }}
         </option>
       </datalist>
-  
+
     </div>
   </div>
 
+  <!-- Tabla con múltiples coincidencias -->
+  <div class="row justify-content-center mt-4" *ngIf="productosFiltrados.length > 1">
+    <div class="col-md-10">
+      <h5 class="text-center mb-3">Coincidencias encontradas</h5>
+      <table class="table table-bordered text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>ID Producto</th>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+            <th>Precio Descuento</th>
+            <th>Cantidad</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let prod of productosFiltrados">
+            <td>{{ prod.idProducto }}</td>
+            <td>{{ prod.nombre }}</td>
+            <td>{{ prod.tipo }}</td>
+            <td>{{ prod.precio | currency:'USD' }}</td>
+            <td>{{ prod.precioDescuento | currency:'USD' }}</td>
+            <td>{{ prod.cantidad }}</td>
+            <td>
+              <button class="btn btn-primary btn-sm" (click)="seleccionarProducto(prod)">Ver / Editar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tabla de producto seleccionado (único o desde múltiples) -->
   <div class="row justify-content-center mt-4 mb-4" *ngIf="productoEncontrado">
     <div class="col-md-10">
       <table class="table table-bordered text-center">

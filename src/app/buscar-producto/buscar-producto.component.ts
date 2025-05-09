@@ -45,37 +45,49 @@ export class BuscarProductoComponent {
   }
 
   buscarProducto() {
+  const texto = this.idProductoBuscar.trim();
 
-    if(this.idProductoBuscar !== ''){
-      this.productoServicio
-        .buscarRegistroPorId(this.tabla, this.idProductoBuscar)
-        .subscribe((producto) => {
-          if (producto && !producto.error && producto !== '') {
-            this.productoEncontrado = { ...producto, editando: false };
-            this.productoOriginal = { ...producto };
-            this.idProductoBuscar = '';
-            this.productosFiltrados = []
-          } else {
-
-            this.productoServicio
-              .buscarRegistroPorNombre(this.tabla, this.idProductoBuscar)
-              .subscribe((productoPorNombre) => {
-                if (productoPorNombre && !productoPorNombre.error) {
-                  this.productoEncontrado = { ...productoPorNombre, editando: false };
-                  this.productoOriginal = { ...productoPorNombre };
-                  this.idProductoBuscar = '';
-                  this.productosFiltrados = []
-                } else {
-                  alert('Producto no encontrado.');
-                }
-              });
-          }
-        });
-    }
-    else{
-      alert('Introduzca el ID o Nombre del producto');
-    }
+  if (texto === '') {
+    alert('Introduzca el ID o Nombre del producto');
+    return;
   }
+
+  // Buscar por ID exacto
+  this.productoServicio.buscarRegistroPorId(this.tabla, texto).subscribe((producto) => {
+    if (producto && !producto.error && producto !== '') {
+      this.productoEncontrado = { ...producto, editando: false };
+      this.productoOriginal = { ...producto };
+      this.idProductoBuscar = '';
+      this.productosFiltrados = [];
+    } else {
+      // Buscar por nombre parcial (inicio)
+      this.productoServicio.buscarRegistrosPorNombreInicio(this.tabla, texto).subscribe({
+        next: (productos) => {
+          if (productos.length === 1) {
+            this.productoEncontrado = { ...productos[0], editando: false };
+            this.productoOriginal = { ...productos[0] };
+          } else {
+            this.productoEncontrado = null;
+            this.productosFiltrados = productos;
+          }
+          this.idProductoBuscar = '';
+        },
+        error: () => {
+          alert('No se encontraron productos.');
+          this.productoEncontrado = null;
+          this.productosFiltrados = [];
+        },
+      });
+    }
+  });
+}
+
+seleccionarProducto(producto: any) {
+  this.productoEncontrado = { ...producto, editando: false };
+  this.productoOriginal = { ...producto };
+  this.productosFiltrados = [];
+}
+
   
 
   activarEdicion() {
