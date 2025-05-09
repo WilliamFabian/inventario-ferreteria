@@ -28,7 +28,7 @@ export class ProductosComponent {
   mostrarFormulario = false;
   tablaSeleccionada: string = 'productos';
   tipoSeleccionado: string = '';
-  ordenSeleccionado: string = '';
+  ordenSeleccionado: string = 'idDescendente';
 
   tipos = [
     { valor: 'tornillo', nombre: 'Tornillo' },
