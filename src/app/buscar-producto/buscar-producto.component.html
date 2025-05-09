@@ -96,11 +96,10 @@
             <th>Precio</th>
             <th>Precio Descuento</th>
             <th>Cantidad</th>
-            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let producto of productos">
+          <tr *ngFor="let productoEncontrado of productos">
             <td>{{ productoEncontrado.idProducto }}</td>
             <td>
               <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.nombre" class="form-control" />
