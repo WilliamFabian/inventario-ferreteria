@@ -34,7 +34,7 @@ export class ProductosService {
     return this.http.get<any>(`${this.apiUrl}/${tabla}/${tipo}`);
   }
 
-  buscarRegistroPorId(tabla: string, id: string): Observable<any> {
+  buscarRegistroPorId(tabla: string, id: string | number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${tabla}/id/${id}`);
   }
 
@@ -51,7 +51,7 @@ export class ProductosService {
     return this.http.put<any>(`${this.apiUrl}/${tabla}/editar`, registro);
   }
 
-  eliminarRegistro(tabla: string, id: string): Observable<any> {
+  eliminarRegistro(tabla: string, id: string | number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${tabla}/${id}`);
   }
 }

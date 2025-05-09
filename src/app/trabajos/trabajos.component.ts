@@ -29,7 +29,6 @@ export class TrabajosComponent implements OnInit {
     private productoServicio: ProductosService
   ) {
     this.trabajoForm = this.fb.group({
-      idTrabajo: ['', Validators.required], // Se agregó como obligatorio
       descripcion: ['', Validators.required],
       valor: ['', [Validators.required, Validators.min(1)]],
     });
@@ -101,7 +100,7 @@ export class TrabajosComponent implements OnInit {
     this.trabajoEditando = null;
   }
 
-  eliminarRegistro(id: string) {
+  eliminarRegistro(id: number) {
     if (confirm('¿Estás seguro de que quieres eliminar este trabajo?')) {
       this.productoServicio
         .eliminarRegistro(this.tablaSeleccionada, id)
