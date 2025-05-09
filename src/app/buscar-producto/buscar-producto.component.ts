@@ -36,13 +36,8 @@ export class BuscarProductoComponent {
   }
 
   filtrarProductos() {
-    
+    //recuperar
     const texto = this.idProductoBuscar.toLowerCase();
-
-    if (texto === '') {
-      this.productosFiltrados = [];
-      return;
-    }
     this.productosFiltrados = this.productos.filter(
       (producto) =>
         producto.idProducto.toLowerCase().includes(texto) ||
@@ -68,7 +63,7 @@ export class BuscarProductoComponent {
               .subscribe((productos) => {
                 if (productos && productos.length > 0) {
                   this.productos = productos;
-                  this.productosFiltrados = [];
+                  this.productosFiltrados = []; // ✅ limpiar productos filtrados anteriores
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
                   this.idProductoBuscar = '';
