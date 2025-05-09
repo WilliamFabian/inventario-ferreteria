@@ -18,6 +18,8 @@ export class BuscarProductoComponent {
   tabla: string = 'productos';
   productos: any[] = [];
   productosFiltrados: any[] = [];
+  mostrarTablaMultiple: boolean = false;
+
 
   constructor(private productoServicio: ProductosService) {}
 
@@ -45,51 +47,53 @@ export class BuscarProductoComponent {
   }
 
   buscarProducto() {
-  const texto = this.idProductoBuscar.trim();
-
-  if (texto === '') {
+  if (this.idProductoBuscar.trim() === '') {
     alert('Introduzca el ID o Nombre del producto');
     return;
   }
 
-  // Buscar por ID exacto
-  this.productoServicio.buscarRegistroPorId(this.tabla, texto).subscribe((producto) => {
-    if (producto && !producto.error && producto !== '') {
-      this.productoEncontrado = { ...producto, editando: false };
-      this.productoOriginal = { ...producto };
-      this.idProductoBuscar = '';
-      this.productosFiltrados = [];
-    } else {
-      // Buscar por nombre parcial (inicio)
-      this.productoServicio.buscarRegistrosPorNombreInicio(this.tabla, texto).subscribe({
-        next: (productos) => {
-          if (productos.length === 1) {
-            this.productoEncontrado = { ...productos[0], editando: false };
-            this.productoOriginal = { ...productos[0] };
-          } else {
-            this.productoEncontrado = null;
-            this.productosFiltrados = productos;
-          }
-          this.idProductoBuscar = '';
-        },
-        error: () => {
-          alert('No se encontraron productos.');
-          this.productoEncontrado = null;
-          this.productosFiltrados = [];
-        },
+  // Si el valor ingresado es un número, intenta buscar por ID
+  const idNumerico = Number(this.idProductoBuscar);
+  if (!isNaN(idNumerico)) {
+    this.productoServicio
+      .buscarRegistroPorId(this.tabla, this.idProductoBuscar)
+      .subscribe((producto) => {
+        if (producto && !producto.error && producto !== '') {
+          this.productoEncontrado = { ...producto, editando: false };
+          this.productoOriginal = { ...producto };
+          this.mostrarTablaMultiple = false; // ocultar tabla múltiple si aparece
+        } else {
+          alert('Producto no encontrado por ID.');
+        }
+        this.idProductoBuscar = '';
+        this.productosFiltrados = [];
       });
-    }
-  });
+  } else {
+    // Si no es número, buscar por nombre que comience con ese texto
+    this.productoServicio
+      .buscarRegistrosPorNombreInicio(this.tabla, this.idProductoBuscar)
+      .subscribe((resultados) => {
+        if (resultados && resultados.length > 0) {
+          this.productos = resultados;
+          this.mostrarTablaMultiple = true;
+          this.productoEncontrado = null; // ocultar producto único si aparece
+        } else {
+          alert('No se encontraron productos con ese nombre.');
+          this.mostrarTablaMultiple = false;
+        }
+        this.idProductoBuscar = '';
+        this.productosFiltrados = [];
+      });
+  }
 }
 
-seleccionarProducto(producto: any) {
-  this.productoEncontrado = { ...producto, editando: false };
-  this.productoOriginal = { ...producto };
+cerrarTablaMultiple() {
+  this.productos = [];
   this.productosFiltrados = [];
+  this.mostrarTablaMultiple = false;
 }
 
-  
-
+ 
   activarEdicion() {
     if (this.productoEncontrado) {
       this.productoOriginal = { ...this.productoEncontrado };

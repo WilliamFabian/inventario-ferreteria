@@ -16,27 +16,18 @@
         <input
           type="text"
           [(ngModel)]="idProductoBuscar"
-          (input)="filtrarProductos()"
-          list="productosList"
           (keydown.enter)="buscarProducto()" 
           placeholder="Ingrese el ID o Nombre del producto"
           class="form-control search-input"
         />
       </div>
-
-      <datalist id="productosList">
-        <option *ngFor="let producto of productosFiltrados" [value]="producto.idProducto">
-          {{ producto.nombre }}
-        </option>
-      </datalist>
-
     </div>
   </div>
 
   <!-- Tabla con múltiples coincidencias -->
-  <div class="row justify-content-center mt-4" *ngIf="productosFiltrados.length > 1">
+  <div class="row justify-content-center mt-4" *ngIf="mostrarTablaMultiple">
     <div class="col-md-10">
-      <h5 class="text-center mb-3">Coincidencias encontradas</h5>
+      <h5 class="text-center mb-3">Productos encontrados</h5>
       <table class="table table-bordered text-center">
         <thead class="table-dark">
           <tr>
@@ -46,7 +37,6 @@
             <th>Precio</th>
             <th>Precio Descuento</th>
             <th>Cantidad</th>
-            <th>Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -57,17 +47,17 @@
             <td>{{ prod.precio | currency:'USD' }}</td>
             <td>{{ prod.precioDescuento | currency:'USD' }}</td>
             <td>{{ prod.cantidad }}</td>
-            <td>
-              <button class="btn btn-primary btn-sm" (click)="seleccionarProducto(prod)">Ver / Editar</button>
-            </td>
           </tr>
         </tbody>
       </table>
+      <div class="text-center">
+        <button class="btn btn-dark btn-sm mt-2" (click)="cerrarTablaMultiple()">Cerrar</button>
+      </div>
     </div>
   </div>
 
-  <!-- Tabla de producto seleccionado (único o desde múltiples) -->
-  <div class="row justify-content-center mt-4 mb-4" *ngIf="productoEncontrado">
+  <!-- Tabla de producto individual -->
+  <div class="row justify-content-center mt-4 mb-4" *ngIf="productoEncontrado && !mostrarTablaMultiple">
     <div class="col-md-10">
       <table class="table table-bordered text-center">
         <thead class="table-dark">
