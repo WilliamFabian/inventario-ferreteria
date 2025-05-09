@@ -36,18 +36,18 @@ export class BuscarProductoComponent {
   }
 
   filtrarProductos() {
-    //recuperar
     const texto = this.idProductoBuscar.toLowerCase();
 
+    // Siempre filtrar desde la lista completa de productos
     if (texto === '') {
-      this.productosFiltrados = [];
-      return;
+      this.productosFiltrados = [...this.productos]; // Mostrar todos o dejar vacío según prefieras
+    } else {
+      this.productosFiltrados = this.productos.filter(
+        (producto) =>
+          producto.idProducto.toLowerCase().includes(texto) ||
+          producto.nombre.toLowerCase().includes(texto)
+      );
     }
-    this.productosFiltrados = this.productos.filter(
-      (producto) =>
-        producto.idProducto.toLowerCase().includes(texto) ||
-        producto.nombre.toLowerCase().includes(texto)
-    );
   }
 
   buscarProducto() {
@@ -60,18 +60,18 @@ export class BuscarProductoComponent {
           if (producto && !producto.error && producto !== '') {
             this.productoEncontrado = { ...producto, editando: false };
             this.productoOriginal = { ...producto };
-            this.idProductoBuscar = '';
-            this.productosFiltrados = [];
+            //this.idProductoBuscar = '';
+            //this.productosFiltrados = [];
           } else {
             this.productoServicio
               .buscarRegistrosPorNombreInicio(this.tabla, texto)
               .subscribe((productos) => {
                 if (productos && productos.length > 0) {
                   this.productos = productos;
-                  this.productosFiltrados = [];
+                  //this.productosFiltrados = [];
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
-                  this.idProductoBuscar = '';
+                  //this.idProductoBuscar = '';
                 } else {
                   alert('Producto no encontrado.');
                 }
