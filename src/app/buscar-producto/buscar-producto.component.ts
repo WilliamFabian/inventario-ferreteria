@@ -52,7 +52,7 @@ export class BuscarProductoComponent {
       alert('Introduzca el ID o Nombre del producto');
       return;
     }
-    this.productosFiltrados = [];
+
     this.mostrarTablaMultiple = false;
     // Primero intenta buscar por ID
     this.productoServicio
@@ -64,7 +64,6 @@ export class BuscarProductoComponent {
           this.productoOriginal = { ...producto };
           this.mostrarTablaMultiple = false;
           this.idProductoBuscar = '';
-          this.productosFiltrados = [];
         } else {
           // Si no se encuentra por ID, busca por nombre parcial
           this.productoServicio
@@ -75,12 +74,12 @@ export class BuscarProductoComponent {
                 this.mostrarTablaMultiple = true;
                 this.productoEncontrado = null;
                 this.idProductoBuscar = '';
-                this.productosFiltrados = [];
               } else {
                 alert('Producto no encontrado.');
               }
             });
         }
+        this.productosFiltrados = [];
       });
   }
 
