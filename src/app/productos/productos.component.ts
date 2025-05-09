@@ -50,8 +50,8 @@ export class ProductosComponent {
   ];
 
   ordenNombres: { [key: string]: string } = {
-    idMenor: 'Ascendente',
-    idMayor: 'Descendente',
+    idMenor: 'ID Ascendente',
+    idMayor: 'ID Descendente',
     precioMenor: 'Menor Precio',
     precioMayor: 'Mayor Precio',
     cantidadMenor: 'Menor Cantidad',
