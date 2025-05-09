@@ -38,6 +38,11 @@ export class BuscarProductoComponent {
   filtrarProductos() {
     //recuperar
     const texto = this.idProductoBuscar.toLowerCase();
+
+    if (texto === '') {
+      this.productosFiltrados = [];
+      return;
+    }
     this.productosFiltrados = this.productos.filter(
       (producto) =>
         producto.idProducto.toLowerCase().includes(texto) ||
@@ -63,9 +68,7 @@ export class BuscarProductoComponent {
               .subscribe((productos) => {
                 if (productos && productos.length > 0) {
                   this.productos = productos;
-                  setTimeout(() => {
-                    this.productosFiltrados = [];
-                  });
+                  this.productosFiltrados = [];
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
                   this.idProductoBuscar = '';
