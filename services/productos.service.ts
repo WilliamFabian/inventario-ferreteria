@@ -43,6 +43,7 @@ export class ProductosService {
     return this.http.get<any>(`${this.apiUrl}/${tabla}/nombre/${nombreCodificado}`);
   }
 
+  //Nuevo Buscar
   buscarRegistrosPorNombreInicio(tabla: string, texto: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/${tabla}/nombre-inicia/${texto}`);
   }

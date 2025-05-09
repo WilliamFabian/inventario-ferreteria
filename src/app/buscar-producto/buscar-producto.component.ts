@@ -35,56 +35,59 @@ export class BuscarProductoComponent {
     });
   }
 
-  filtrarProductos() { //recuperar
+  filtrarProductos() {
+    //recuperar
     const texto = this.idProductoBuscar.toLowerCase();
     this.productosFiltrados = this.productos.filter(
       (producto) =>
         producto.idProducto.toLowerCase().includes(texto) ||
         producto.nombre.toLowerCase().includes(texto)
     );
-    
   }
 
-buscarProducto() {
-  const texto = this.idProductoBuscar.trim();
+  buscarProducto() {
+    const texto = this.idProductoBuscar.trim();
 
-  if (texto === '') {
-    alert('Introduzca el ID o Nombre del producto');
-    return;
-  }
-
-  // Primero intenta buscar por ID
-  this.productoServicio.buscarRegistroPorId(this.tabla, texto).subscribe(producto => {
-    if (producto && !producto.error && producto !== '') {
-      // Se encontró por ID
-      this.productoEncontrado = { ...producto, editando: false };
-      this.productoOriginal = { ...producto };
-      this.mostrarTablaMultiple = false;
-      this.idProductoBuscar = '';
-      this.productosFiltrados = [];
-    } else {
-      // Si no se encuentra por ID, busca por nombre parcial
-      this.productoServicio.buscarRegistrosPorNombreInicio(this.tabla, texto).subscribe(productos => {
-        if (productos && productos.length > 0) {
-          this.productos = productos;
-          this.mostrarTablaMultiple = true;
-          this.productoEncontrado = null;
+    if (texto === '') {
+      alert('Introduzca el ID o Nombre del producto');
+      return;
+    }
+    this.productosFiltrados = [];
+    this.mostrarTablaMultiple = false;
+    // Primero intenta buscar por ID
+    this.productoServicio
+      .buscarRegistroPorId(this.tabla, texto)
+      .subscribe((producto) => {
+        if (producto && !producto.error && producto !== '') {
+          // Se encontró por ID
+          this.productoEncontrado = { ...producto, editando: false };
+          this.productoOriginal = { ...producto };
+          this.mostrarTablaMultiple = false;
           this.idProductoBuscar = '';
           this.productosFiltrados = [];
         } else {
-          alert('Producto no encontrado.');
+          // Si no se encuentra por ID, busca por nombre parcial
+          this.productoServicio
+            .buscarRegistrosPorNombreInicio(this.tabla, texto)
+            .subscribe((productos) => {
+              if (productos && productos.length > 0) {
+                this.productos = productos;
+                this.mostrarTablaMultiple = true;
+                this.productoEncontrado = null;
+                this.idProductoBuscar = '';
+                this.productosFiltrados = [];
+              } else {
+                alert('Producto no encontrado.');
+              }
+            });
         }
       });
-    }
-  });
-}
+  }
 
-cerrarTablaMultiple() {
-  this.productos = [];
-  this.mostrarTablaMultiple = false;
-}
-
-  
+  cerrarTablaMultiple() {
+    this.productos = [];
+    this.mostrarTablaMultiple = false;
+  }
 
   activarEdicion() {
     if (this.productoEncontrado) {
@@ -102,7 +105,6 @@ cerrarTablaMultiple() {
 
   guardarEdicion() {
     if (this.productoEncontrado) {
-
       const { editando, ...productoLimpio } = this.productoEncontrado;
 
       console.log('Enviando al backend:', productoLimpio);
@@ -133,12 +135,12 @@ cerrarTablaMultiple() {
         .subscribe({
           next: () => {
             alert('Producto eliminado con éxito.');
-            this.productoEliminado.emit(this.productoEncontrado.idProducto); 
+            this.productoEliminado.emit(this.productoEncontrado.idProducto);
             this.productoEncontrado = null;
           },
           error: (err) => {
             console.error('Error al eliminar el producto:', err);
-            alert('No se pudo eliminar el producto.'); 
+            alert('No se pudo eliminar el producto.');
           },
           complete: () => console.log('Eliminación completada'),
         });

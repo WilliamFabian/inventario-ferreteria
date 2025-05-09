@@ -84,7 +84,7 @@ apiRouter.get("/:tabla/nombre/:nombre", validarTabla, (req, res) => {
   });
 });
 
-//Buscar Nombre.
+//Buscar Nombre Nuevo.
 apiRouter.get("/:tabla/nombre-inicia/:texto", validarTabla, (req, res) => {
   const { tabla, texto } = req.params;
   const sql = `SELECT * FROM ${tabla} WHERE LOWER(nombre) LIKE LOWER(?)`;
