@@ -66,6 +66,7 @@ export class BuscarProductoComponent {
             this.productoOriginal = { ...producto };
             this.idProductoBuscar = '';
             this.productosFiltrados = [];
+            this.cerrarTablaMultiple();
           } else {
             this.productoServicio
               .buscarRegistrosPorNombreInicio(this.tabla, texto)
@@ -76,6 +77,7 @@ export class BuscarProductoComponent {
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
                   this.idProductoBuscar = '';
+                  this.cerrarTablaMultiple();
                 } else {
                   alert('Producto no encontrado.');
                 }
