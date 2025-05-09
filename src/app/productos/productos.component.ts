@@ -50,6 +50,8 @@ export class ProductosComponent {
   ];
 
   ordenNombres: { [key: string]: string } = {
+    idMenor: 'Ascendente',
+    idMayor: 'Descendente',
     precioMenor: 'Menor Precio',
     precioMayor: 'Mayor Precio',
     cantidadMenor: 'Menor Cantidad',
@@ -119,6 +121,20 @@ export class ProductosComponent {
             case 'cantidadMayor':
               this.registros.sort((a, b) => b.cantidad - a.cantidad);
               break;
+            case 'idMenor':
+              this.registros.sort((a, b) => {
+                const numA = parseInt(a.id.split('-')[1]);
+                const numB = parseInt(b.id.split('-')[1]);
+                return numA - numB;
+              });
+              break;
+            case 'idMayor':
+              this.registros.sort((a, b) => {
+                const numA = parseInt(a.id.split('-')[1]);
+                const numB = parseInt(b.id.split('-')[1]);
+                return numB - numA;
+              });
+              break;
           }
         }
       });
@@ -143,6 +159,20 @@ export class ProductosComponent {
               break;
             case 'cantidadMayor':
               this.registros.sort((a, b) => b.cantidad - a.cantidad);
+              break;
+                          case 'idMenor':
+              this.registros.sort((a, b) => {
+                const numA = parseInt(a.id.split('-')[1]);
+                const numB = parseInt(b.id.split('-')[1]);
+                return numA - numB;
+              });
+              break;
+            case 'idMayor':
+              this.registros.sort((a, b) => {
+                const numA = parseInt(a.id.split('-')[1]);
+                const numB = parseInt(b.id.split('-')[1]);
+                return numB - numA;
+              });
               break;
           }
         }
