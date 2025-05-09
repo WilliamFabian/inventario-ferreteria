@@ -35,56 +35,53 @@ export class BuscarProductoComponent {
     });
   }
 
-filtrarProductos() {
-  const texto = this.idProductoBuscar.toLowerCase();
-  
-  // Siempre partir de la lista completa de productos original
-  // para garantizar que no se pierdan productos al filtrar
-  if (texto === '') {
-    this.productosFiltrados = [];  // Lista vacía cuando no hay texto
-  } else {
-    // Siempre filtramos desde this.productos (lista completa), no desde productosFiltrados
+  filtrarProductos() {
+    
+    const texto = this.idProductoBuscar.toLowerCase();
+
+    if (texto === '') {
+      this.productosFiltrados = [];
+      return;
+    }
     this.productosFiltrados = this.productos.filter(
       (producto) =>
         producto.idProducto.toLowerCase().includes(texto) ||
         producto.nombre.toLowerCase().includes(texto)
     );
   }
-}
 
-buscarProducto() {
-  if (this.idProductoBuscar !== '') {
-    this.productoServicio
-      .buscarRegistroPorId(this.tabla, this.idProductoBuscar)
-      .subscribe((producto) => {
-        if (producto && !producto.error && producto !== '') {
-          this.productoEncontrado = { ...producto, editando: false };
-          this.productoOriginal = { ...producto };
-          this.idProductoBuscar = '';
-          this.productosFiltrados = [];
-          // Forzar actualización del filtro cuando se limpia
-          setTimeout(() => this.filtrarProductos(), 0);
-        } else {
-          this.productoServicio
-            .buscarRegistroPorNombre(this.tabla, this.idProductoBuscar)
-            .subscribe((productoPorNombre) => {
-              if (productoPorNombre && !productoPorNombre.error) {
-                this.productoEncontrado = { ...productoPorNombre, editando: false };
-                this.productoOriginal = { ...productoPorNombre };
-                this.idProductoBuscar = '';
-                this.productosFiltrados = [];
-                // Forzar actualización del filtro cuando se limpia
-                setTimeout(() => this.filtrarProductos(), 0);
-              } else {
-                alert('Producto no encontrado.');
-              }
-            });
-        }
-      });
-  } else {
-    alert('Introduzca el ID o Nombre del producto');
+  buscarProducto() {
+    const texto = this.idProductoBuscar.trim();
+
+    if (this.idProductoBuscar !== '') {
+      this.productoServicio
+        .buscarRegistroPorId(this.tabla, this.idProductoBuscar)
+        .subscribe((producto) => {
+          if (producto && !producto.error && producto !== '') {
+            this.productoEncontrado = { ...producto, editando: false };
+            this.productoOriginal = { ...producto };
+            this.idProductoBuscar = '';
+            this.productosFiltrados = [];
+          } else {
+            this.productoServicio
+              .buscarRegistrosPorNombreInicio(this.tabla, texto)
+              .subscribe((productos) => {
+                if (productos && productos.length > 0) {
+                  this.productos = productos;
+                  this.productosFiltrados = [];
+                  this.mostrarTablaMultiple = true;
+                  this.productoEncontrado = null;
+                  this.idProductoBuscar = '';
+                } else {
+                  alert('Producto no encontrado.');
+                }
+              });
+          }
+        });
+    } else {
+      alert('Introduzca el ID o Nombre del producto');
+    }
   }
-}
 
   cerrarTablaMultiple() {
     this.productos = [];
