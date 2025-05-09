@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ProductosService } from '../../../services/productos.service';
-import {CommonModule, NgFor, NgIf } from '@angular/common';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { BuscarProductoComponent } from '../buscar-producto/buscar-producto.component';
 
@@ -18,7 +18,7 @@ import { BuscarProductoComponent } from '../buscar-producto/buscar-producto.comp
     ReactiveFormsModule,
     FormsModule,
     BuscarProductoComponent,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './productos.component.html',
   styleUrl: './productos.component.css',
@@ -28,25 +28,25 @@ export class ProductosComponent {
   mostrarFormulario = false;
   tablaSeleccionada: string = 'productos';
   tipoSeleccionado: string = '';
-  ordenSeleccionado: string = ''; 
+  ordenSeleccionado: string = '';
 
   tipos = [
-    {valor: 'tornillo', nombre: 'Tornillo'},
-    {valor: 'herramienta', nombre: 'Herramienta'},
-    {valor: 'griferia', nombre: 'Griferia'},
-    {valor: 'electrico', nombre: 'Electrico'},
-    {valor: 'pealpe', nombre: 'Pealpe'},
-    {valor: 'pintura', nombre: 'Pintura'}
+    { valor: 'tornillo', nombre: 'Tornillo' },
+    { valor: 'herramienta', nombre: 'Herramienta' },
+    { valor: 'griferia', nombre: 'Griferia' },
+    { valor: 'electrico', nombre: 'Electrico' },
+    { valor: 'pealpe', nombre: 'Pealpe' },
+    { valor: 'pintura', nombre: 'Pintura' },
   ];
 
   tiposFiltro = [
-    {valor: 'todo', nombre: 'Todo'},
-    {valor: 'tornillo', nombre: 'Tornillo'},
-    {valor: 'herramienta', nombre: 'Herramienta'},
-    {valor: 'griferia', nombre: 'Griferia'},
-    {valor: 'electrico', nombre: 'Electrico'},
-    {valor: 'pealpe', nombre: 'Pealpe'},
-    {valor: 'pintura', nombre: 'Pintura'}
+    { valor: 'todo', nombre: 'Todo' },
+    { valor: 'tornillo', nombre: 'Tornillo' },
+    { valor: 'herramienta', nombre: 'Herramienta' },
+    { valor: 'griferia', nombre: 'Griferia' },
+    { valor: 'electrico', nombre: 'Electrico' },
+    { valor: 'pealpe', nombre: 'Pealpe' },
+    { valor: 'pintura', nombre: 'Pintura' },
   ];
 
   ordenNombres: { [key: string]: string } = {
@@ -63,8 +63,7 @@ export class ProductosComponent {
     private fb: FormBuilder,
     private productoServicio: ProductosService
   ) {
-
-    this.productoServicio.selectedOption$.subscribe(option => {
+    this.productoServicio.selectedOption$.subscribe((option) => {
       this.tipoSeleccionado = option;
       this.cargarTabla();
     });
@@ -75,7 +74,7 @@ export class ProductosComponent {
       nombre: ['', Validators.required],
       tipo: ['', Validators.required],
       precio: ['', [Validators.required, Validators.min(1)]],
-      precioDescuento: [''],
+      precioDescuento: [0],
       cantidad: ['', [Validators.required, Validators.min(1)]],
     });
 
@@ -92,11 +91,10 @@ export class ProductosComponent {
     this.cargarTabla();
   }
 
-  cargarTabla(){
-    if(this.tipoSeleccionado === 'todo' || ''){
+  cargarTabla() {
+    if (this.tipoSeleccionado === 'todo' || '') {
       this.obtenerRegistros();
-    }
-    else{
+    } else {
       this.obtenerProductosTipo();
     }
   }
@@ -106,7 +104,7 @@ export class ProductosComponent {
       .obtenerRegistros(this.tablaSeleccionada)
       .subscribe((data) => {
         this.registros = data;
-  
+
         if (this.ordenSeleccionado !== '') {
           switch (this.ordenSeleccionado) {
             case 'precioMenor':
@@ -125,13 +123,13 @@ export class ProductosComponent {
         }
       });
   }
-  
+
   obtenerProductosTipo() {
     this.productoServicio
       .obtenerRegistrosTipo(this.tablaSeleccionada, this.tipoSeleccionado)
       .subscribe((data) => {
         this.registros = data;
-  
+
         if (this.ordenSeleccionado !== '') {
           switch (this.ordenSeleccionado) {
             case 'precioMenor':
@@ -150,7 +148,6 @@ export class ProductosComponent {
         }
       });
   }
-  
 
   agregarRegistro() {
     const form =
@@ -182,7 +179,6 @@ export class ProductosComponent {
   }
 
   editarRegistro(registro: any) {
-
     const { editando, ...registroLimpio } = registro;
 
     console.log('Enviando al backend:', registroLimpio);
@@ -219,7 +215,6 @@ export class ProductosComponent {
   activarEdicion(producto: any) {
     producto.editando = true;
   }
-
 
   cancelarEdicion(producto: any) {
     producto.editando = false;
