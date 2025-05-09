@@ -123,15 +123,15 @@ export class ProductosComponent {
               break;
             case 'idMenor':
               this.registros.sort((a, b) => {
-                const numA = parseInt(a.id.split('-')[1]);
-                const numB = parseInt(b.id.split('-')[1]);
+                const numA = parseInt(a.idProducto.split('-')[1]);
+                const numB = parseInt(b.idProducto.split('-')[1]);
                 return numA - numB;
               });
               break;
             case 'idMayor':
               this.registros.sort((a, b) => {
-                const numA = parseInt(a.id.split('-')[1]);
-                const numB = parseInt(b.id.split('-')[1]);
+                const numA = parseInt(a.idProducto.split('-')[1]);
+                const numB = parseInt(b.idProducto.split('-')[1]);
                 return numB - numA;
               });
               break;
