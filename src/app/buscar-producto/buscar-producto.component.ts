@@ -46,7 +46,6 @@ export class BuscarProductoComponent {
   }
 
   buscarProducto() {
-
     const texto = this.idProductoBuscar.trim();
 
     if (this.idProductoBuscar !== '') {
@@ -64,10 +63,10 @@ export class BuscarProductoComponent {
               .subscribe((productos) => {
                 if (productos && productos.length > 0) {
                   this.productos = productos;
+                  this.productosFiltrados = []; // ✅ limpiar productos filtrados anteriores
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
                   this.idProductoBuscar = '';
-                  this.productosFiltrados = [];
                 } else {
                   alert('Producto no encontrado.');
                 }
