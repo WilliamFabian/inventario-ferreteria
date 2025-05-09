@@ -107,6 +107,11 @@ export class ProductosComponent {
       .subscribe((data) => {
         this.registros = data;
 
+        const obtenerNumeroID = (id: string): number => {
+          const match = id.match(/\d+$/);
+          return match ? parseInt(match[0], 10) : 0;
+        };
+
         if (this.ordenSeleccionado !== '') {
           switch (this.ordenSeleccionado) {
             case 'precioMenor':
@@ -122,18 +127,16 @@ export class ProductosComponent {
               this.registros.sort((a, b) => b.cantidad - a.cantidad);
               break;
             case 'idMenor':
-              this.registros.sort((a, b) => {
-                const numA = parseInt(a.idProducto.split('-')[1], 10);
-                const numB = parseInt(b.idProducto.split('-')[1], 10);
-                return numA - numB;
-              });
+              this.registros.sort(
+                (a, b) =>
+                  obtenerNumeroID(a.idProducto) - obtenerNumeroID(b.idProducto)
+              );
               break;
             case 'idMayor':
-              this.registros.sort((a, b) => {
-                const numA = parseInt(a.idProducto.split('-')[1], 10);
-                const numB = parseInt(b.idProducto.split('-')[1], 10);
-                return numB - numA;
-              });
+              this.registros.sort(
+                (a, b) =>
+                  obtenerNumeroID(b.idProducto) - obtenerNumeroID(a.idProducto)
+              );
               break;
           }
         }
@@ -146,6 +149,11 @@ export class ProductosComponent {
       .subscribe((data) => {
         this.registros = data;
 
+        const obtenerNumeroID = (id: string): number => {
+          const match = id.match(/\d+$/);
+          return match ? parseInt(match[0], 10) : 0;
+        };
+
         if (this.ordenSeleccionado !== '') {
           switch (this.ordenSeleccionado) {
             case 'precioMenor':
@@ -161,18 +169,16 @@ export class ProductosComponent {
               this.registros.sort((a, b) => b.cantidad - a.cantidad);
               break;
             case 'idMenor':
-              this.registros.sort((a, b) => {
-                const numA = parseInt(a.id.split('-')[1]);
-                const numB = parseInt(b.id.split('-')[1]);
-                return numA - numB;
-              });
+              this.registros.sort(
+                (a, b) =>
+                  obtenerNumeroID(a.idProducto) - obtenerNumeroID(b.idProducto)
+              );
               break;
             case 'idMayor':
-              this.registros.sort((a, b) => {
-                const numA = parseInt(a.id.split('-')[1]);
-                const numB = parseInt(b.id.split('-')[1]);
-                return numB - numA;
-              });
+              this.registros.sort(
+                (a, b) =>
+                  obtenerNumeroID(b.idProducto) - obtenerNumeroID(a.idProducto)
+              );
               break;
           }
         }
