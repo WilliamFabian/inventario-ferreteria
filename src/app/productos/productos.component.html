@@ -150,7 +150,7 @@
 
           <td>
             <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.cantidad" class="form-control" />
-            <span *ngIf="!producto.editando">{{ producto.cantidad }}</span>
+            <span *ngIf="!producto.editando">{{ producto.cantidad  || 0}}</span>
           </td>
 
           <td class="acciones-cell">
