@@ -28,7 +28,7 @@ export class ProductosComponent {
   mostrarFormulario = false;
   tablaSeleccionada: string = 'productos';
   tipoSeleccionado: string = '';
-  ordenSeleccionado: string = 'idMenor';
+  ordenSeleccionado: string = '';
 
   tipos = [
     { valor: 'tornillo', nombre: 'Tornillo' },
@@ -90,6 +90,7 @@ export class ProductosComponent {
   }
 
   ngOnInit() {
+    this.ordenSeleccionado = 'idMenor';
     this.cargarTabla();
   }
 
