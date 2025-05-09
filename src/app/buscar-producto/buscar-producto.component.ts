@@ -74,12 +74,10 @@ export class BuscarProductoComponent {
                 if (productos && productos.length > 0) {
                   this.productos = productos; // Solo cambiamos this.productos para mostrar los resultados
                   this.productosFiltrados = []; // Limpiar productos filtrados
+                  this.mostrarTablaMultiple = false;
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
                   this.idProductoBuscar = '';
-                  if(productos.length === 1){
-                    this.cerrarTablaMultiple();
-                  }
                 } else {
                   alert('Producto no encontrado.');
                 }
