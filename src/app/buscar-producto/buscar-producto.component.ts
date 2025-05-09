@@ -17,6 +17,7 @@ export class BuscarProductoComponent {
   @Output() productoEliminado = new EventEmitter<number>();
   tabla: string = 'productos';
   productos: any[] = [];
+  productosCompletos: any[] = []; // Nueva variable para la lista completa
   productosFiltrados: any[] = [];
   mostrarTablaMultiple: boolean = false;
 
@@ -32,13 +33,21 @@ export class BuscarProductoComponent {
   obtenerProductos() {
     this.productoServicio.obtenerRegistros('productos').subscribe((data) => {
       this.productos = data;
+      this.productosCompletos = [...data]; // Guardar una copia completa
     });
   }
 
   filtrarProductos() {
-    //recuperar
     const texto = this.idProductoBuscar.toLowerCase();
-    this.productosFiltrados = this.productos.filter(
+
+    // Si no hay texto, limpiamos la lista de filtrados
+    if (texto === '') {
+      this.productosFiltrados = [];
+      return;
+    }
+
+    // Siempre filtrar desde la lista completa original
+    this.productosFiltrados = this.productosCompletos.filter(
       (producto) =>
         producto.idProducto.toLowerCase().includes(texto) ||
         producto.nombre.toLowerCase().includes(texto)
@@ -62,8 +71,8 @@ export class BuscarProductoComponent {
               .buscarRegistrosPorNombreInicio(this.tabla, texto)
               .subscribe((productos) => {
                 if (productos && productos.length > 0) {
-                  this.productos = productos;
-                  this.productosFiltrados = []; // ✅ limpiar productos filtrados anteriores
+                  this.productos = productos; // Solo cambiamos this.productos para mostrar los resultados
+                  this.productosFiltrados = []; // Limpiar productos filtrados
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
                   this.idProductoBuscar = '';
