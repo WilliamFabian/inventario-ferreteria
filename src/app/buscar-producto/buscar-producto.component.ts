@@ -20,7 +20,6 @@ export class BuscarProductoComponent {
   productosFiltrados: any[] = [];
   mostrarTablaMultiple: boolean = false;
 
-
   constructor(private productoServicio: ProductosService) {}
 
   ngOnInit() {
@@ -46,54 +45,47 @@ export class BuscarProductoComponent {
     
   }
 
-  buscarProducto() {
-  if (this.idProductoBuscar.trim() === '') {
+buscarProducto() {
+  const texto = this.idProductoBuscar.trim();
+
+  if (texto === '') {
     alert('Introduzca el ID o Nombre del producto');
     return;
   }
 
-  // Si el valor ingresado es un número, intenta buscar por ID
-  const idNumerico = Number(this.idProductoBuscar);
-  if (!isNaN(idNumerico)) {
-    this.productoServicio
-      .buscarRegistroPorId(this.tabla, this.idProductoBuscar)
-      .subscribe((producto) => {
-        if (producto && !producto.error && producto !== '') {
-          this.productoEncontrado = { ...producto, editando: false };
-          this.productoOriginal = { ...producto };
-          this.mostrarTablaMultiple = false; // ocultar tabla múltiple si aparece
-        } else {
-          alert('Producto no encontrado por ID.');
-        }
-        this.idProductoBuscar = '';
-        this.productosFiltrados = [];
-      });
-  } else {
-    // Si no es número, buscar por nombre que comience con ese texto
-    this.productoServicio
-      .buscarRegistrosPorNombreInicio(this.tabla, this.idProductoBuscar)
-      .subscribe((resultados) => {
-        if (resultados && resultados.length > 0) {
-          this.productos = resultados;
+  // Primero intenta buscar por ID
+  this.productoServicio.buscarRegistroPorId(this.tabla, texto).subscribe(producto => {
+    if (producto && !producto.error && producto !== '') {
+      // Se encontró por ID
+      this.productoEncontrado = { ...producto, editando: false };
+      this.productoOriginal = { ...producto };
+      this.mostrarTablaMultiple = false;
+      this.idProductoBuscar = '';
+      this.productosFiltrados = [];
+    } else {
+      // Si no se encuentra por ID, busca por nombre parcial
+      this.productoServicio.buscarRegistrosPorNombreInicio(this.tabla, texto).subscribe(productos => {
+        if (productos && productos.length > 0) {
+          this.productos = productos;
           this.mostrarTablaMultiple = true;
-          this.productoEncontrado = null; // ocultar producto único si aparece
+          this.productoEncontrado = null;
+          this.idProductoBuscar = '';
+          this.productosFiltrados = [];
         } else {
-          alert('No se encontraron productos con ese nombre.');
-          this.mostrarTablaMultiple = false;
+          alert('Producto no encontrado.');
         }
-        this.idProductoBuscar = '';
-        this.productosFiltrados = [];
       });
-  }
+    }
+  });
 }
 
 cerrarTablaMultiple() {
   this.productos = [];
-  this.productosFiltrados = [];
   this.mostrarTablaMultiple = false;
 }
 
- 
+  
+
   activarEdicion() {
     if (this.productoEncontrado) {
       this.productoOriginal = { ...this.productoEncontrado };
