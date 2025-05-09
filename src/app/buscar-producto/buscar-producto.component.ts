@@ -77,7 +77,9 @@ export class BuscarProductoComponent {
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
                   this.idProductoBuscar = '';
-                  this.cerrarTablaMultiple();
+                  if(productos.length === 1){
+                    this.cerrarTablaMultiple();
+                  }
                 } else {
                   alert('Producto no encontrado.');
                 }
