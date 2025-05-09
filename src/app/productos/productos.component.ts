@@ -75,7 +75,7 @@ export class ProductosComponent {
       tipo: ['', Validators.required],
       precio: ['', [Validators.required, Validators.min(1)]],
       precioDescuento: [null],
-      cantidad: [null],
+      cantidad: [null, Validators.min(0)],
     });
 
     // Formulario para ventas
