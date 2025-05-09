@@ -34,7 +34,6 @@ export class VentasComponent {
     private productoServicio: ProductosService
   ) {
     this.ventaForm = this.fb.group({
-      idVenta: ['', Validators.required],
       idProductoVenta: ['', Validators.required],
       cantidad: ['', [Validators.required, Validators.min(1)]],
       valorUnitario: [{ value: '', disabled: true }],
@@ -127,7 +126,7 @@ export class VentasComponent {
     }
   }
 
-  eliminarRegistro(id: string) {
+  eliminarRegistro(id: number) {
     if (
       confirm(
         `¿Estás seguro de eliminar esta ${this.tablaSeleccionada.slice(0, -1)}?`
