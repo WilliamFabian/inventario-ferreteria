@@ -75,7 +75,7 @@ export class ProductosComponent {
       nombre: ['', Validators.required],
       tipo: ['', Validators.required],
       precio: ['', [Validators.required, Validators.min(1)]],
-      precioDescuento: [''],
+      precioDescuento: [0],
       cantidad: ['', [Validators.required, Validators.min(1)]],
     });
 
