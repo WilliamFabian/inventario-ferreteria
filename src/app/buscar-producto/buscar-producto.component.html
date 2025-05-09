@@ -87,7 +87,7 @@
   <!-- Tabla de productos por nombre -->
   <div class="row justify-content-center mt-4 mb-4" *ngIf="mostrarTablaMultiple">
     <div class="col-md-10">
-      <table class="table table-striped table-bordered text-center">
+      <table class="table table-bordered text-center">
         <thead class="table-dark">
           <tr>
             <th>ID Producto</th>
@@ -96,16 +96,47 @@
             <th>Precio</th>
             <th>Precio Descuento</th>
             <th>Cantidad</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let producto of productos">
-            <td>{{ producto.idProducto }}</td>
-            <td>{{ producto.nombre }}</td>
-            <td>{{ producto.tipo }}</td>
-            <td>{{ producto.precio | currency:'USD' }}</td>
-            <td>{{ producto.precioDescuento | currency:'USD' }}</td>
-            <td>{{ producto.cantidad }}</td>
+          <tr>
+            <td>{{ productoEncontrado.idProducto }}</td>
+            <td>
+              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.nombre" class="form-control" />
+              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.nombre }}</span>
+            </td>
+            <td>
+              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.tipo" class="form-control" />
+              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.tipo }}</span>
+            </td>
+            <td>
+              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precio" class="form-control" />
+              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.precio | currency:'USD' }}</span>
+            </td>
+            <td>
+              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precioDescuento"
+                class="form-control" />
+              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.precioDescuento | currency:'USD'
+                }}</span>
+            </td>
+            <td>
+              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.cantidad"
+                class="form-control" />
+              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.cantidad }}</span>
+            </td>
+            <td>
+              <div class="d-flex justify-content-center gap-2 mt-2 mb-2">
+                <button *ngIf="productoEncontrado.editando" class="btn btn-success btn-sm"
+                  (click)="guardarEdicion()">Guardar</button>
+                <button *ngIf="productoEncontrado.editando" class="btn btn-secondary btn-sm"
+                  (click)="cancelarEdicion()">Cancelar</button>
+                <button *ngIf="!productoEncontrado.editando" class="btn btn-warning btn-sm"
+                  (click)="activarEdicion()">Editar</button>
+                <button class="btn btn-danger btn-sm" (click)="eliminarProducto()">Eliminar</button>
+                <button class="btn btn-dark btn-sm" (click)="cerrarProductoEncontrado()">Cerrar</button>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
