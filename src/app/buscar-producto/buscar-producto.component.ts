@@ -17,10 +17,18 @@ export class BuscarProductoComponent {
   @Output() productoEliminado = new EventEmitter<number>();
   tabla: string = 'productos';
   productos: any[] = [];
-  productosCompletos: any[] = []; // Nueva variable para la lista completa
+  productosCompletos: any[] = [];
   productosFiltrados: any[] = [];
   mostrarTablaMultiple: boolean = false;
   productosOriginales: Map<string, any> = new Map();
+
+  //Para ventas.
+  mostrarFormularioVenta: boolean = false;
+  productoParaVender: any = null;
+  cantidadVenta: number = 1;
+  aplicarDescuentoVenta: boolean = false;
+  valorUnitarioVenta: number = 0;
+  precioTotalVenta: number = 0;
 
   constructor(private productoServicio: ProductosService) {}
 
@@ -198,5 +206,74 @@ eliminarProducto(producto?: any) {
       });
   }
 }
+
+//Para ventas.
+  venderProducto(producto?: any) {
+    // Si se proporciona un producto específico, usamos ese
+    this.productoParaVender = producto || this.productoEncontrado;
+    
+    if (this.productoParaVender) {
+      this.mostrarFormularioVenta = true;
+      this.cantidadVenta = 1;
+      this.aplicarDescuentoVenta = false;
+      this.actualizarPrecioUnitarioVenta();
+    }
+  }
+
+  actualizarPrecioUnitarioVenta() {
+    if (this.productoParaVender) {
+      this.valorUnitarioVenta = this.aplicarDescuentoVenta && this.productoParaVender.precioDescuento 
+        ? this.productoParaVender.precioDescuento 
+        : this.productoParaVender.precio;
+      this.calcularPrecioTotalVenta();
+    }
+  }
+
+  calcularPrecioTotalVenta() {
+    this.precioTotalVenta = this.cantidadVenta * this.valorUnitarioVenta;
+  }
+
+  toggleDescuentoVenta() {
+    this.aplicarDescuentoVenta = !this.aplicarDescuentoVenta;
+    this.actualizarPrecioUnitarioVenta();
+  }
+
+  guardarVenta() {
+    if (this.cantidadVenta <= 0) {
+      alert('La cantidad debe ser mayor a 0');
+      return;
+    }
+
+    if (this.cantidadVenta > this.productoParaVender.cantidad) {
+      alert('No hay suficiente stock disponible. Stock actual: ' + this.productoParaVender.cantidad);
+      return;
+    }
+
+    const datosVenta = {
+      idProductoVenta: this.productoParaVender.idProducto,
+      cantidad: this.cantidadVenta,
+      valorUnitario: this.valorUnitarioVenta,
+      precioTotal: this.precioTotalVenta
+    };
+
+    this.productoServicio.agregarRegistro('ventas', datosVenta).subscribe({
+      next: () => {
+        alert('Venta realizada con éxito');
+        // Actualizar el stock del producto
+        this.productoParaVender.cantidad -= this.cantidadVenta;
+        this.guardarEdicion(this.productoParaVender);
+        this.cerrarFormularioVenta();
+      },
+      error: (err) => {
+        alert('No se pudo realizar la venta');
+        console.error('Error al realizar la venta:', err);
+      }
+    });
+  }
+
+  cerrarFormularioVenta() {
+    this.mostrarFormularioVenta = false;
+    this.productoParaVender = null;
+  }
 
 }
