@@ -164,18 +164,15 @@
         <h5 class="mb-3 fw-bold">Producto: {{ productoParaVender?.nombre }}</h5>
 
         <p class="mb-1">
-          <span class="fw-semibold text-muted">Stock disponible:</span>
-          <span class="text-dark">{{ productoParaVender?.cantidad }}</span>
+          <span class="fw-semibold text-muted">Stock disponible: {{ productoParaVender?.cantidad }}</span>
         </p>
 
         <p class="mb-1">
-          <span class="fw-semibold text-muted">Precio:</span>
-          <span class="text-primary fw-bold">${{ productoParaVender?.precio | number:'1.0-0' }}</span>
+          <span class="fw-semibold text-muted">Precio: ${{ productoParaVender?.precio | number:'1.0-0' }}</span>
         </p>
 
         <p *ngIf="productoParaVender?.precioDescuento" class="mb-0">
-          <span class="fw-semibold text-muted">Precio con descuento:</span>
-          <span class="text-success fw-bold">${{ productoParaVender?.precioDescuento | number:'1.0-0' }}</span>
+          <span class="fw-semibold text-muted">Precio con descuento: ${{ productoParaVender?.precioDescuento | number:'1.0-0' }}</span>
         </p>
       </div>
 
