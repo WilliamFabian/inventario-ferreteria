@@ -160,12 +160,23 @@
 
       <h2 class="text-center mb-4">Vender Producto</h2>
 
-      <div class="mb-3">
-        <h5>Producto: {{ productoParaVender?.nombre }}</h5>
-        <p>Stock disponible: {{ productoParaVender?.cantidad }}</p>
-        <p>Precio: ${{ productoParaVender?.precio | number:'1.0-0' }}</p>
-        <p *ngIf="productoParaVender?.precioDescuento">Precio con descuento: ${{ productoParaVender?.precioDescuento |
-          number:'1.0-0' }}</p>
+      <div class="p-3 border rounded shadow-sm bg-light">
+        <h5 class="mb-3 fw-bold">Producto: {{ productoParaVender?.nombre }}</h5>
+
+        <p class="mb-1">
+          <span class="fw-semibold text-muted">Stock disponible:</span>
+          <span class="text-dark">{{ productoParaVender?.cantidad }}</span>
+        </p>
+
+        <p class="mb-1">
+          <span class="fw-semibold text-muted">Precio:</span>
+          <span class="text-primary fw-bold">${{ productoParaVender?.precio | number:'1.0-0' }}</span>
+        </p>
+
+        <p *ngIf="productoParaVender?.precioDescuento" class="mb-0">
+          <span class="fw-semibold text-muted">Precio con descuento:</span>
+          <span class="text-success fw-bold">${{ productoParaVender?.precioDescuento | number:'1.0-0' }}</span>
+        </p>
       </div>
 
       <div class="form-group text-start mb-3">

@@ -22,7 +22,6 @@ export class BuscarProductoComponent {
   mostrarTablaMultiple: boolean = false;
   productosOriginales: Map<string, any> = new Map();
 
-  //Para ventas.
   mostrarFormularioVenta: boolean = false;
   productoParaVender: any = null;
   cantidadVenta: number = 1;
@@ -42,20 +41,18 @@ export class BuscarProductoComponent {
   obtenerProductos() {
     this.productoServicio.obtenerRegistros('productos').subscribe((data) => {
       this.productos = data;
-      this.productosCompletos = [...data]; // Guardar una copia completa
+      this.productosCompletos = [...data];
     });
   }
 
   filtrarProductos() {
     const texto = this.idProductoBuscar.toLowerCase();
 
-    // Si no hay texto, limpiamos la lista de filtrados
     if (texto === '') {
       this.productosFiltrados = [];
       return;
     }
 
-    // Siempre filtrar desde la lista completa original
     this.productosFiltrados = this.productosCompletos.filter(
       (producto) =>
         producto.idProducto.toLowerCase().includes(texto) ||
@@ -81,8 +78,8 @@ export class BuscarProductoComponent {
               .buscarRegistrosPorNombreInicio(this.tabla, texto)
               .subscribe((productos) => {
                 if (productos && productos.length > 0) {
-                  this.productos = productos; // Solo cambiamos this.productos para mostrar los resultados
-                  this.productosFiltrados = []; // Limpiar productos filtrados
+                  this.productos = productos;
+                  this.productosFiltrados = []; 
                   this.mostrarTablaMultiple = false;
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
@@ -104,15 +101,12 @@ export class BuscarProductoComponent {
     this.productoEncontrado = null;
   }
 
-  // Modificar los métodos existentes para trabajar con un producto específico
-
   activarEdicion(producto?: any) {
-    // Si se proporciona un producto específico, usamos ese
+
     const productoObjetivo = producto || this.productoEncontrado;
 
     if (productoObjetivo) {
-      // Guardamos una copia original antes de la edición
-      // Usamos el ID como clave para el mapa de productos originales
+
       if (!this.productosOriginales) {
         this.productosOriginales = new Map();
       }
@@ -120,23 +114,20 @@ export class BuscarProductoComponent {
         ...productoObjetivo,
       });
 
-      // Activamos el modo de edición para este producto específico
       productoObjetivo.editando = true;
     }
   }
 
   cancelarEdicion(producto?: any) {
-    // Si se proporciona un producto específico, usamos ese
+
     const productoObjetivo = producto || this.productoEncontrado;
 
     if (productoObjetivo && this.productosOriginales) {
-      // Recuperamos la copia original guardada de este producto
       const original = this.productosOriginales.get(
         productoObjetivo.idProducto
       );
 
       if (original) {
-        // Restauramos todos los valores originales
         Object.assign(productoObjetivo, original);
         productoObjetivo.editando = false;
       }
@@ -144,14 +135,11 @@ export class BuscarProductoComponent {
   }
 
   guardarEdicion(producto?: any) {
-    // Si se proporciona un producto específico, usamos ese
     const productoObjetivo = producto || this.productoEncontrado;
 
     if (productoObjetivo) {
-      // Limpiamos la propiedad editando antes de enviar al backend
       const { editando, ...productoLimpio } = productoObjetivo;
 
-      console.log('Enviando al backend:', productoLimpio);
 
       this.productoServicio
         .editarRegistro(this.tabla, productoLimpio)
@@ -163,14 +151,12 @@ export class BuscarProductoComponent {
           },
           error: (err) => {
             alert('No se pudo editar el producto.');
-            console.error('Error al editar el producto:', err);
           },
         });
     }
   }
 
   eliminarProducto(producto?: any) {
-    // Si se proporciona un producto específico, usamos ese
     const productoObjetivo = producto || this.productoEncontrado;
 
     if (
@@ -184,12 +170,10 @@ export class BuscarProductoComponent {
             alert('Producto eliminado con éxito.');
             this.productoEliminado.emit(productoObjetivo.idProducto);
 
-            // Si es el mismo que productoEncontrado, lo limpiamos
             if (productoObjetivo === this.productoEncontrado) {
               this.productoEncontrado = null;
             }
 
-            // Si está en la lista de productos, lo removemos
             const index = this.productos.findIndex(
               (p) => p.idProducto === productoObjetivo.idProducto
             );
@@ -197,7 +181,6 @@ export class BuscarProductoComponent {
               this.productos.splice(index, 1);
             }
 
-            // También lo removemos de la lista completa
             const indexCompleto = this.productosCompletos.findIndex(
               (p) => p.idProducto === productoObjetivo.idProducto
             );
@@ -206,7 +189,6 @@ export class BuscarProductoComponent {
             }
           },
           error: (err) => {
-            console.error('Error al eliminar el producto:', err);
             alert('No se pudo eliminar el producto.');
           },
           complete: () => console.log('Eliminación completada'),
@@ -216,7 +198,6 @@ export class BuscarProductoComponent {
 
   //Para ventas.
   venderProducto(producto?: any) {
-    // Si se proporciona un producto específico, usamos ese
     this.productoParaVender = producto || this.productoEncontrado;
 
     if (this.productoParaVender) {
@@ -229,12 +210,7 @@ export class BuscarProductoComponent {
 
   actualizarPrecioUnitarioVenta() {
     if (this.productoParaVender) {
-      console.log(
-        'Calculando precio unitario. Descuento:',
-        this.aplicarDescuentoVenta
-      );
 
-      // Verificar que el precio descuento exista antes de usarlo
       if (
         this.aplicarDescuentoVenta &&
         this.productoParaVender.precioDescuento
@@ -246,7 +222,6 @@ export class BuscarProductoComponent {
         this.valorUnitarioVenta = Number(this.productoParaVender.precio);
       }
 
-      console.log('Valor unitario calculado:', this.valorUnitarioVenta);
       this.calcularPrecioTotalVenta();
     }
   }
@@ -256,9 +231,7 @@ export class BuscarProductoComponent {
   }
 
   toggleDescuentoVenta() {
-    // Invertir manualmente el valor
     this.aplicarDescuentoVenta = !this.aplicarDescuentoVenta;
-    console.log('Descuento:', this.aplicarDescuentoVenta); // Para depuración
     this.actualizarPrecioUnitarioVenta();
   }
 
@@ -286,14 +259,13 @@ export class BuscarProductoComponent {
     this.productoServicio.agregarRegistro('ventas', datosVenta).subscribe({
       next: () => {
         alert('Venta realizada con éxito');
-        // Actualizar el stock del producto
+
         this.productoParaVender.cantidad -= this.cantidadVenta;
         this.guardarEdicion(this.productoParaVender);
         this.cerrarFormularioVenta();
       },
       error: (err) => {
         alert('No se pudo realizar la venta');
-        console.error('Error al realizar la venta:', err);
       },
     });
   }
