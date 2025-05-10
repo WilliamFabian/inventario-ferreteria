@@ -153,8 +153,4 @@ export class BuscarProductoComponent {
     }
   }
 
-  cerrarProductoEncontrado() {
-    this.productoEncontrado = null;
-    this.mostrarTablaMultiple = false;
-  }
 }
