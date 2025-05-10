@@ -53,12 +53,12 @@
             </td>
             <td>
               <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precio" class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.precio | number:'1.0-0' }}</span>
+              <span *ngIf="!productoEncontrado.editando">${{ productoEncontrado.precio | number:'1.0-0' }}</span>
             </td>
             <td>
               <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precioDescuento"
                 class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.precioDescuento ? (productoEncontrado.precioDescuento | number:'1.0-0') : 'N/A'}}</span>
+              <span *ngIf="!productoEncontrado.editando">${{ productoEncontrado.precioDescuento ? (productoEncontrado.precioDescuento | number:'1.0-0') : 'N/A'}}</span>
             </td>
             <td>
               <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.cantidad"
@@ -110,12 +110,12 @@
             </td>
             <td>
               <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precio" class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.precio | number:'1.0-0' }}</span>
+              <span *ngIf="!productoEncontrado.editando">${{ productoEncontrado.precio | number:'1.0-0' }}</span>
             </td>
             <td>
               <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precioDescuento"
                 class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.precioDescuento ? (productoEncontrado.precioDescuento | number:'1.0-0') : 'N/A'}}</span>
+              <span *ngIf="!productoEncontrado.editando">${{ productoEncontrado.precioDescuento ? (productoEncontrado.precioDescuento | number:'1.0-0') : 'N/A'}}</span>
             </td>
             <td>
               <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.cantidad"
