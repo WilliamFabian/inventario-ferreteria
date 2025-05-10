@@ -66,7 +66,7 @@ export class BuscarProductoComponent {
             this.productoOriginal = { ...producto };
             this.idProductoBuscar = '';
             this.productosFiltrados = [];
-            this.cerrarTablaMultiple();
+            this.mostrarTablaMultiple = false;
           } else {
             this.productoServicio
               .buscarRegistrosPorNombreInicio(this.tabla, texto)
