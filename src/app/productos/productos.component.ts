@@ -200,7 +200,7 @@ export class ProductosComponent {
         .subscribe({
           next: (response) => {
             alert(`Producto agregado con éxito.`);
-            this.obtenerRegistros();
+            this.cargarTabla();
             this.productoServicio.notificarProductoCreado();
             form.reset();
             this.mostrarFormulario = false;
