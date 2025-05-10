@@ -141,7 +141,7 @@
 
     </div>
   </div>
-  <div class="text-center mt-3">
+  <div class="text-center mt-3" *ngIf="productoEncontrado || mostrarTablaMultiple">
     <button class="btn btn-dark btn-sm" (click)="cerrarTablaMultiple()">Cerrar tabla</button>
   </div>
 </div>
