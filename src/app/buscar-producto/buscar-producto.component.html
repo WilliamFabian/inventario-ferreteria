@@ -98,39 +98,39 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let productoEncontrado of productos">
-            <td>{{ productoEncontrado.idProducto }}</td>
+          <tr *ngFor="let producto of productos">
+            <td>{{ producto.idProducto }}</td>
             <td>
-              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.nombre" class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.nombre }}</span>
+              <input *ngIf="producto.editando" [(ngModel)]="producto.nombre" class="form-control" />
+              <span *ngIf="!producto.editando">{{ producto.nombre }}</span>
             </td>
             <td>
-              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.tipo" class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.tipo }}</span>
+              <input *ngIf="producto.editando" [(ngModel)]="producto.tipo" class="form-control" />
+              <span *ngIf="!producto.editando">{{ producto.tipo }}</span>
             </td>
             <td>
-              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precio" class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">${{ productoEncontrado.precio | number:'1.0-0' }}</span>
+              <input *ngIf="producto.editando" [(ngModel)]="producto.precio" class="form-control" />
+              <span *ngIf="!producto.editando">${{ producto.precio | number:'1.0-0' }}</span>
             </td>
             <td>
-              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precioDescuento"
+              <input *ngIf="producto.editando" [(ngModel)]="producto.precioDescuento"
                 class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">${{ productoEncontrado.precioDescuento ? (productoEncontrado.precioDescuento | number:'1.0-0') : 'N/A'}}</span>
+              <span *ngIf="!producto.editando">${{ producto.precioDescuento ? (producto.precioDescuento | number:'1.0-0') : 'N/A'}}</span>
             </td>
             <td>
-              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.cantidad"
+              <input *ngIf="producto.editando" [(ngModel)]="producto.cantidad"
                 class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.cantidad }}</span>
+              <span *ngIf="!producto.editando">{{ producto.cantidad }}</span>
             </td>
             <td>
               <div class="d-flex justify-content-center gap-2 mt-2 mb-2">
-                <button *ngIf="productoEncontrado.editando" class="btn btn-success btn-sm"
-                  (click)="guardarEdicion()">Guardar</button>
-                <button *ngIf="productoEncontrado.editando" class="btn btn-secondary btn-sm"
-                  (click)="cancelarEdicion()">Cancelar</button>
-                <button *ngIf="!productoEncontrado.editando" class="btn btn-warning btn-sm"
-                  (click)="activarEdicion()">Editar</button>
-                <button class="btn btn-danger btn-sm" (click)="eliminarProducto()">Eliminar</button>
+                <button *ngIf="producto.editando" class="btn btn-success btn-sm"
+                  (click)="guardarEdicion(producto)">Guardar</button>
+                <button *ngIf="producto.editando" class="btn btn-secondary btn-sm"
+                  (click)="cancelarEdicion(producto)">Cancelar</button>
+                <button *ngIf="!producto.editando" class="btn btn-warning btn-sm"
+                  (click)="activarEdicion(producto)">Editar</button>
+                <button class="btn btn-danger btn-sm" (click)="eliminarProducto(producto)">Eliminar</button>
               </div>
             </td>
           </tr>

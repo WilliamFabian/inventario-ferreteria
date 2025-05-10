@@ -20,6 +20,7 @@ export class BuscarProductoComponent {
   productosCompletos: any[] = []; // Nueva variable para la lista completa
   productosFiltrados: any[] = [];
   mostrarTablaMultiple: boolean = false;
+  productosOriginales: Map<string, any> = new Map();
 
   constructor(private productoServicio: ProductosService) {}
 
@@ -95,62 +96,107 @@ export class BuscarProductoComponent {
     this.productoEncontrado = null;
   }
 
-  activarEdicion() {
-    if (this.productoEncontrado) {
-      this.productoOriginal = { ...this.productoEncontrado };
-      this.productoEncontrado.editando = true;
+
+// Modificar los métodos existentes para trabajar con un producto específico
+
+activarEdicion(producto?: any) {
+  // Si se proporciona un producto específico, usamos ese
+  const productoObjetivo = producto || this.productoEncontrado;
+  
+  if (productoObjetivo) {
+    // Guardamos una copia original antes de la edición
+    // Usamos el ID como clave para el mapa de productos originales
+    if (!this.productosOriginales) {
+      this.productosOriginales = new Map();
+    }
+    this.productosOriginales.set(productoObjetivo.idProducto, { ...productoObjetivo });
+    
+    // Activamos el modo de edición para este producto específico
+    productoObjetivo.editando = true;
+  }
+}
+
+cancelarEdicion(producto?: any) {
+  // Si se proporciona un producto específico, usamos ese
+  const productoObjetivo = producto || this.productoEncontrado;
+  
+  if (productoObjetivo && this.productosOriginales) {
+    // Recuperamos la copia original guardada de este producto
+    const original = this.productosOriginales.get(productoObjetivo.idProducto);
+    
+    if (original) {
+      // Restauramos todos los valores originales
+      Object.assign(productoObjetivo, original);
+      productoObjetivo.editando = false;
     }
   }
+}
 
-  cancelarEdicion() {
-    if (this.productoOriginal) {
-      this.productoEncontrado = { ...this.productoOriginal };
-      this.productoEncontrado.editando = false;
-    }
+guardarEdicion(producto?: any) {
+  // Si se proporciona un producto específico, usamos ese
+  const productoObjetivo = producto || this.productoEncontrado;
+  
+  if (productoObjetivo) {
+    // Limpiamos la propiedad editando antes de enviar al backend
+    const { editando, ...productoLimpio } = productoObjetivo;
+    
+    console.log('Enviando al backend:', productoLimpio);
+    
+    this.productoServicio
+      .editarRegistro(this.tabla, productoLimpio)
+      .subscribe({
+        next: () => {
+          alert('Producto editado con éxito.');
+          productoObjetivo.editando = false;
+          this.productoEditado.emit(productoObjetivo);
+        },
+        error: (err) => {
+          alert('No se pudo editar el producto.');
+          console.error('Error al editar el producto:', err);
+        },
+      });
   }
+}
 
-  guardarEdicion() {
-    if (this.productoEncontrado) {
-      const { editando, ...productoLimpio } = this.productoEncontrado;
-
-      console.log('Enviando al backend:', productoLimpio);
-
-      this.productoServicio
-        .editarRegistro(this.tabla, productoLimpio)
-        .subscribe({
-          next: () => {
-            alert('Producto editado con éxito.');
-            this.productoEncontrado.editando = false;
-            this.productoEditado.emit(this.productoEncontrado);
-          },
-          error: (err) => {
-            alert('No se pudo editar el producto.');
-            console.error('Error al editar el producto:', err);
-          },
-        });
-    }
-  }
-
-  eliminarProducto() {
-    if (
-      this.productoEncontrado &&
-      confirm('¿Estás seguro de eliminar este producto?')
-    ) {
-      this.productoServicio
-        .eliminarRegistro(this.tabla, this.productoEncontrado.idProducto)
-        .subscribe({
-          next: () => {
-            alert('Producto eliminado con éxito.');
-            this.productoEliminado.emit(this.productoEncontrado.idProducto);
+eliminarProducto(producto?: any) {
+  // Si se proporciona un producto específico, usamos ese
+  const productoObjetivo = producto || this.productoEncontrado;
+  
+  if (
+    productoObjetivo &&
+    confirm('¿Estás seguro de eliminar este producto?')
+  ) {
+    this.productoServicio
+      .eliminarRegistro(this.tabla, productoObjetivo.idProducto)
+      .subscribe({
+        next: () => {
+          alert('Producto eliminado con éxito.');
+          this.productoEliminado.emit(productoObjetivo.idProducto);
+          
+          // Si es el mismo que productoEncontrado, lo limpiamos
+          if (productoObjetivo === this.productoEncontrado) {
             this.productoEncontrado = null;
-          },
-          error: (err) => {
-            console.error('Error al eliminar el producto:', err);
-            alert('No se pudo eliminar el producto.');
-          },
-          complete: () => console.log('Eliminación completada'),
-        });
-    }
+          }
+          
+          // Si está en la lista de productos, lo removemos
+          const index = this.productos.findIndex(p => p.idProducto === productoObjetivo.idProducto);
+          if (index !== -1) {
+            this.productos.splice(index, 1);
+          }
+          
+          // También lo removemos de la lista completa
+          const indexCompleto = this.productosCompletos.findIndex(p => p.idProducto === productoObjetivo.idProducto);
+          if (indexCompleto !== -1) {
+            this.productosCompletos.splice(indexCompleto, 1);
+          }
+        },
+        error: (err) => {
+          console.error('Error al eliminar el producto:', err);
+          alert('No se pudo eliminar el producto.');
+        },
+        complete: () => console.log('Eliminación completada'),
+      });
   }
+}
 
 }
