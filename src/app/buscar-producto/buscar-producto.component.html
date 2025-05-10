@@ -68,9 +68,12 @@
             </td>
             <td>
               <div class="d-flex justify-content-center gap-2 mt-2 mb-2">
-                <button *ngIf="productoEncontrado.editando" class="btn btn-success btn-sm" (click)="guardarEdicion()">Guardar</button>
-                <button *ngIf="productoEncontrado.editando" class="btn btn-secondary btn-sm" (click)="cancelarEdicion()">Cancelar</button>
-                <button *ngIf="!productoEncontrado.editando" class="btn btn-warning btn-sm" (click)="activarEdicion()">Editar</button>
+                <button *ngIf="productoEncontrado.editando" class="btn btn-success btn-sm"
+                  (click)="guardarEdicion()">Guardar</button>
+                <button *ngIf="productoEncontrado.editando" class="btn btn-secondary btn-sm"
+                  (click)="cancelarEdicion()">Cancelar</button>
+                <button *ngIf="!productoEncontrado.editando" class="btn btn-warning btn-sm"
+                  (click)="activarEdicion()">Editar</button>
                 <button class="btn btn-danger btn-sm" (click)="eliminarProducto()">Eliminar</button>
               </div>
             </td>
@@ -111,18 +114,24 @@
               <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.precio | currency:'USD' }}</span>
             </td>
             <td>
-              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precioDescuento" class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.precioDescuento | currency:'USD' }}</span>
+              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.precioDescuento"
+                class="form-control" />
+              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.precioDescuento | currency:'USD'
+                }}</span>
             </td>
             <td>
-              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.cantidad" class="form-control" />
+              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.cantidad"
+                class="form-control" />
               <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.cantidad }}</span>
             </td>
             <td>
               <div class="d-flex justify-content-center gap-2 mt-2 mb-2">
-                <button *ngIf="productoEncontrado.editando" class="btn btn-success btn-sm" (click)="guardarEdicion()">Guardar</button>
-                <button *ngIf="productoEncontrado.editando" class="btn btn-secondary btn-sm" (click)="cancelarEdicion()">Cancelar</button>
-                <button *ngIf="!productoEncontrado.editando" class="btn btn-warning btn-sm" (click)="activarEdicion()">Editar</button>
+                <button *ngIf="productoEncontrado.editando" class="btn btn-success btn-sm"
+                  (click)="guardarEdicion()">Guardar</button>
+                <button *ngIf="productoEncontrado.editando" class="btn btn-secondary btn-sm"
+                  (click)="cancelarEdicion()">Cancelar</button>
+                <button *ngIf="!productoEncontrado.editando" class="btn btn-warning btn-sm"
+                  (click)="activarEdicion()">Editar</button>
                 <button class="btn btn-danger btn-sm" (click)="eliminarProducto()">Eliminar</button>
               </div>
             </td>
@@ -130,9 +139,9 @@
         </tbody>
       </table>
 
-      <div class="text-center mt-3">
-        <button class="btn btn-dark btn-sm" (click)="cerrarTablaMultiple()">Cerrar tabla</button>
-      </div>
     </div>
+  </div>
+  <div class="text-center mt-3">
+    <button class="btn btn-dark btn-sm" (click)="cerrarTablaMultiple()">Cerrar tabla</button>
   </div>
 </div>
