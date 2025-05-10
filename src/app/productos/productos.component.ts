@@ -97,7 +97,7 @@ export class ProductosComponent {
   }
 
   cargarTabla() {
-    if (this.tipoSeleccionado === 'todo' || '') {
+    if (this.tipoSeleccionado === 'todo' || this.tipoSeleccionado === '') {
       this.obtenerRegistros();
     } else {
       this.obtenerProductosTipo();
