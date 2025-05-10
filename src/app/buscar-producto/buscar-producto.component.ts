@@ -229,10 +229,24 @@ export class BuscarProductoComponent {
 
   actualizarPrecioUnitarioVenta() {
     if (this.productoParaVender) {
-      this.valorUnitarioVenta =
-        this.aplicarDescuentoVenta && this.productoParaVender.precioDescuento
-          ? this.productoParaVender.precioDescuento
-          : this.productoParaVender.precio;
+      console.log(
+        'Calculando precio unitario. Descuento:',
+        this.aplicarDescuentoVenta
+      );
+
+      // Verificar que el precio descuento exista antes de usarlo
+      if (
+        this.aplicarDescuentoVenta &&
+        this.productoParaVender.precioDescuento
+      ) {
+        this.valorUnitarioVenta = Number(
+          this.productoParaVender.precioDescuento
+        );
+      } else {
+        this.valorUnitarioVenta = Number(this.productoParaVender.precio);
+      }
+
+      console.log('Valor unitario calculado:', this.valorUnitarioVenta);
       this.calcularPrecioTotalVenta();
     }
   }
@@ -242,7 +256,9 @@ export class BuscarProductoComponent {
   }
 
   toggleDescuentoVenta() {
-    // No necesitamos invertir manualmente el valor, ya que el two-way binding [(ngModel)] ya lo hace
+    // Invertir manualmente el valor
+    this.aplicarDescuentoVenta = !this.aplicarDescuentoVenta;
+    console.log('Descuento:', this.aplicarDescuentoVenta); // Para depuración
     this.actualizarPrecioUnitarioVenta();
   }
 
