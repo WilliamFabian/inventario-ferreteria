@@ -92,6 +92,7 @@ export class BuscarProductoComponent {
   cerrarTablaMultiple() {
     this.productos = [];
     this.mostrarTablaMultiple = false;
+    this.productoEncontrado = null;
   }
 
   activarEdicion() {
@@ -154,5 +155,6 @@ export class BuscarProductoComponent {
 
   cerrarProductoEncontrado() {
     this.productoEncontrado = null;
+    this.mostrarTablaMultiple = false;
   }
 }
