@@ -37,6 +37,7 @@ export class ProductosComponent {
     { valor: 'electrico', nombre: 'Electrico' },
     { valor: 'pealpe', nombre: 'Pealpe' },
     { valor: 'pintura', nombre: 'Pintura' },
+    { valor: 'alcantarillado', nombre: 'Alcantarillado' },
   ];
 
   tiposFiltro = [
@@ -47,6 +48,7 @@ export class ProductosComponent {
     { valor: 'electrico', nombre: 'Electrico' },
     { valor: 'pealpe', nombre: 'Pealpe' },
     { valor: 'pintura', nombre: 'Pintura' },
+    { valor: 'alcantarillado', nombre: 'Alcantarillado' },
   ];
 
   ordenNombres: { [key: string]: string } = {
