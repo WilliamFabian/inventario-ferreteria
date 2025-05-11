@@ -25,6 +25,11 @@
     </div>
   </div>
 
+  <div class="container mt-3" *ngIf="productoEncontrado || mostrarTablaMultiple">
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-dark btn-sm" (click)="cerrarTablaMultiple()">Cerrar tabla</button>
+    </div>
+  </div>
   <!-- Producto único por ID -->
   <div class="row justify-content-center mt-4 mb-4" *ngIf="productoEncontrado">
     <div class="col-md-10">
@@ -112,7 +117,7 @@
             </td>
             <td>
               <input *ngIf="producto.editando" [(ngModel)]="producto.tipo" class="form-control" />
-              <span *ngIf="!producto.editando">{{ producto.tipo }}</span>
+              <span *ngIf="!producto.editando">{{ producto.tipo | titlecase }}</span>
             </td>
             <td>
               <input *ngIf="producto.editando" [(ngModel)]="producto.precio" class="form-control" />
@@ -149,9 +154,6 @@
 
     </div>
   </div>
-  <div class="text-center mt-3" *ngIf="productoEncontrado || mostrarTablaMultiple">
-    <button class="btn btn-dark btn-sm" (click)="cerrarTablaMultiple()">Cerrar tabla</button>
-  </div>
 
   <!-- Formulario de Venta -->
   <div *ngIf="mostrarFormularioVenta" class="modal-flotante">
@@ -172,7 +174,8 @@
         </p>
 
         <p *ngIf="productoParaVender?.precioDescuento" class="mb-0">
-          <span class="fw-semibold text-muted">Precio con descuento: ${{ productoParaVender?.precioDescuento | number:'1.0-0' }}</span>
+          <span class="fw-semibold text-muted">Precio con descuento: ${{ productoParaVender?.precioDescuento |
+            number:'1.0-0' }}</span>
         </p>
       </div>
 
