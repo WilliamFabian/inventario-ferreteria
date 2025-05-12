@@ -55,7 +55,9 @@
               <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.nombre }}</span>
             </td>
             <td>
-              <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.tipo" class="form-control" />
+              <select *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.tipo" class="form-select">
+                <option *ngFor="let tipo of tipos" [value]="tipo.valor">{{ tipo.nombre }}</option>
+              </select>
               <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.tipo | titlecase}}</span>
             </td>
             <td>
@@ -118,8 +120,10 @@
               <span *ngIf="!producto.editando">{{ producto.nombre }}</span>
             </td>
             <td>
-              <input *ngIf="producto.editando" [(ngModel)]="producto.tipo" class="form-control" />
-              <span *ngIf="!producto.editando">{{ producto.tipo | titlecase }}</span>
+              <select *ngIf="producto.editando" [(ngModel)]="producto.tipo" class="form-select">
+                <option *ngFor="let tipo of tipos" [value]="tipo.valor">{{ tipo.nombre }}</option>
+              </select>
+              <span *ngIf="!producto.editando">{{ producto.tipo | titlecase}}</span>
             </td>
             <td>
               <input *ngIf="producto.editando" [(ngModel)]="producto.precio" class="form-control" />

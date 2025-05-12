@@ -29,6 +29,16 @@ export class BuscarProductoComponent {
   valorUnitarioVenta: number = 0;
   precioTotalVenta: number = 0;
 
+  tipos = [
+    { valor: 'tornillo', nombre: 'Tornillo' },
+    { valor: 'herramienta', nombre: 'Herramienta' },
+    { valor: 'griferia', nombre: 'Griferia' },
+    { valor: 'electrico', nombre: 'Electrico' },
+    { valor: 'pealpe', nombre: 'Pealpe' },
+    { valor: 'pintura', nombre: 'Pintura' },
+    { valor: 'alcantarillado', nombre: 'Alcantarillado' },
+  ];
+
   constructor(private productoServicio: ProductosService) {}
 
   ngOnInit() {
