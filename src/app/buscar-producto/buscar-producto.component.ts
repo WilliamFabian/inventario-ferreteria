@@ -24,7 +24,7 @@ export class BuscarProductoComponent {
 
   mostrarFormularioVenta: boolean = false;
   productoParaVender: any = null;
-  cantidadVenta: number = 0;
+  cantidadVenta!: number;
   aplicarDescuentoVenta: boolean = false;
   valorUnitarioVenta: number = 0;
   precioTotalVenta: number = 0;
@@ -198,7 +198,6 @@ export class BuscarProductoComponent {
 
     if (this.productoParaVender) {
       this.mostrarFormularioVenta = true;
-      this.cantidadVenta = 0;
       this.aplicarDescuentoVenta = false;
       this.actualizarPrecioUnitarioVenta();
     }
