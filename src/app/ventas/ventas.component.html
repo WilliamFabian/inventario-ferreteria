@@ -28,7 +28,7 @@
                  (change)="actualizarPrecioUnitario()" />
           <datalist id="productosList">
             <option *ngFor="let producto of productosFiltrados" [value]="producto.idProducto">
-              {{ producto.nombre }} - ${{ aplicarDescuento ? producto.precioDescuento : producto.precio }}
+              {{ producto.nombre }} - Cantidad: {{producto.cantidad}}
             </option>
           </datalist>
         </div>

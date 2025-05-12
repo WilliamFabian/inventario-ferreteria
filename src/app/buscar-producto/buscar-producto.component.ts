@@ -24,7 +24,7 @@ export class BuscarProductoComponent {
 
   mostrarFormularioVenta: boolean = false;
   productoParaVender: any = null;
-  cantidadVenta: number = 1;
+  cantidadVenta: number = 0;
   aplicarDescuentoVenta: boolean = false;
   valorUnitarioVenta: number = 0;
   precioTotalVenta: number = 0;
@@ -79,7 +79,7 @@ export class BuscarProductoComponent {
               .subscribe((productos) => {
                 if (productos && productos.length > 0) {
                   this.productos = productos;
-                  this.productosFiltrados = []; 
+                  this.productosFiltrados = [];
                   this.mostrarTablaMultiple = false;
                   this.mostrarTablaMultiple = true;
                   this.productoEncontrado = null;
@@ -102,11 +102,9 @@ export class BuscarProductoComponent {
   }
 
   activarEdicion(producto?: any) {
-
     const productoObjetivo = producto || this.productoEncontrado;
 
     if (productoObjetivo) {
-
       if (!this.productosOriginales) {
         this.productosOriginales = new Map();
       }
@@ -119,7 +117,6 @@ export class BuscarProductoComponent {
   }
 
   cancelarEdicion(producto?: any) {
-
     const productoObjetivo = producto || this.productoEncontrado;
 
     if (productoObjetivo && this.productosOriginales) {
@@ -139,7 +136,6 @@ export class BuscarProductoComponent {
 
     if (productoObjetivo) {
       const { editando, ...productoLimpio } = productoObjetivo;
-
 
       this.productoServicio
         .editarRegistro(this.tabla, productoLimpio)
@@ -202,7 +198,7 @@ export class BuscarProductoComponent {
 
     if (this.productoParaVender) {
       this.mostrarFormularioVenta = true;
-      this.cantidadVenta = 1;
+      this.cantidadVenta = 0;
       this.aplicarDescuentoVenta = false;
       this.actualizarPrecioUnitarioVenta();
     }
@@ -210,7 +206,6 @@ export class BuscarProductoComponent {
 
   actualizarPrecioUnitarioVenta() {
     if (this.productoParaVender) {
-
       if (
         this.aplicarDescuentoVenta &&
         this.productoParaVender.precioDescuento
