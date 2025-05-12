@@ -37,7 +37,7 @@ export class BuscarProductoComponent {
     { valor: 'pealpe', nombre: 'Pealpe' },
     { valor: 'pintura', nombre: 'Pintura' },
     { valor: 'alcantarillado', nombre: 'Alcantarillado' },
-    { valor: 'accesorios', nombre: 'Accesorios' },
+    { valor: 'accesorio', nombre: 'Accesorio' },
   ];
 
   constructor(private productoServicio: ProductosService) {}
