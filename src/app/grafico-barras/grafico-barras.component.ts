@@ -176,6 +176,7 @@ export class GraficoBarrasComponent {
         'rgba(54, 185, 235, 0.7)',
         'rgba(255, 99, 132, 0.7)',
         'rgba(118, 175, 190, 0.7)',
+        'rgba(70, 80, 90, 0.7)',
         'rgba(85, 70, 255, 0.7)',
         'rgba(50, 200, 150, 0.7)',
       ];
@@ -186,6 +187,7 @@ export class GraficoBarrasComponent {
         'rgba(40, 130, 185, 1)',
         'rgba(200, 50, 90, 1)',
         'rgba(90, 140, 160, 1)',
+        'rgba(50, 60, 70, 1)',
         'rgba(60, 40, 200, 1)',
         'rgba(30, 140, 100, 1)',
       ];

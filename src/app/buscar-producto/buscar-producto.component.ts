@@ -34,7 +34,7 @@ export class BuscarProductoComponent {
     { valor: 'herramienta', nombre: 'Herramienta' },
     { valor: 'griferia', nombre: 'Griferia' },
     { valor: 'electrico', nombre: 'Electrico' },
-    { valor: 'pealpe', nombre: 'Pealpe' },
+    { valor: 'gas', nombre: 'Gas' },
     { valor: 'pintura', nombre: 'Pintura' },
     { valor: 'alcantarillado', nombre: 'Alcantarillado' },
     { valor: 'accesorio', nombre: 'Accesorio' },
