@@ -66,28 +66,49 @@ export class BuscarProductoComponent {
 
   subirImagen() {
     if (!this.imagenSeleccionada || !this.productoSeleccionado) {
-      alert('Por favor selecciona una imagen válida.');
+      alert('Selecciona una imagen y un producto.');
       return;
     }
 
-    this.productoServicio.subirImagen(this.imagenSeleccionada).subscribe({
-      next: (respuesta) => {
-        const imageUrl = respuesta.imageUrl;
+    const formData = new FormData();
+    formData.append('file', this.imagenSeleccionada);
+    formData.append('upload_preset', 'inventario-ferreteria'); // Tu preset
+    formData.append('cloud_name', 'dsdnkc3eb'); // Tu cloud name
+    formData.append('folder', 'productos'); // Asegura que se suba a la carpeta "productos"
 
-        // Asignamos la URL al producto seleccionado
-        this.productoSeleccionado.imagen = imageUrl;
+    fetch('https://api.cloudinary.com/v1_1/dsdnkc3eb/image/upload', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const urlImagen = data.secure_url;
 
-        // Aquí puedes opcionalmente guardar esta actualización en la base de datos si lo deseas.
-        // this.guardarEdicion(this.productoSeleccionado);
+        // Aseguramos que la URL se guarde en el campo "imagen" del producto
+        const productoActualizado = {
+          ...this.productoSeleccionado,
+          imagen: urlImagen,
+        };
 
-        alert('Imagen subida correctamente.');
-        this.cerrarFormularioImagen();
-      },
-      error: (error) => {
-        console.error('Error al subir la imagen:', error);
-        alert('Ocurrió un error al subir la imagen.');
-      },
-    });
+        // Ahora se pasa correctamente la tabla 'productos' y el objeto actualizado
+        this.productoServicio
+          .editarRegistro('productos', productoActualizado)
+          .subscribe({
+            next: () => {
+              alert('Imagen subida y asociada al producto.');
+              this.obtenerProductos(); // Cargar los productos nuevamente
+              this.cerrarFormularioImagen(); // Cerrar el formulario
+            },
+            error: (err) => {
+              alert('Error al guardar la imagen en el producto.');
+              console.error(err);
+            },
+          });
+      })
+      .catch((error) => {
+        alert('Error al subir la imagen a Cloudinary.');
+        console.error(error);
+      });
   }
 
   obtenerProductos() {
