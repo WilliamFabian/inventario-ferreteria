@@ -79,14 +79,14 @@
               <div class="d-flex justify-content-center gap-2 mt-2 mb-2">
 
                 <div *ngIf="productoEncontrado.editando" class="d-flex gap-2">
-                  <button class="btn btn-info btn-sm" (click)="mostrarFormularioImagen(productoEncontrado)">Subir
-                    Imagen</button>
                   <button class="btn btn-success btn-sm" (click)="guardarEdicion()">Guardar</button>
                   <button class="btn btn-secondary btn-sm" (click)="cancelarEdicion()">Cancelar</button>
                 </div>
 
 
                 <div *ngIf="!productoEncontrado.editando" class="d-flex gap-2">
+                  <button class="btn btn-info btn-sm" (click)="mostrarFormularioImagen(productoEncontrado)">Subir
+                    Imagen</button>
                   <button class="btn btn-dark btn-sm" (click)="venderProducto()">Vender</button>
                   <button class="btn btn-warning btn-sm" (click)="activarEdicion()">Editar</button>
                   <button class="btn btn-danger btn-sm" (click)="eliminarProducto()">Eliminar</button>
@@ -143,12 +143,13 @@
             <td>
               <div class="d-flex justify-content-center gap-2 mt-2 mb-2">
                 <div *ngIf="producto.editando" class="d-flex gap-2">
-                  <button class="btn btn-info btn-sm" (click)="mostrarFormularioImagen(producto)">Subir Imagen</button>
                   <button class="btn btn-success btn-sm" (click)="guardarEdicion(producto)">Guardar</button>
                   <button class="btn btn-secondary btn-sm" (click)="cancelarEdicion(producto)">Cancelar</button>
                 </div>
 
                 <div *ngIf="!producto.editando" class="d-flex gap-2">
+                  <button class="btn btn-info btn-sm" (click)="mostrarFormularioImagen(productoEncontrado)">Subir
+                    Imagen</button>
                   <button class="btn btn-dark btn-sm" (click)="venderProducto(producto)">Vender</button>
                   <button class="btn btn-warning btn-sm" (click)="activarEdicion(producto)">Editar</button>
                   <button class="btn btn-danger btn-sm" (click)="eliminarProducto(producto)">Eliminar</button>
