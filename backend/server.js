@@ -11,9 +11,37 @@ const path = require("path");
 
 const port = process.env.PORT;
 
-app.use(cors({
-  origin: "https://inventario-ferreteria-production.up.railway.app"
-}));
+//Cloudinary
+const multer = require("multer");
+const { v2: cloudinary } = require("cloudinary");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
+// Configurar Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Configurar almacenamiento
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "inventario-ferreteria", // Nombre de la carpeta en Cloudinary
+    allowed_formats: ["jpg", "png", "jpeg"],
+    public_id: (req, file) =>
+      `${Date.now()}-${file.originalname.split(".")[0]}`,
+  },
+});
+
+const upload = multer({ storage });
+//Fin Cloudinary.
+
+app.use(
+  cors({
+    origin: "https://inventario-ferreteria-production.up.railway.app",
+  })
+);
 
 app.use(express.json());
 
@@ -91,32 +119,36 @@ apiRouter.get("/:tabla/nombre-inicia/:texto", validarTabla, (req, res) => {
 
   db.query(sql, [`${texto}%`], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
-    if (results.length === 0) return res.status(404).json({ error: "No se encontraron coincidencias." });
+    if (results.length === 0)
+      return res
+        .status(404)
+        .json({ error: "No se encontraron coincidencias." });
     res.json(results);
   });
 });
 
-apiRouter.post('/:tabla/agregar', validarTabla, (req, res) => {
-    const { tabla } = req.params;
-    const datos = req.body;
+apiRouter.post("/:tabla/agregar", validarTabla, (req, res) => {
+  const { tabla } = req.params;
+  const datos = req.body;
 
-    const columnas = Object.keys(datos).join(', ');
-    const valores = Object.values(datos);
-    const placeholders = valores.map(() => '?').join(', ');
+  const columnas = Object.keys(datos).join(", ");
+  const valores = Object.values(datos);
+  const placeholders = valores.map(() => "?").join(", ");
 
-    const query = `INSERT INTO ${tabla} (${columnas}) VALUES (${placeholders})`;
+  const query = `INSERT INTO ${tabla} (${columnas}) VALUES (${placeholders})`;
 
-    db.query(query, valores, (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-        res.json({ message: 'Registro agregado correctamente', results });
-    });
+  db.query(query, valores, (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json({ message: "Registro agregado correctamente", results });
+  });
 });
 
 apiRouter.put("/:tabla/editar", validarTabla, (req, res) => {
   const { tabla } = req.params;
-  const { idVenta, idProducto, idTrabajo, fechaVenta, fechaTrabajo, ...datos } = req.body;
+  const { idVenta, idProducto, idTrabajo, fechaVenta, fechaTrabajo, ...datos } =
+    req.body;
 
   let idCampo;
   let idValor;
@@ -187,6 +219,16 @@ apiRouter.delete("/:tabla/:id", validarTabla, (req, res) => {
     }
   });
 });
+
+//Cloudinary Ruta.
+app.post("/api/upload-image", upload.single("imagen"), (req, res) => {
+  if (!req.file || !req.file.path) {
+    return res.status(400).json({ error: "No se pudo subir la imagen" });
+  }
+  res.json({ imageUrl: req.file.path }); // URL pública de Cloudinary
+});
+
+//Fin Cloudinary.
 
 app.use("/api", apiRouter);
 
