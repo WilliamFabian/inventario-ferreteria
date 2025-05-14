@@ -56,6 +56,40 @@ export class BuscarProductoComponent {
     });
   }
 
+  onArchivoSeleccionado(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.imagenSeleccionada = file;
+      this.nombreImagenSeleccionada = file.name;
+    }
+  }
+
+  subirImagen() {
+    if (!this.imagenSeleccionada || !this.productoSeleccionado) {
+      alert('Por favor selecciona una imagen válida.');
+      return;
+    }
+
+    this.productoServicio.subirImagen(this.imagenSeleccionada).subscribe({
+      next: (respuesta) => {
+        const imageUrl = respuesta.imageUrl;
+
+        // Asignamos la URL al producto seleccionado
+        this.productoSeleccionado.imagen = imageUrl;
+
+        // Aquí puedes opcionalmente guardar esta actualización en la base de datos si lo deseas.
+        // this.guardarEdicion(this.productoSeleccionado);
+
+        alert('Imagen subida correctamente.');
+        this.cerrarFormularioImagen();
+      },
+      error: (error) => {
+        console.error('Error al subir la imagen:', error);
+        alert('Ocurrió un error al subir la imagen.');
+      },
+    });
+  }
+
   obtenerProductos() {
     this.productoServicio.obtenerRegistros('productos').subscribe((data) => {
       this.productos = data;
@@ -300,37 +334,5 @@ export class BuscarProductoComponent {
     this.productoSeleccionado = null;
     this.imagenSeleccionada = null;
     this.nombreImagenSeleccionada = null;
-  }
-
-  onArchivoSeleccionado(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.imagenSeleccionada = file;
-      this.nombreImagenSeleccionada = file.name;
-    }
-  }
-
-  subirImagen() {
-    if (!this.imagenSeleccionada || !this.productoSeleccionado) {
-      return;
-    }
-
-    const imagenAntigua = this.productoSeleccionado.imagen || null;
-
-    this.productoServicio
-      .actualizarImagenProducto(
-        this.productoSeleccionado.id,
-        this.imagenSeleccionada,
-        imagenAntigua
-      )
-      .subscribe({
-        next: (response: any) => {
-          this.productoSeleccionado.imagen = response.imageUrl;
-          this.cerrarFormularioImagen();
-        },
-        error: (error) => {
-          console.error('Error al actualizar la imagen:', error);
-        },
-      });
   }
 }
