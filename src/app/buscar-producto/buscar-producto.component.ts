@@ -76,7 +76,7 @@ export class BuscarProductoComponent {
     formData.append('file', this.imagenSeleccionada);
     formData.append('upload_preset', 'inventario-ferreteria'); // Tu preset
     formData.append('cloud_name', 'dsdnkc3eb'); // Tu cloud name
-    formData.append('folder', 'productos'); // Asegura que se suba a la carpeta "productos"
+    formData.append('folder', 'productos'); // Carpeta en Cloudinary
 
     // Subir la imagen a Cloudinary
     fetch('https://api.cloudinary.com/v1_1/dsdnkc3eb/image/upload', {
@@ -88,10 +88,13 @@ export class BuscarProductoComponent {
         // Obtener la URL de la imagen subida
         const urlImagen = data.secure_url;
 
-        // Crear el objeto actualizado con la URL de la imagen
+        // Excluir la propiedad 'editando' del producto
+        const { editando, ...productoSinEditando } = this.productoSeleccionado;
+
+        // Crear el objeto actualizado con la nueva URL de la imagen
         const productoActualizado = {
-          ...this.productoSeleccionado,
-          imagen: urlImagen, // Asignamos la URL de la imagen al producto
+          ...productoSinEditando,
+          imagen: urlImagen,
         };
 
         // Llamar al servicio para actualizar el producto con la imagen
