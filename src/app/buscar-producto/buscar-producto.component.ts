@@ -65,39 +65,43 @@ export class BuscarProductoComponent {
   }
 
   subirImagen() {
+    // Verificar que se haya seleccionado una imagen y un producto
     if (!this.imagenSeleccionada || !this.productoSeleccionado) {
       alert('Selecciona una imagen y un producto.');
       return;
     }
 
+    // Crear un FormData con la imagen seleccionada
     const formData = new FormData();
     formData.append('file', this.imagenSeleccionada);
     formData.append('upload_preset', 'inventario-ferreteria'); // Tu preset
     formData.append('cloud_name', 'dsdnkc3eb'); // Tu cloud name
     formData.append('folder', 'productos'); // Asegura que se suba a la carpeta "productos"
 
+    // Subir la imagen a Cloudinary
     fetch('https://api.cloudinary.com/v1_1/dsdnkc3eb/image/upload', {
       method: 'POST',
       body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
+        // Obtener la URL de la imagen subida
         const urlImagen = data.secure_url;
 
-        // Aseguramos que la URL se guarde en el campo "imagen" del producto
+        // Crear el objeto actualizado con la URL de la imagen
         const productoActualizado = {
           ...this.productoSeleccionado,
-          imagen: urlImagen,
+          imagen: urlImagen, // Asignamos la URL de la imagen al producto
         };
 
-        // Ahora se pasa correctamente la tabla 'productos' y el objeto actualizado
+        // Llamar al servicio para actualizar el producto con la imagen
         this.productoServicio
           .editarRegistro('productos', productoActualizado)
           .subscribe({
             next: () => {
               alert('Imagen subida y asociada al producto.');
-              this.obtenerProductos(); // Cargar los productos nuevamente
-              this.cerrarFormularioImagen(); // Cerrar el formulario
+              this.obtenerProductos(); // Recargar los productos
+              this.cerrarFormularioImagen(); // Cerrar el formulario de imagen
             },
             error: (err) => {
               alert('Error al guardar la imagen en el producto.');
