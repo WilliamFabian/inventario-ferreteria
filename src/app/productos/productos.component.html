@@ -52,6 +52,14 @@
           <input type="number" formControlName="cantidad" class="form-control" />
         </div>
 
+        <div class="mb-3 text-start">
+          <label class="form-label fw-bold">Imagen</label>
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control" />
+          <div *ngIf="selectedFile" class="text-success mt-2">
+            Imagen seleccionada: {{ selectedFile.name }}
+          </div>
+        </div>
+
         <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="!productoForm.valid">
           Guardar Producto
         </button>
@@ -145,12 +153,13 @@
           <td>
             <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.precioDescuento"
               class="form-control" />
-              <span *ngIf="!producto.editando">${{ producto.precioDescuento ? (producto.precioDescuento | number:'1.0-0') : 'N/A' }}</span>
+            <span *ngIf="!producto.editando">${{ producto.precioDescuento ? (producto.precioDescuento | number:'1.0-0')
+              : 'N/A' }}</span>
           </td>
 
           <td>
             <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.cantidad" class="form-control" />
-            <span *ngIf="!producto.editando">{{ producto.cantidad  || 0}}</span>
+            <span *ngIf="!producto.editando">{{ producto.cantidad || 0}}</span>
           </td>
 
           <td class="acciones-cell">

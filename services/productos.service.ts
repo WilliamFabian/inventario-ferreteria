@@ -6,11 +6,11 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class ProductosService {
-
-  private apiUrl = 'https://inventario-ferreteria-production.up.railway.app/api';
+  private apiUrl =
+    'https://inventario-ferreteria-production.up.railway.app/api';
   private productoCreadoSubject = new Subject<void>();
   private selectedOptionSource = new BehaviorSubject<string>('');
-  selectedOption$ = this.selectedOptionSource.asObservable(); 
+  selectedOption$ = this.selectedOptionSource.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -40,15 +40,25 @@ export class ProductosService {
 
   buscarRegistroPorNombre(tabla: string, nombre: string): Observable<any> {
     const nombreCodificado = encodeURIComponent(nombre);
-    return this.http.get<any>(`${this.apiUrl}/${tabla}/nombre/${nombreCodificado}`);
+    return this.http.get<any>(
+      `${this.apiUrl}/${tabla}/nombre/${nombreCodificado}`
+    );
   }
 
-  //Nuevo Buscar
-  buscarRegistrosPorNombreInicio(tabla: string, texto: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${tabla}/nombre-inicia/${texto}`);
+  buscarRegistrosPorNombreInicio(
+    tabla: string,
+    texto: string
+  ): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/${tabla}/nombre-inicia/${texto}`
+    );
   }
 
-
+  subirImagen(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('imagen', file);
+    return this.http.post<any>(`${this.apiUrl}/upload-image`, formData);
+  }
 
   agregarRegistro(tabla: string, registro: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${tabla}/agregar`, registro);
