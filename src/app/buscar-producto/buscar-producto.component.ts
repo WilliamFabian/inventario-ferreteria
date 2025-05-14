@@ -29,6 +29,12 @@ export class BuscarProductoComponent {
   valorUnitarioVenta: number = 0;
   precioTotalVenta: number = 0;
 
+  //Imagen.
+  formularioImagenVisible: boolean = false;
+  productoSeleccionado: any = null;
+  imagenSeleccionada: File | null = null;
+  nombreImagenSeleccionada: string | null = null;
+
   tipos = [
     { valor: 'tornillo', nombre: 'Tornillo' },
     { valor: 'herramienta', nombre: 'Herramienta' },
@@ -279,5 +285,52 @@ export class BuscarProductoComponent {
   cerrarFormularioVenta() {
     this.mostrarFormularioVenta = false;
     this.productoParaVender = null;
+  }
+
+  //Imagen.
+  mostrarFormularioImagen(producto: any) {
+    this.productoSeleccionado = producto;
+    this.formularioImagenVisible = true;
+    this.imagenSeleccionada = null;
+    this.nombreImagenSeleccionada = null;
+  }
+
+  cerrarFormularioImagen() {
+    this.formularioImagenVisible = false;
+    this.productoSeleccionado = null;
+    this.imagenSeleccionada = null;
+    this.nombreImagenSeleccionada = null;
+  }
+
+  onArchivoSeleccionado(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.imagenSeleccionada = file;
+      this.nombreImagenSeleccionada = file.name;
+    }
+  }
+
+  subirImagen() {
+    if (!this.imagenSeleccionada || !this.productoSeleccionado) {
+      return;
+    }
+
+    const imagenAntigua = this.productoSeleccionado.imagen || null;
+
+    this.productoServicio
+      .actualizarImagenProducto(
+        this.productoSeleccionado.id,
+        this.imagenSeleccionada,
+        imagenAntigua
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.productoSeleccionado.imagen = response.imageUrl;
+          this.cerrarFormularioImagen();
+        },
+        error: (error) => {
+          console.error('Error al actualizar la imagen:', error);
+        },
+      });
   }
 }

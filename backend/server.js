@@ -228,6 +228,45 @@ app.post("/api/upload-image", upload.single("imagen"), (req, res) => {
   res.json({ imageUrl: req.file.path }); // URL pública de Cloudinary
 });
 
+app.post(
+  "/api/actualizar-imagen-producto",
+  upload.single("imagen"),
+  async (req, res) => {
+    try {
+      if (!req.file || !req.file.path) {
+        return res.status(400).json({ error: "No se pudo subir la imagen" });
+      }
+
+      if (req.body.imagenAntigua) {
+        const urlAntigua = req.body.imagenAntigua;
+        const match = urlAntigua.match(/\/upload\/(?:v\d+\/)?(.+)\./);
+        if (match && match[1]) {
+          const publicId = match[1];
+          try {
+            await cloudinary.uploader.destroy(publicId);
+          } catch (deleteError) {
+            console.error("Error al eliminar imagen antigua:", deleteError);
+          }
+        }
+      }
+
+      const productoId = req.body.productoId;
+      const nuevaImagenUrl = req.file.path;
+
+      res.json({
+        success: true,
+        imageUrl: nuevaImagenUrl,
+        mensaje: req.body.imagenAntigua
+          ? "Imagen actualizada correctamente"
+          : "Imagen agregada correctamente",
+      });
+    } catch (error) {
+      console.error("Error al procesar la solicitud:", error);
+      res.status(500).json({ error: "Error interno del servidor" });
+    }
+  }
+);
+
 //Fin Cloudinary.
 
 app.use("/api", apiRouter);

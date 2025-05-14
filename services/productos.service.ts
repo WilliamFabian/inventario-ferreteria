@@ -60,6 +60,18 @@ export class ProductosService {
     return this.http.post<any>(`${this.apiUrl}/upload-image`, formData);
   }
 
+  actualizarImagenProducto(productoId: number | string, file: File, imagenAntigua?: string): Observable<any> {
+    const formData = new FormData();
+    formData.append('imagen', file);
+    formData.append('productoId', productoId.toString());
+    
+    if (imagenAntigua) {
+      formData.append('imagenAntigua', imagenAntigua);
+    }
+    
+    return this.http.post<any>(`${this.apiUrl}/actualizar-imagen-producto`, formData);
+  }
+
   agregarRegistro(tabla: string, registro: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${tabla}/agregar`, registro);
   }
