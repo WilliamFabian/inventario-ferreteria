@@ -252,6 +252,7 @@
       <p class="fw-semibold text-muted" *ngIf="productoSeleccionado?.precioDescuento">
         Precio con descuento: ${{ productoSeleccionado?.precioDescuento | number: '1.0-0' }}
       </p>
+      <p class="fw-semibold text-muted">Cantidad: {{ productoSeleccionado?.cantidad }}</p>
     </div>
   </div>
 
