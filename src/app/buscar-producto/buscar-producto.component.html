@@ -247,9 +247,9 @@
 
       <img [src]="productoSeleccionado?.imagen" alt="Imagen del producto" class="img-fluid rounded mb-3 producto-img" />
 
-      <h4 class="mb-1">{{ productoSeleccionado?.nombre }}</h4>
-      <p class="text-muted mb-0">Precio: ${{ productoSeleccionado?.precio | number: '1.0-0' }}</p>
-      <p class="text-muted" *ngIf="productoSeleccionado?.precioDescuento">
+      <h4 class="bold mb-1">{{ productoSeleccionado?.nombre }}</h4>
+      <p class="fw-semibold text-muted mb-0">Precio: ${{ productoSeleccionado?.precio | number: '1.0-0' }}</p>
+      <p class="fw-semibold text-muted" *ngIf="productoSeleccionado?.precioDescuento">
         Precio con descuento: ${{ productoSeleccionado?.precioDescuento | number: '1.0-0' }}
       </p>
     </div>
