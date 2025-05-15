@@ -30,6 +30,8 @@ export class ProductosComponent {
   tipoSeleccionado: string = '';
   ordenSeleccionado: string = '';
   selectedFile: File | null = null;
+  mostrarImagenProducto = false;
+  productoSeleccionado: any = null;
 
   tipos = [
     { valor: 'tornillo', nombre: 'Tornillo' },
@@ -157,6 +159,15 @@ export class ProductosComponent {
           }
         }
       });
+  }
+
+  verImagenProducto(producto: any) {
+    this.productoSeleccionado = producto;
+    this.mostrarImagenProducto = true;
+  }
+
+  cerrarVistaImagen() {
+    this.mostrarImagenProducto = false;
   }
 
   obtenerProductosTipo() {
