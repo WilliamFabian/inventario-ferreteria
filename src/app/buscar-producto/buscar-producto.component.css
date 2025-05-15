@@ -54,6 +54,13 @@
     box-shadow: none !important;
   }
 
+  .producto-img {
+    max-height: 300px;
+    width: auto;
+    object-fit: contain;
+  }
+
+
   
   
   

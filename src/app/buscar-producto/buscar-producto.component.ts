@@ -34,6 +34,7 @@ export class BuscarProductoComponent {
   productoSeleccionado: any = null;
   imagenSeleccionada: File | null = null;
   nombreImagenSeleccionada: string | null = null;
+  mostrarImagenProducto = false;
 
   tipos = [
     { valor: 'tornillo', nombre: 'Tornillo' },
@@ -116,6 +117,15 @@ export class BuscarProductoComponent {
         alert('Error al subir la imagen a Cloudinary.');
         console.error(error);
       });
+  }
+
+  verImagenProducto(producto: any) {
+    this.productoSeleccionado = producto;
+    this.mostrarImagenProducto = true;
+  }
+
+  cerrarVistaImagen() {
+    this.mostrarImagenProducto = false;
   }
 
   obtenerProductos() {
