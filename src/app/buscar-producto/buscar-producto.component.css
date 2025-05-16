@@ -55,7 +55,7 @@
   }
 
   .producto-img {
-    max-height: 300px;
+    max-height: 500px;
     width: auto;
     object-fit: contain;
   }
