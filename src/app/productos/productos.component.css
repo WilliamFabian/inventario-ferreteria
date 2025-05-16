@@ -10,3 +10,9 @@
 .container-filter{
   margin-left: 10px;
 }
+
+  .producto-img {
+    max-height: 300px;
+    width: auto;
+    object-fit: contain;
+  }
