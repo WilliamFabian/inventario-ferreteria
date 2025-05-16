@@ -43,6 +43,7 @@ export class ProductosComponent {
     { valor: 'alcantarillado', nombre: 'Alcantarillado' },
     { valor: 'accesorio', nombre: 'Accesorio' },
     { valor: 'estufa', nombre: 'Estufa' },
+    { valor: 'cerrajeria', nombre: 'Cerrajeria' },
   ];
 
   tiposFiltro = [
@@ -56,6 +57,7 @@ export class ProductosComponent {
     { valor: 'alcantarillado', nombre: 'Alcantarillado' },
     { valor: 'accesorio', nombre: 'Accesorio' },
     { valor: 'estufa', nombre: 'Estufa' },
+    { valor: 'cerrajeria', nombre: 'Cerrajeria' },
   ];
 
   ordenNombres: { [key: string]: string } = {
@@ -212,84 +214,86 @@ export class ProductosComponent {
       });
   }
 
-agregarRegistro() {
-  const form =
-    this.tablaSeleccionada === 'productos'
-      ? this.productoForm
-      : this.ventaForm;
+  agregarRegistro() {
+    const form =
+      this.tablaSeleccionada === 'productos'
+        ? this.productoForm
+        : this.ventaForm;
 
-  if (form.valid) {
-    // Si es productos y hay imagen, subimos a Cloudinary
-    if (this.tablaSeleccionada === 'productos' && this.selectedFile) {
-      const formData = new FormData();
-      formData.append('file', this.selectedFile);
-      formData.append('upload_preset', 'inventario-ferreteria'); // Reemplaza con tu preset
-      formData.append('cloud_name', 'dsdnkc3eb'); // Reemplaza con tu cloud name
+    if (form.valid) {
+      // Si es productos y hay imagen, subimos a Cloudinary
+      if (this.tablaSeleccionada === 'productos' && this.selectedFile) {
+        const formData = new FormData();
+        formData.append('file', this.selectedFile);
+        formData.append('upload_preset', 'inventario-ferreteria'); // Reemplaza con tu preset
+        formData.append('cloud_name', 'dsdnkc3eb'); // Reemplaza con tu cloud name
 
-      // Subir imagen a Cloudinary
-      fetch('https://api.cloudinary.com/v1_1/dsdnkc3eb/image/upload', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          // Agregar la URL de la imagen al formulario
-          const datosConImagen = {
-            ...form.value,
-            imagen: data.secure_url,
-          };
-
-          this.productoServicio
-            .agregarRegistro(this.tablaSeleccionada, datosConImagen)
-            .subscribe({
-              next: (response) => {
-                alert(`Producto agregado con éxito.`);
-                this.cargarTabla();
-                this.productoServicio.notificarProductoCreado();
-                form.reset();
-                this.selectedFile = null; // limpiar imagen
-                this.mostrarFormulario = false;
-              },
-              error: (err) => {
-                alert(
-                  `No se pudo agregar el ${this.tablaSeleccionada.slice(0, -1)}.`
-                );
-                console.error(
-                  `Error al agregar ${this.tablaSeleccionada}:`,
-                  err
-                );
-              },
-            });
+        // Subir imagen a Cloudinary
+        fetch('https://api.cloudinary.com/v1_1/dsdnkc3eb/image/upload', {
+          method: 'POST',
+          body: formData,
         })
-        .catch((error) => {
-          alert('Error al subir la imagen.');
-          console.error('Cloudinary error:', error);
-        });
-    } else {
-      // Si no es productos o no hay imagen, se usa la lógica original
-      this.productoServicio
-        .agregarRegistro(this.tablaSeleccionada, form.value)
-        .subscribe({
-          next: (response) => {
-            alert(`Registro agregado con éxito.`);
-            this.cargarTabla();
-            this.productoServicio.notificarProductoCreado();
-            form.reset();
-            this.mostrarFormulario = false;
-          },
-          error: (err) => {
-            alert(
-              `No se pudo agregar el ${this.tablaSeleccionada.slice(0, -1)}.`
-            );
-            console.error(`Error al agregar ${this.tablaSeleccionada}:`, err);
-          },
-        });
-    }
-  } else {
-    alert('Por favor, completa todos los campos obligatorios.');
-  }
-}
+          .then((res) => res.json())
+          .then((data) => {
+            // Agregar la URL de la imagen al formulario
+            const datosConImagen = {
+              ...form.value,
+              imagen: data.secure_url,
+            };
 
+            this.productoServicio
+              .agregarRegistro(this.tablaSeleccionada, datosConImagen)
+              .subscribe({
+                next: (response) => {
+                  alert(`Producto agregado con éxito.`);
+                  this.cargarTabla();
+                  this.productoServicio.notificarProductoCreado();
+                  form.reset();
+                  this.selectedFile = null; // limpiar imagen
+                  this.mostrarFormulario = false;
+                },
+                error: (err) => {
+                  alert(
+                    `No se pudo agregar el ${this.tablaSeleccionada.slice(
+                      0,
+                      -1
+                    )}.`
+                  );
+                  console.error(
+                    `Error al agregar ${this.tablaSeleccionada}:`,
+                    err
+                  );
+                },
+              });
+          })
+          .catch((error) => {
+            alert('Error al subir la imagen.');
+            console.error('Cloudinary error:', error);
+          });
+      } else {
+        // Si no es productos o no hay imagen, se usa la lógica original
+        this.productoServicio
+          .agregarRegistro(this.tablaSeleccionada, form.value)
+          .subscribe({
+            next: (response) => {
+              alert(`Registro agregado con éxito.`);
+              this.cargarTabla();
+              this.productoServicio.notificarProductoCreado();
+              form.reset();
+              this.mostrarFormulario = false;
+            },
+            error: (err) => {
+              alert(
+                `No se pudo agregar el ${this.tablaSeleccionada.slice(0, -1)}.`
+              );
+              console.error(`Error al agregar ${this.tablaSeleccionada}:`, err);
+            },
+          });
+      }
+    } else {
+      alert('Por favor, completa todos los campos obligatorios.');
+    }
+  }
 
   editarRegistro(registro: any) {
     const { editando, ...registroLimpio } = registro;

@@ -46,6 +46,7 @@ export class BuscarProductoComponent {
     { valor: 'alcantarillado', nombre: 'Alcantarillado' },
     { valor: 'accesorio', nombre: 'Accesorio' },
     { valor: 'estufa', nombre: 'Estufa' },
+    { valor: 'cerrajeria', nombre: 'Cerrajeria' },
   ];
 
   constructor(private productoServicio: ProductosService) {}
