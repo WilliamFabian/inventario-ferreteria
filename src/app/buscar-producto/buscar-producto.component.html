@@ -85,7 +85,8 @@
 
 
                 <div *ngIf="!productoEncontrado.editando" class="d-flex gap-2">
-                  <button class="btn btn-info btn-sm" (click)="mostrarFormularioImagen(productoEncontrado)">Subir
+                  <button *ngIf="!productoEncontrado.imagen" class="btn btn-info btn-sm"
+                    (click)="mostrarFormularioImagen(productoEncontrado)">Subir
                     Imagen</button>
                   <button class="btn btn-secondary btn-sm" (click)="verImagenProducto(productoEncontrado)">Ver</button>
                   <button class="btn btn-dark btn-sm" (click)="venderProducto()">Vender</button>
@@ -149,7 +150,8 @@
                 </div>
 
                 <div *ngIf="!producto.editando" class="d-flex gap-2">
-                  <button class="btn btn-info btn-sm" (click)="mostrarFormularioImagen(productoEncontrado)">Subir
+                  <button *ngIf="!producto.imagen" class="btn btn-info btn-sm"
+                    (click)="mostrarFormularioImagen(producto)">Subir
                     Imagen</button>
                   <button class="btn btn-secondary btn-sm" (click)="verImagenProducto(producto)">Ver</button>
                   <button class="btn btn-dark btn-sm" (click)="venderProducto(producto)">Vender</button>
