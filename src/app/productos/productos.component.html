@@ -55,8 +55,8 @@
         <div class="mb-3 text-start">
           <label class="form-label fw-bold">Imagen</label>
           <input type="file" (change)="onFileSelected($event)" accept="image/*" class="form-control" />
-          <div *ngIf="selectedFile" class="text-success mt-2">
-            Imagen seleccionada: {{ selectedFile.name }}
+          <div *ngIf="selectedFile" class="form-text mt-2 text-center">
+            Imagen seleccionada: <strong>{{ selectedFile.name }}</strong>
           </div>
         </div>
 
