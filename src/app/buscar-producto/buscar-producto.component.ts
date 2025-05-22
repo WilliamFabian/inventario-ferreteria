@@ -47,6 +47,7 @@ export class BuscarProductoComponent {
     { valor: 'accesorio', nombre: 'Accesorio' },
     { valor: 'estufa', nombre: 'Estufa' },
     { valor: 'cerrajeria', nombre: 'Cerrajeria' },
+    {valor: 'material', nombre: 'Material'},
   ];
 
   constructor(private productoServicio: ProductosService) {}

@@ -44,6 +44,7 @@ export class ProductosComponent {
     { valor: 'accesorio', nombre: 'Accesorio' },
     { valor: 'estufa', nombre: 'Estufa' },
     { valor: 'cerrajeria', nombre: 'Cerrajeria' },
+    {valor: 'material', nombre: 'Material'},
   ];
 
   tiposFiltro = [
@@ -58,6 +59,7 @@ export class ProductosComponent {
     { valor: 'accesorio', nombre: 'Accesorio' },
     { valor: 'estufa', nombre: 'Estufa' },
     { valor: 'cerrajeria', nombre: 'Cerrajeria' },
+    {valor: 'material', nombre: 'Material'},
   ];
 
   ordenNombres: { [key: string]: string } = {
