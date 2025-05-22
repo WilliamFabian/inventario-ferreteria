@@ -80,16 +80,16 @@ export class GraficoBarrasComponent {
       productoCategoriaMap[producto.idProducto] = producto.tipo;
     });
 
-    const cantidadPorCategoria: { [tipo: string]: number } = {};
+    const totalPorCategoria: { [tipo: string]: number } = {};
     ventas.forEach((venta: any) => {
       const tipo = productoCategoriaMap[venta.idProductoVenta];
       if (!tipo) return;
-      if (!cantidadPorCategoria[tipo]) cantidadPorCategoria[tipo] = 0;
-      cantidadPorCategoria[tipo] += Number(venta.cantidad);
+      if (!totalPorCategoria[tipo]) totalPorCategoria[tipo] = 0;
+      totalPorCategoria[tipo] += Number(venta.precioTotal);
     });
 
-    this.labels = Object.keys(cantidadPorCategoria);
-    this.data = this.labels.map((cat) => cantidadPorCategoria[cat]);
+    this.labels = Object.keys(totalPorCategoria);
+    this.data = this.labels.map((cat) => totalPorCategoria[cat]);
 
     this.actualizarGrafico();
   }
@@ -157,7 +157,7 @@ export class GraficoBarrasComponent {
 
       case 'categorias':
         typeValue = 'pie';
-        labelName = 'Cantidad';
+        labelName = 'Total';
         titulo = 'Ventas por Categoría';
         break;
 
