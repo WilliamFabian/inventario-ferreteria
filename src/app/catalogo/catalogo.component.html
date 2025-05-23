@@ -1,13 +1,14 @@
 <!-- Contenedor de tarjetas -->
-<div class="container mt-4">
-    <div class="row g-4">
-        <div class="col-6 col-md-4 col-lg-2" *ngFor="let producto of registros">
-            <div class="card h-100 shadow-sm" (click)="verImagenProducto(producto)" style="cursor: pointer;">
-                <img [src]="producto.imagen" class="card-img-top img-fluid" alt="{{producto.nombre}}"
-                    style="aspect-ratio: 4/3; object-fit: cover;">
-                <div class="card-body text-center">
-                    <h6 class="card-title mb-1">{{producto.nombre}}</h6>
-                    <p class="text-primary fw-bold m-0">${{producto.precio | number:'1.0-0'}}</p>
+<div class="catalogo-container">
+    <div class="container-fluid">
+        <div class="grid-container">
+            <div class="catalogo-item" *ngFor="let producto of registros" (click)="verImagenProducto(producto)">
+
+                <img [src]="producto.imagen" class="product-image" alt="producto.nombre">
+
+                <div class="card-body">
+                    <h6 class="product-title">{{producto.nombre}}</h6>
+                    <p class="product-price">${{producto.precio | number:'1.0-0'}}</p>
                 </div>
             </div>
         </div>

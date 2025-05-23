@@ -1,10 +1,120 @@
-.catalogo-item {
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  border-radius: 0.5rem;
+.catalogo-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  min-height: 100vh;
 }
 
-.catalogo-item:hover {
-  transform: scale(1.03);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+.grid-container {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.catalogo-item {
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border-radius: 12px;
+  overflow: hidden;
+  background: white;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+
+    .product-image {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.card-body {
+  padding: 1rem;
+  text-align: center;
+}
+
+.product-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  line-height: 1.3;
+  min-height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #007bff;
+  margin: 0;
+}
+
+@media (min-width: 576px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .product-image {
+    height: 220px;
+  }
+  
+  .product-title {
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .product-image {
+    height: 240px;
+  }
+}
+
+@media (min-width: 992px) {
+  .grid-container {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  
+  .product-image {
+    height: 260px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid-container {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .product-image {
+    height: 280px;
+  }
+}
+
+@media (max-width: 400px) {
+  .grid-container {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+  }
+  
+  .product-image {
+    height: 180px;
+  }
+  
+  .catalogo-container {
+    padding: 15px;
+  }
 }
