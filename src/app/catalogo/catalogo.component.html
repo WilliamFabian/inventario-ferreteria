@@ -1,37 +1,36 @@
-<!-- Lista de productos -->
-<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-  <div
-    *ngFor="let producto of registros"
-    class="border rounded-lg p-4 shadow-md hover:shadow-lg cursor-pointer transition"
-    (click)="verImagenProducto(producto)"
-  >
-    <h3 class="text-lg font-bold">{{ producto.nombre }}</h3>
-    <p class="text-sm text-gray-600">Categoría: {{ producto.categoria }}</p>
-    <p class="text-sm font-semibold text-gray-700">Precio: ${{ producto.precio | number: '1.0-0' }}</p>
-  </div>
+<!-- Contenedor de tarjetas -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let producto of registros">
+            <div class="card h-100 shadow-sm border-primary" (click)="verImagenProducto(producto)"
+                style="cursor: pointer;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ producto.nombre }}</h5>
+                    <p class="card-text text-muted mb-1"><strong>Categoría:</strong> {{ producto.tipo || 'N/A' }}</p>
+                    <p class="card-text"><strong>Precio:</strong> ${{ producto.precio | number:'1.0-0' }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Modal flotante al hacer clic en el producto -->
-<div *ngIf="mostrarImagenProducto" class="modal-flotante fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-  <div class="modal-contenido bg-white rounded-2xl p-6 max-w-md w-full relative text-center shadow-lg">
-    <button class="absolute top-3 right-3 text-gray-500 hover:text-black text-xl" (click)="cerrarVistaImagen()">✕</button>
-
-    <h4 class="text-base font-bold mb-2">{{ productoSeleccionado?.idProducto }}</h4>
-
-    <img
-      [src]="productoSeleccionado?.imagen"
-      alt="Imagen del producto"
-      class="w-full max-h-64 object-contain rounded mb-4"
-    />
-
-    <h4 class="text-xl font-bold mb-2">{{ productoSeleccionado?.nombre }}</h4>
-
-    <p class="text-gray-700 font-semibold">Precio: ${{ productoSeleccionado?.precio | number: '1.0-0' }}</p>
-
-    <p *ngIf="productoSeleccionado?.precioDescuento" class="text-green-600 font-semibold">
-      Precio con descuento: ${{ productoSeleccionado?.precioDescuento | number: '1.0-0' }}
-    </p>
-
-    <p class="text-gray-600">Cantidad: {{ productoSeleccionado?.cantidad }}</p>
-  </div>
+<!-- Modal flotante -->
+<div *ngIf="mostrarImagenProducto" class="modal fade show d-block" tabindex="-1" role="dialog"
+    style="background-color: rgba(0,0,0,0.6);">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ productoSeleccionado?.nombre }}</h5>
+                <button type="button" class="btn-close" aria-label="Close" (click)="cerrarVistaImagen()"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img *ngIf="productoSeleccionado?.imagen" [src]="productoSeleccionado.imagen"
+                    class="img-fluid rounded mb-3" alt="Imagen del producto" />
+                <p><strong>Precio:</strong> ${{ productoSeleccionado?.precio | number:'1.0-0' }}</p>
+                <p *ngIf="productoSeleccionado?.precioDescuento"><strong>Descuento:</strong> ${{
+                    productoSeleccionado.precioDescuento | number:'1.0-0' }}</p>
+                <p><strong>Cantidad:</strong> {{ productoSeleccionado?.cantidad }}</p>
+            </div>
+        </div>
+    </div>
 </div>
