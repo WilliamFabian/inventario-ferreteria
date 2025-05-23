@@ -1,5 +1,5 @@
 <!-- Contenedor de tarjetas -->
-<div class="catalogo-container">
+<div>
     <div class="container-fluid">
         <div class="grid-container">
             <div class="catalogo-item" *ngFor="let producto of registros" (click)="verImagenProducto(producto)">
@@ -27,9 +27,6 @@
 
         <h4 class="bold mb-1">{{ productoSeleccionado?.nombre }}</h4>
         <p class="fw-semibold text-muted mb-0">Precio: ${{ productoSeleccionado?.precio | number: '1.0-0' }}</p>
-        <p class="fw-semibold text-muted mb-0" *ngIf="productoSeleccionado?.precioDescuento">
-            Precio con descuento: ${{ productoSeleccionado?.precioDescuento | number: '1.0-0' }}
-        </p>
         <p class="fw-semibold text-muted">Cantidad: {{ productoSeleccionado?.cantidad }}</p>
     </div>
 </div>
