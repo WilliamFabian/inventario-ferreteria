@@ -3,63 +3,64 @@
     <span class="texto-titulo">Catálogo</span>
 </div>
 
-<div class="container-filter d-flex justify-content-between align-items-center mb-3">
-    <div class="d-flex align-items-center gap-4">
-        <div class="d-flex align-items-center gap-2">
-            <img src="filtro.svg" class="img-filtro" alt="icono filtro">
-            <span class="texto-filtrar fw-bold">Filtrar por:</span>
-            <div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="categoriasDropdown"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ tipoSeleccionado ? (tipoSeleccionado | titlecase) : 'Seleccionar tipo' }}
-                </button>
-                <ul class="dropdown-menu minimal-dropdown" aria-labelledby="categoriasDropdown">
-                    <li class="item-dropdown" *ngFor="let tipoFiltro of tiposFiltro">
-                        <a class="dropdown-item custom-item"
-                            (click)="tipoSeleccionado = tipoFiltro.valor; cargarTabla()">
-                            {{ tipoFiltro.nombre }}
-                        </a>
-                    </li>
-                </ul>
+<div class="container">
+    <div class="container-filter d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center gap-4">
+            <div class="d-flex align-items-center gap-2">
+                <img src="filtro.svg" class="img-filtro" alt="icono filtro">
+                <span class="texto-filtrar fw-bold">Filtrar por:</span>
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="categoriasDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ tipoSeleccionado ? (tipoSeleccionado | titlecase) : 'Seleccionar tipo' }}
+                    </button>
+                    <ul class="dropdown-menu minimal-dropdown" aria-labelledby="categoriasDropdown">
+                        <li class="item-dropdown" *ngFor="let tipoFiltro of tiposFiltro">
+                            <a class="dropdown-item custom-item"
+                                (click)="tipoSeleccionado = tipoFiltro.valor; cargarTabla()">
+                                {{ tipoFiltro.nombre }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
 
-        <div class="d-flex align-items-center gap-2">
-            <img src="orden.svg" class="img-orden" alt="icono orden">
-            <span class="texto-filtrar fw-bold">Ordenar por:</span>
-            <div class="dropdown">
-                <button class="btn btn-light dropdown-toggle" type="button" id="ordenDropdown" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    {{ ordenSeleccionado ? ordenNombres[ordenSeleccionado] : 'Seleccionar Orden' }}
-                </button>
-                <ul class="dropdown-menu minimal-dropdown" aria-labelledby="ordenDropdown">
-                    <li class="item-dropdown" *ngFor="let orden of ordenNombres | keyvalue">
-                        <a class="dropdown-item custom-item" (click)="ordenSeleccionado = orden.key; cargarTabla()">
-                            {{ orden.value }}
-                        </a>
-                    </li>
-                </ul>
+            <div class="d-flex align-items-center gap-2">
+                <img src="orden.svg" class="img-orden" alt="icono orden">
+                <span class="texto-filtrar fw-bold">Ordenar por:</span>
+                <div class="dropdown">
+                    <button class="btn btn-light dropdown-toggle" type="button" id="ordenDropdown"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ ordenSeleccionado ? ordenNombres[ordenSeleccionado] : 'Seleccionar Orden' }}
+                    </button>
+                    <ul class="dropdown-menu minimal-dropdown" aria-labelledby="ordenDropdown">
+                        <li class="item-dropdown" *ngFor="let orden of ordenNombres | keyvalue">
+                            <a class="dropdown-item custom-item" (click)="ordenSeleccionado = orden.key; cargarTabla()">
+                                {{ orden.value }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div>
-    <div class="container-fluid">
-        <div class="grid-container">
-            <div class="catalogo-item" *ngFor="let producto of registros" (click)="verImagenProducto(producto)">
+    <div>
+        <div class="container-fluid">
+            <div class="grid-container">
+                <div class="catalogo-item" *ngFor="let producto of registros" (click)="verImagenProducto(producto)">
 
-                <img [src]="producto.imagen" class="product-image" alt="producto.nombre">
+                    <img [src]="producto.imagen" class="product-image" alt="producto.nombre">
 
-                <div class="card-body">
-                    <h6 class="bold mb-1">{{producto.nombre}}</h6>
-                    <p class="fw-semibold text-muted">${{producto.precio | number:'1.0-0'}}</p>
+                    <div class="card-body">
+                        <h6 class="bold mb-1">{{producto.nombre}}</h6>
+                        <p class="fw-semibold text-muted">${{producto.precio | number:'1.0-0'}}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Modal flotante -->
 <div *ngIf="mostrarImagenProducto" class="modal-flotante">
