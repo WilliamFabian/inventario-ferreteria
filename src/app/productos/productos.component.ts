@@ -44,7 +44,7 @@ export class ProductosComponent {
     { valor: 'accesorio', nombre: 'Accesorio' },
     { valor: 'estufa', nombre: 'Estufa' },
     { valor: 'cerrajeria', nombre: 'Cerrajeria' },
-    {valor: 'material', nombre: 'Material'},
+    { valor: 'material', nombre: 'Material' },
   ];
 
   tiposFiltro = [
@@ -59,7 +59,7 @@ export class ProductosComponent {
     { valor: 'accesorio', nombre: 'Accesorio' },
     { valor: 'estufa', nombre: 'Estufa' },
     { valor: 'cerrajeria', nombre: 'Cerrajeria' },
-    {valor: 'material', nombre: 'Material'},
+    { valor: 'material', nombre: 'Material' },
   ];
 
   ordenNombres: { [key: string]: string } = {
@@ -115,14 +115,6 @@ export class ProductosComponent {
     }
   }
 
-  //Cloudinary.
-  onFileSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.selectedFile = file;
-    }
-  }
-
   obtenerRegistros() {
     this.productoServicio
       .obtenerRegistros(this.tablaSeleccionada)
@@ -174,6 +166,12 @@ export class ProductosComponent {
     this.mostrarImagenProducto = false;
   }
 
+  actualizarLista(id: number) {
+    this.registros = this.registros.filter(
+      (producto) => producto.idProducto !== id
+    );
+  }
+
   obtenerProductosTipo() {
     this.productoServicio
       .obtenerRegistrosTipo(this.tablaSeleccionada, this.tipoSeleccionado)
@@ -214,6 +212,14 @@ export class ProductosComponent {
           }
         }
       });
+  }
+
+  //Cloudinary.
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
   }
 
   agregarRegistro() {
@@ -323,12 +329,6 @@ export class ProductosComponent {
     if (index !== -1) {
       this.registros[index] = { ...productoEditado };
     }
-  }
-
-  actualizarLista(id: number) {
-    this.registros = this.registros.filter(
-      (producto) => producto.idProducto !== id
-    );
   }
 
   activarEdicion(producto: any) {
