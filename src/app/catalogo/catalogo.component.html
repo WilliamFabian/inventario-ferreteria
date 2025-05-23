@@ -7,8 +7,8 @@
                 <img [src]="producto.imagen" class="product-image" alt="producto.nombre">
 
                 <div class="card-body">
-                    <h6 class="product-title">{{producto.nombre}}</h6>
-                    <p class="product-price">${{producto.precio | number:'1.0-0'}}</p>
+                    <h6 class="bold mb-1">{{producto.nombre}}</h6>
+                    <p class="fw-semibold text-muted">${{producto.precio | number:'1.0-0'}}</p>
                 </div>
             </div>
         </div>
