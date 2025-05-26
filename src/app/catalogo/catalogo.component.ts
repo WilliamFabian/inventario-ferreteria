@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProductosService } from '../../../services/productos.service';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
-import { PipeDecorator } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-catalogo',
-  imports: [NgIf, NgFor, CommonModule],
+  imports: [NgIf, NgFor, CommonModule, FormsModule],
   templateUrl: './catalogo.component.html',
   styleUrl: './catalogo.component.css',
 })
@@ -41,6 +41,14 @@ export class CatalogoComponent {
     cantidadMayor: 'Mayor Cantidad',
   };
 
+  idProductoBuscar: string = '';
+  productoEncontrado: any = null;
+  productoOriginal: any = null;
+  productos: any[] = [];
+  productosCompletos: any[] = [];
+  productosFiltrados: any[] = [];
+  productosOriginales: Map<string, any> = new Map();
+
   constructor(private productoServicio: ProductosService) {
     this.productoServicio.selectedOption$.subscribe((option) => {
       this.tipoSeleccionado = option;
@@ -51,6 +59,53 @@ export class CatalogoComponent {
   ngOnInit() {
     this.ordenSeleccionado = 'idMenor';
     this.cargarTabla();
+  }
+
+  filtrarProductos() {
+    const texto = this.idProductoBuscar.toLowerCase();
+
+    if (texto === '') {
+      this.productosFiltrados = [];
+      return;
+    }
+
+    this.productosFiltrados = this.productosCompletos.filter(
+      (producto) =>
+        producto.idProducto.toLowerCase().includes(texto) ||
+        producto.nombre.toLowerCase().includes(texto)
+    );
+  }
+
+  buscarProducto() {
+    const texto = this.idProductoBuscar.trim();
+
+    if (this.idProductoBuscar !== '') {
+      this.productoServicio
+        .buscarRegistroPorId(this.tablaSeleccionada, this.idProductoBuscar)
+        .subscribe((producto) => {
+          if (producto && !producto.error && producto !== '') {
+            this.productoEncontrado = { ...producto, editando: false };
+            this.productoOriginal = { ...producto };
+            this.idProductoBuscar = '';
+            this.productosFiltrados = [];
+          } else {
+            this.productoServicio
+              .buscarRegistrosPorNombreInicio(this.tablaSeleccionada, texto)
+              .subscribe((productos) => {
+                if (productos && productos.length > 0) {
+                  this.productos = productos;
+                  this.productosFiltrados = [];
+                  this.productoEncontrado = null;
+                  this.idProductoBuscar = '';
+                } else {
+                  alert('Producto no encontrado.');
+                }
+              });
+          }
+        });
+    } else {
+      alert('Introduzca el ID o Nombre del producto');
+    }
   }
 
   cargarTabla() {
