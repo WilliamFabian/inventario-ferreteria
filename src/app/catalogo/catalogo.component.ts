@@ -61,6 +61,13 @@ export class CatalogoComponent {
     this.cargarTabla();
   }
 
+  obtenerProductos() {
+    this.productoServicio.obtenerRegistros('productos').subscribe((data) => {
+      this.productos = data;
+      this.productosCompletos = [...data];
+    });
+  }
+
   filtrarProductos() {
     const texto = this.idProductoBuscar.toLowerCase();
 
