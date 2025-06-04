@@ -6,8 +6,12 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class ProductosService {
-  private apiUrl =
-    'https://inventario-ferreteria-production.up.railway.app/api';
+  // private apiUrl = 'https://inventario-ferreteria-production.up.railway.app/api';
+  isLocalhost = window.location.hostname === 'localhost';
+
+  apiUrl = this.isLocalhost
+    ? 'http://localhost:3000/api'
+    : 'https://inventario-ferreteria-production.up.railway.app/api';
   private productoCreadoSubject = new Subject<void>();
   private selectedOptionSource = new BehaviorSubject<string>('');
   selectedOption$ = this.selectedOptionSource.asObservable();

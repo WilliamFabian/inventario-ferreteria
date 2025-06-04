@@ -9,7 +9,7 @@ const app = express();
 
 const path = require("path");
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 //Cloudinary
 const multer = require("multer");
@@ -18,9 +18,10 @@ const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 // Configurar Cloudinary
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME || "dsdnkc3eb",
+  api_key: process.env.CLOUDINARY_API_KEY || "479784982925749",
+  api_secret:
+    process.env.CLOUDINARY_API_SECRET || "ecbeq43QirS9FtFP9zBLJQNLgbo",
 });
 
 // Configurar almacenamiento
@@ -37,9 +38,19 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 //Fin Cloudinary.
 
+/* Para Railway.
 app.use(
   cors({
     origin: "https://inventario-ferreteria-production.up.railway.app",
+  })
+); */
+
+app.use(
+  cors({
+    origin: [
+      "https://inventario-ferreteria-production.up.railway.app",
+      "http://localhost:4200",
+    ],
   })
 );
 
