@@ -1,91 +1,118 @@
+/* Estilo general del sidebar */
 .sidebar-nav {
+  background-color: rgb(33, 37, 41);
+  color: rgb(206, 212, 218);
+  border-right: 1px solid rgb(52, 58, 64);
+  z-index: 1030;
+}
+
+/* Sidebar visible solo en pantallas medianas en adelante (md+) */
+@media (min-width: 768px) {
+  .sidebar-nav {
     position: fixed;
     top: 0;
     left: 0;
     height: 100vh;
     width: 250px;
-    background-color: rgb(33, 37, 41);
     padding: 1rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-right: 1px solid rgb(52, 58, 64);
-    z-index: 1000;
-    color: rgb(206, 212, 218)
-}
-
-.icono-container .icon {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 2rem;
-    margin-right: 8px;
-}
-
-.nav-icon {
-    width: 25px;
-    height: 25px;
-    margin-right: 8px;
-    vertical-align: middle;
   }
-  
-.navbar-nav {
+
+  .navbar-collapse {
+    display: flex !important;
+    flex-direction: column;
     width: 100%;
-    padding: 0;
+  }
+}
+
+/* Para pantallas pequeñas (menor a 768px) */
+@media (max-width: 767.98px) {
+  .sidebar-nav {
+    width: 100%;
+    position: relative;
+  }
+
+  .navbar-collapse {
+    background-color: rgb(33, 37, 41);
+    padding: 1rem;
+  }
+}
+
+/* Icono del logo */
+.icono-container .icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 2rem;
+  margin-right: 8px;
+}
+
+/* Iconos de los menús */
+.nav-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Menú */
+.navbar-nav {
+  width: 100%;
+  padding: 0;
 }
 
 .nav-item {
-    width: 100%;
-    margin-top: 8px;
+  width: 100%;
+  margin-top: 8px;
 }
 
 .nav-link {
-    display: block;
-    width: 100%;
-    padding: 0.75rem 1rem;
-    color: #ced4da;
-    text-decoration: none;
-    transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
-    margin-left: 2px;
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  color: #ced4da;
+  text-decoration: none;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s, box-shadow 0.2s;
+  margin-left: 2px;
 }
 
 .nav-link.active,
 .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    font-weight: bold;
-    border-radius: 8px;
-    margin: 5px;
-    width: 85%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    transform: scale(1.03);
-    margin-left: 15px; 
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 8px;
+  margin: 5px;
+  width: 85%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transform: scale(1.03);
+  margin-left: 15px;
 }
 
 .nav-link:hover .nav-icon,
 .nav-link.active .nav-icon {
-  transform: scale(1.2); 
+  transform: scale(1.2);
   transition: transform 0.3s ease;
 }
 
 .menu-title {
-    font-weight: bold;
-    font-size: 1.2rem;
-    vertical-align: middle;
+  font-weight: bold;
+  font-size: 1.2rem;
+  vertical-align: middle;
 }
 
-.dropdown{
-    position: relative;
+/* Dropdown */
+.dropdown {
+  position: relative;
 }
 
-/* Estilos del menú desplegable */
 .dropdown-menu.minimal-dropdown {
-    position: absolute; /* Hace que el menú se coloque sobre otros elementos */
-    z-index: 1050;      /* Asegura que el menú esté por encima de otros elementos */
-    background-color: white; /* Asegura que el fondo sea blanco */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4); /* Sombra para que se vea elevado */
-    border-radius: 8px; /* Bordes redondeados */
-    padding: 0; /* Sin relleno */
-    transition: max-height 0.5s ease-out, opacity 0.5s ease-out; /* Animación */
-  }
-  
+  position: absolute;
+  z-index: 1050;
+  background-color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  border-radius: 8px;
+  padding: 0;
+}
 
