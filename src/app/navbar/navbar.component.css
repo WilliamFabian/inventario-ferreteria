@@ -4,9 +4,10 @@
   color: rgb(206, 212, 218);
   border-right: 1px solid rgb(52, 58, 64);
   z-index: 1030;
+  width: 100%; /* por defecto en móvil */
 }
 
-/* Sidebar visible solo en pantallas medianas en adelante (md+) */
+/* Sidebar en pantallas medianas en adelante (fijo a la izquierda) */
 @media (min-width: 768px) {
   .sidebar-nav {
     position: fixed;
@@ -27,11 +28,16 @@
   }
 }
 
-/* Para pantallas pequeñas (menor a 768px) */
+/* Sidebar en pantallas pequeñas (fijo arriba como barra hamburguesa) */
 @media (max-width: 767.98px) {
   .sidebar-nav {
+    position: fixed; /* ← hace que quede fijo al hacer scroll */
+    top: 0;
+    left: 0;
     width: 100%;
-    position: relative;
+    z-index: 1030;
+    height: auto;
+    padding: 0.5rem;
   }
 
   .navbar-collapse {
@@ -40,7 +46,7 @@
   }
 }
 
-/* Icono del logo */
+/* Iconos del logo */
 .icono-container .icon {
   width: 40px;
   height: 40px;
@@ -48,7 +54,7 @@
   margin-right: 8px;
 }
 
-/* Iconos de los menús */
+/* Iconos del menú */
 .nav-icon {
   width: 25px;
   height: 25px;
@@ -115,4 +121,3 @@
   border-radius: 8px;
   padding: 0;
 }
-

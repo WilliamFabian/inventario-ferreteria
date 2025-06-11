@@ -1,33 +1,31 @@
-<div class="menu-wrapper">
-  <div class="container mt-3">
-    <div class="titulo-cuadro d-flex align-items-center">
-      <img src="/dashboard.svg" alt="DashBoard" class="title-icon">
-      <span class="texto-titulo">DashBoard</span>
-    </div>
+<div class="container mt-3">
+  <div class="titulo-cuadro d-flex align-items-center">
+    <img src="/dashboard.svg" alt="DashBoard" class="title-icon">
+    <span class="texto-titulo">DashBoard</span>
+  </div>
 
-    <div class="row justify-content-center">
-      <div class="col-12 col-md-6 col-lg-5 mb-3">
-        <div class="card p-2 shadow-sm rounded">
-          <app-grafico-barras [tabla]="'ventas'"></app-grafico-barras>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-5 mb-3">
-        <div class="card p-2 shadow-sm rounded">
-          <app-grafico-barras [tabla]="'trabajos'"></app-grafico-barras>
-        </div>
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-5 mb-3">
+      <div class="card p-2 shadow-sm rounded">
+        <app-grafico-barras [tabla]="'ventas'"></app-grafico-barras>
       </div>
     </div>
-
-    <div class="row justify-content-center">
-      <div class="col-md-5 col-lg-4 mb-4">
-        <div class="card p-3 shadow-sm rounded">
-          <app-grafico-barras [tabla]="'categorias'"></app-grafico-barras>
-        </div>
+    <div class="col-12 col-md-6 col-lg-5 mb-3">
+      <div class="card p-2 shadow-sm rounded">
+        <app-grafico-barras [tabla]="'trabajos'"></app-grafico-barras>
       </div>
-      <div class="col-md-5 col-lg-6 mb-4">
-        <div class="card p-3 shadow-sm rounded">
-          <app-grafico-barras [tabla]="'id'"></app-grafico-barras>
-        </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4 mb-4">
+      <div class="card p-3 shadow-sm rounded">
+        <app-grafico-barras [tabla]="'categorias'"></app-grafico-barras>
+      </div>
+    </div>
+    <div class="col-md-5 col-lg-6 mb-4">
+      <div class="card p-3 shadow-sm rounded">
+        <app-grafico-barras [tabla]="'id'"></app-grafico-barras>
       </div>
     </div>
   </div>

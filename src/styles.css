@@ -1,3 +1,10 @@
+html, body {
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .titulo-cuadro {
     width: 90%;
     font-weight: bold;
