@@ -41,8 +41,8 @@
 
         <div class="form-group text-start">
           <label class="form-label fw-bold">Cantidad</label>
-          <input type="number" formControlName="cantidad" (input)="calcularPrecioTotal()" 
-                 class="form-control" min="1" required />
+          <input type="number" formControlName="cantidad" (input)="calcularPrecioTotal() " 
+                 class="form-control" step="0.01" min="0" required/>
         </div>
 
         <div class="form-group text-start">
