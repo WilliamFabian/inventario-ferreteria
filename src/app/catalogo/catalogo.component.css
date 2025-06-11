@@ -151,3 +151,8 @@
     outline: none;
     box-shadow: none !important;
   }
+  
+.container-filter {
+  width: 100%;
+}
+

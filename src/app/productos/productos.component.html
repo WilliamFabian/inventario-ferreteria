@@ -69,124 +69,136 @@
 
   <div class="container">
 
-    <div class="container-filter d-flex justify-content-between align-items-center mb-3">
-      <div class="d-flex align-items-center gap-4">
-        <div class="d-flex align-items-center gap-2">
-          <img src="filtro.svg" class="img-filtro" alt="icono filtro">
-          <span class="texto-filtrar fw-bold">Filtrar por:</span>
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="categoriasDropdown"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              {{ tipoSeleccionado ? (tipoSeleccionado | titlecase) : 'Seleccionar tipo' }}
-            </button>
-            <ul class="dropdown-menu minimal-dropdown" aria-labelledby="categoriasDropdown">
-              <li class="item-dropdown" *ngFor="let tipoFiltro of tiposFiltro">
-                <a class="dropdown-item custom-item" (click)="tipoSeleccionado = tipoFiltro.valor; cargarTabla()">
-                  {{ tipoFiltro.nombre }}
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+    <div class="container-filter row g-3 align-items-center mb-3">
 
-        <div class="d-flex align-items-center gap-2">
-          <img src="orden.svg" class="img-orden" alt="icono orden">
-          <span class="texto-filtrar fw-bold">Ordenar por:</span>
-          <div class="dropdown">
-            <button class="btn btn-light dropdown-toggle" type="button" id="ordenDropdown" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              {{ ordenSeleccionado ? ordenNombres[ordenSeleccionado] : 'Seleccionar Orden' }}
-            </button>
-            <ul class="dropdown-menu minimal-dropdown" aria-labelledby="ordenDropdown">
-              <li class="item-dropdown" *ngFor="let orden of ordenNombres | keyvalue">
-                <a class="dropdown-item custom-item" (click)="ordenSeleccionado = orden.key; cargarTabla()">
-                  {{ orden.value }}
-                </a>
-              </li>
-            </ul>
+      <!-- Filtros -->
+      <div class="col-12 col-md">
+        <div class="d-flex flex-wrap align-items-center gap-3">
+          <!-- filtro tipo -->
+          <div class="d-flex align-items-center gap-2">
+            <img src="filtro.svg" class="img-filtro" alt="icono filtro">
+            <span class="texto-filtrar fw-bold">Filtrar por:</span>
+            <div class="dropdown">
+              <button class="btn btn-light dropdown-toggle" type="button" id="categoriasDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                {{ tipoSeleccionado ? (tipoSeleccionado | titlecase) : 'Seleccionar tipo' }}
+              </button>
+              <ul class="dropdown-menu minimal-dropdown" aria-labelledby="categoriasDropdown">
+                <li class="item-dropdown" *ngFor="let tipoFiltro of tiposFiltro">
+                  <a class="dropdown-item custom-item" (click)="tipoSeleccionado = tipoFiltro.valor; cargarTabla()">
+                    {{ tipoFiltro.nombre }}
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- filtro orden -->
+          <div class="d-flex align-items-center gap-2">
+            <img src="orden.svg" class="img-orden" alt="icono orden">
+            <span class="texto-filtrar fw-bold">Ordenar por:</span>
+            <div class="dropdown">
+              <button class="btn btn-light dropdown-toggle" type="button" id="ordenDropdown" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                {{ ordenSeleccionado ? ordenNombres[ordenSeleccionado] : 'Seleccionar Orden' }}
+              </button>
+              <ul class="dropdown-menu minimal-dropdown" aria-labelledby="ordenDropdown">
+                <li class="item-dropdown" *ngFor="let orden of ordenNombres | keyvalue">
+                  <a class="dropdown-item custom-item" (click)="ordenSeleccionado = orden.key; cargarTabla()">
+                    {{ orden.value }}
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="button-container">
-        <button class="btn btn-success" (click)="mostrarFormulario = true">
+      <!-- Botón -->
+      <div class="col-12 col-md-auto text-md-end">
+        <button class="btn btn-success w-100 w-md-auto" (click)="mostrarFormulario = true">
           Agregar Producto
         </button>
       </div>
+
     </div>
 
 
 
-    <table class="table table-striped table-secondary table-bordered">
-      <thead class="table-dark">
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Tipo</th>
-          <th>Precio</th>
-          <th>Precio Descuento</th>
-          <th>Cantidad</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody class="">
-        <tr *ngFor="let producto of registros; let i = index" [class.bg-light]="i % 2 === 0">
-          <td>{{ producto.idProducto }}</td>
+    <div class="table-responsive">
+      <table class="table table-striped table-secondary table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Precio</th>
+            <th>Precio Descuento</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="">
+          <tr *ngFor="let producto of registros; let i = index" [class.bg-light]="i % 2 === 0">
+            <td>{{ producto.idProducto }}</td>
 
-          <td>
-            <input *ngIf="producto.editando" [(ngModel)]="producto.nombre" class="form-control" />
-            <span *ngIf="!producto.editando">{{ producto.nombre }}</span>
-          </td>
+            <td>
+              <input *ngIf="producto.editando" [(ngModel)]="producto.nombre" class="form-control" />
+              <span *ngIf="!producto.editando">{{ producto.nombre }}</span>
+            </td>
 
-          <td>
-            <select *ngIf="producto.editando" [(ngModel)]="producto.tipo" class="form-select">
-              <option *ngFor="let tipo of tipos" [value]="tipo.valor">{{ tipo.nombre }}</option>
-            </select>
-            <span *ngIf="!producto.editando">{{ producto.tipo | titlecase}}</span>
-          </td>
+            <td>
+              <select *ngIf="producto.editando" [(ngModel)]="producto.tipo" class="form-select">
+                <option *ngFor="let tipo of tipos" [value]="tipo.valor">{{ tipo.nombre }}</option>
+              </select>
+              <span *ngIf="!producto.editando">{{ producto.tipo | titlecase}}</span>
+            </td>
 
-          <td>
-            <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.precio" class="form-control" />
-            <span *ngIf="!producto.editando">${{ producto.precio | number:'1.0-0'}}</span>
-          </td>
+            <td>
+              <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.precio" class="form-control" />
+              <span *ngIf="!producto.editando">${{ producto.precio | number:'1.0-0'}}</span>
+            </td>
 
-          <td>
-            <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.precioDescuento"
-              class="form-control" />
-            <span *ngIf="!producto.editando">${{ producto.precioDescuento ? (producto.precioDescuento | number:'1.0-0')
-              : 'N/A' }}</span>
-          </td>
+            <td>
+              <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.precioDescuento"
+                class="form-control" />
+              <span *ngIf="!producto.editando">${{ producto.precioDescuento ? (producto.precioDescuento |
+                number:'1.0-0')
+                : 'N/A' }}</span>
+            </td>
 
-          <td>
-            <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.cantidad" class="form-control" />
-            <span *ngIf="!producto.editando">{{ producto.cantidad || 0}}</span>
-          </td>
+            <td>
+              <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.cantidad" class="form-control" />
+              <span *ngIf="!producto.editando">{{ producto.cantidad || 0}}</span>
+            </td>
 
-          <td class="acciones-cell">
-            <div class="d-flex align-items-center">
-              <button *ngIf="!producto.editando" class="btn btn-secondary btn-sm me-2"
-                (click)="verImagenProducto(producto)">Ver</button>
-              <button *ngIf="!producto.editando" class="btn btn-warning btn-sm me-2" (click)="activarEdicion(producto)">
-                Editar
-              </button>
-              <button *ngIf="producto.editando" class="btn btn-success btn-sm me-2" (click)="editarRegistro(producto)">
-                Guardar
-              </button>
-              <button *ngIf="producto.editando" class="btn btn-secondary btn-sm me-2"
-                (click)="cancelarEdicion(producto)">
-                Cancelar
-              </button>
-              <button *ngIf="!producto.editando" class="btn btn-danger btn-sm"
-                (click)="eliminarRegistro(producto.idProducto)">
-                Eliminar
-              </button>
-            </div>
-          </td>
+            <td class="acciones-cell">
+              <div class="d-flex align-items-center">
+                <button *ngIf="!producto.editando" class="btn btn-secondary btn-sm me-2"
+                  (click)="verImagenProducto(producto)">Ver</button>
+                <button *ngIf="!producto.editando" class="btn btn-warning btn-sm me-2"
+                  (click)="activarEdicion(producto)">
+                  Editar
+                </button>
+                <button *ngIf="producto.editando" class="btn btn-success btn-sm me-2"
+                  (click)="editarRegistro(producto)">
+                  Guardar
+                </button>
+                <button *ngIf="producto.editando" class="btn btn-secondary btn-sm me-2"
+                  (click)="cancelarEdicion(producto)">
+                  Cancelar
+                </button>
+                <button *ngIf="!producto.editando" class="btn btn-danger btn-sm"
+                  (click)="eliminarRegistro(producto.idProducto)">
+                  Eliminar
+                </button>
+              </div>
+            </td>
 
-        </tr>
-      </tbody>
-    </table>
-
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div *ngIf="mostrarImagenProducto" class="modal-flotante">
