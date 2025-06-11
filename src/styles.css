@@ -160,6 +160,31 @@
   transition: max-height 0.5s ease-out, opacity 0.5s ease-out; /* Animación suave */
 }
 
+/* Extra para moviles. */
+
+@media (max-width: 767.98px) {
+  .titulo-cuadro {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+  }
+
+  .modal-contenido {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .dropdown-size {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+
+  .acciones-cell .btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}
+
 
 
   
