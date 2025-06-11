@@ -306,6 +306,15 @@ export class ProductosComponent {
   editarRegistro(registro: any) {
     const { editando, ...registroLimpio } = registro;
 
+    // 👉 Convertir campo vacío a undefined
+    if (
+      'precioDescuento' in registroLimpio &&
+      (registroLimpio.precioDescuento === '' ||
+        registroLimpio.precioDescuento === null)
+    ) {
+      registroLimpio.precioDescuento = undefined;
+    }
+
     console.log('Enviando al backend:', registroLimpio);
 
     this.productoServicio
