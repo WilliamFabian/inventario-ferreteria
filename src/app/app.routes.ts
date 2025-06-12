@@ -5,6 +5,7 @@ import { VentasComponent } from './ventas/ventas.component';
 import { ReportesComponent } from './reportes/reportes.component';
 import { TrabajosComponent } from './trabajos/trabajos.component';
 import { CatalogoComponent } from './catalogo/catalogo.component';
+import { FacturasComponent } from './facturas/facturas.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/menu', pathMatch: 'full' }, // Redirige al menú por defecto
@@ -14,4 +15,5 @@ export const routes: Routes = [
   { path: 'ventas', component: VentasComponent },
   { path: 'reportes', component: ReportesComponent },
   { path: 'trabajos', component: TrabajosComponent },
+  { path: 'facturas', component: FacturasComponent },
 ];

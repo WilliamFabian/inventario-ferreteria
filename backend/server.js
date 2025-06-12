@@ -56,7 +56,13 @@ app.use(
 
 app.use(express.json());
 
-const tablasPermitidas = ["productos", "ventas", "reportes", "trabajos"];
+const tablasPermitidas = [
+  "productos",
+  "ventas",
+  "reportes",
+  "trabajos",
+  "facturas",
+];
 
 function validarTabla(req, res, next) {
   const { tabla } = req.params;
@@ -173,6 +179,9 @@ apiRouter.put("/:tabla/editar", validarTabla, (req, res) => {
   } else if (tabla === "trabajos") {
     idCampo = "idTrabajo";
     idValor = idTrabajo;
+  } else if (tabla === "facturas") {
+    idCampo = "idFactura";
+    idValor = idFactura;
   } else {
     return res.status(400).json({ error: "Tabla no válida para edición" });
   }
@@ -212,6 +221,9 @@ apiRouter.delete("/:tabla/:id", validarTabla, (req, res) => {
       break;
     case "trabajos":
       primaryKey = "idTrabajo";
+      break;
+    case "facturas":
+      primaryKey = "idFactura";
       break;
     default:
       primaryKey = "idProducto";
