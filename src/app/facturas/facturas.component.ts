@@ -29,6 +29,7 @@ export class FacturasComponent {
     private productoServicio: ProductosService
   ) {
     this.facturaForm = this.fb.group({
+      codigoFactura: [''],
       vendedor: ['', Validators.required],
       nit: ['', Validators.required],
       valorFactura: ['', [Validators.required, Validators.min(1)]],

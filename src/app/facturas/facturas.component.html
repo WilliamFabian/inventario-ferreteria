@@ -21,6 +21,11 @@
                 <form [formGroup]="facturaForm" (ngSubmit)="agregarRegistro()">
 
                     <div class="mb-3">
+                        <label class="form-label">Codigo</label>
+                        <input type="text" formControlName="codigo" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">Vendedor</label>
                         <input type="text" formControlName="vendedor" class="form-control" />
                     </div>
@@ -48,6 +53,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>Id Factura</th>
+                    <th>Codigo</th>
                     <th>Vendedor</th>
                     <th>NIT</th>
                     <th>Valor</th>
@@ -67,9 +73,16 @@
                     </td>
                     <td>
                         <input *ngIf="facturaEditando?.idFactura === factura.idFactura"
+                            [(ngModel)]="facturaEditando.codigoFactura" class="form-control" />
+                        <span *ngIf="!facturaEditando || facturaEditando.idFactura !== factura.idFactura">
+                            {{ factura.codigo }}
+                        </span>
+                    </td>
+                    <td>
+                        <input *ngIf="facturaEditando?.idFactura === factura.idFactura"
                             [(ngModel)]="facturaEditando.nit" class="form-control" />
                         <span *ngIf="!facturaEditando || facturaEditando.idFactura !== factura.idFactura">
-                            ${{ factura.nit}}
+                            {{ factura.nit}}
                         </span>
                     </td>
                     <td>

@@ -192,8 +192,8 @@ export class GraficoBarrasComponent {
         'rgba(30, 140, 100, 1)',
       ];
     } else {
-      color = 'rgba(50, 140, 200, 0.41)';
-      borde = 'rgba(30, 140, 100, 0.69)';
+      color = 'rgba(50, 200, 200, 0.41)';
+      borde = 'rgba(30, 136, 140, 0.69)';
     }
 
     let chartOptions: any = {};
