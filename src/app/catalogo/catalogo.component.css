@@ -1,3 +1,4 @@
+/* Mantener estilos originales para pantallas normales */
 .grid-container {
   display: grid;
   gap: 1.5rem;
@@ -13,21 +14,23 @@
   border: none;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   min-width: 200px;
+  min-width: 0; /* Permite que los items se contraigan en responsive */
+}
 
-  &:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+.catalogo-item:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
 
-    .product-image {
-      transform: scale(1.05);
-    }
-  }
+.catalogo-item:hover .product-image {
+  transform: scale(1.05);
 }
 
 .product-image {
   width: 100%;
   height: 220px;
-  object-fit: cover;
+  object-fit: cover; /* Cambiado de scale-down a cover para rellenar completamente */
+  object-position: center; /* Centra la imagen dentro del contenedor */
   transition: transform 0.3s ease;
 }
 
@@ -36,6 +39,44 @@
   text-align: center;
 }
 
+/* Solo media queries para pantallas pequeñas - mantener comportamiento original para pantallas grandes */
+
+/* Móviles muy pequeños (hasta 400px) */
+@media (max-width: 400px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .product-image {
+    height: 200px;
+    object-fit: cover; /* Cambiado de scale-down a cover */
+    object-position: center;
+  }
+  
+  .catalogo-item {
+    min-width: 0;
+  }
+}
+
+/* Móviles (401px - 500px) */
+@media (min-width: 401px) and (max-width: 500px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .product-image {
+    object-fit: cover; /* Cambiado de scale-down a cover */
+    object-position: center;
+  }
+  
+  .catalogo-item {
+    min-width: 0;
+  }
+}
+
+/* Mantener tamaños originales para tablets y desktop */
 @media (min-width: 576px) {
   .grid-container {
     grid-template-columns: repeat(3, 1fr);
@@ -44,7 +85,6 @@
   .product-image {
     height: 240px;
   }
-  
 }
 
 @media (min-width: 768px) {
@@ -77,82 +117,70 @@
   }
   
   .card-body {
-    padding: 1.5rem; 
-  }
+    padding: 1.5rem;
+   }
 }
 
-@media (max-width: 400px) {
-  .grid-container {
-    grid-template-columns: repeat(1, 1fr);
-    gap: 1rem;
-  }
-  
-  .product-image {
-    height: 200px;
-  }
-  
-  .catalogo-container {
-    padding: 15px;
-  }
-}
-
+/* Estilos para la barra de búsqueda */
 .search-bar {
-    position: relative;
-  }
-  
-  .search-icon {
-    background-color: white;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .search-icon:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .icon-img {
-    width: 25px;
-    height: 25px;
-  }
-  
-  .separator-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .separator {
-    width: 2px;
-    background-color: #b8b8b8;
-    height: 65%; 
-  }
-  
-  
-  .search-input:focus {
-    outline: none;
-    box-shadow: none !important;
-  }
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
 
-  .input-group.search-bar {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .search-input {
-    border: none;
-  }
-  
-  .search-input:focus {
-    outline: none;
-    box-shadow: none !important;
-  }
-  
+.search-icon {
+  background-color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-icon:hover {
+  background-color: #f0f0f0;
+}
+
+.icon-img {
+  width: 25px;
+  height: 25px;
+}
+
+.separator-container {
+  display: flex;
+  align-items: center;
+}
+
+.separator {
+  width: 2px;
+  background-color: #b8b8b8;
+  height: 65%;
+}
+
+.search-input {
+  border: none;
+}
+
+.search-input:focus {
+  outline: none;
+  box-shadow: none !important;
+}
+
 .container-filter {
   width: 100%;
 }
 
+/* Ajustes responsivos para los filtros */
+@media (max-width: 576px) {
+  .container-filter {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  
+  .container-filter > div {
+    justify-content: center;
+  }
+}

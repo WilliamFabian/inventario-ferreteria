@@ -71,15 +71,13 @@
 
 
         <div>
-            <div class="container-fluid">
+            <div class="container-fluid mt-3">
                 <div class="grid-container">
                     <div class="catalogo-item" *ngFor="let producto of registros" (click)="verImagenProducto(producto)">
-
                         <img [src]="producto.imagen" class="product-image" alt="producto.nombre">
-
                         <div class="card-body">
-                            <h6 class="bold mb-1">{{producto.nombre}}</h6>
-                            <p class="fw-semibold text-muted">${{producto.precio | number:'1.0-0'}}</p>
+                            <h6 class="bold mb-1">{{ producto.nombre }}</h6>
+                            <p class="fw-semibold text-muted">${{ producto.precio | number:'1.0-0' }}</p>
                         </div>
                     </div>
                 </div>
