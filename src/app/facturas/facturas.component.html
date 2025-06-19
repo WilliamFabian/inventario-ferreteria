@@ -21,7 +21,7 @@
                 <form [formGroup]="facturaForm" (ngSubmit)="agregarRegistro()">
 
                     <div class="mb-3">
-                        <label class="form-label">Codigo</label>
+                        <label class="form-label">Código</label>
                         <input type="text" formControlName="codigo" class="form-control" />
                     </div>
 
@@ -37,7 +37,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Valor</label>
-                        <input type="number" formControlName="valorFactura" class="form-control" />
+                        <input type="number" formControlName="valorFactura" class="form-control" step="0.01" min="0" />
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100" [disabled]="!facturaForm.valid">Agregar
@@ -90,7 +90,7 @@
                         <input *ngIf="facturaEditando?.idFactura === factura.idFactura"
                             [(ngModel)]="facturaEditando.valorFactura" class="form-control" />
                         <span *ngIf="!facturaEditando || facturaEditando.idFactura !== factura.idFactura">
-                            ${{ factura.valorFactura | number:'1.0-0' }}
+                            ${{ factura.valorFactura | number:'1.0-2' }}
                         </span>
                     </td>
                     <td>{{ factura.fechaFactura | date:'dd/MM/yyyy HH:mm' }}</td>

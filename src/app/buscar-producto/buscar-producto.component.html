@@ -73,7 +73,8 @@
             <td>
               <input *ngIf="productoEncontrado.editando" [(ngModel)]="productoEncontrado.cantidad"
                 class="form-control" />
-              <span *ngIf="!productoEncontrado.editando">{{ productoEncontrado.cantidad }}</span>
+              <span *ngIf="!productoEncontrado.editando">{{ (productoEncontrado.cantidad || 0 ) | number: '1.0-2'
+                }}</span>
             </td>
             <td>
               <div class="d-flex justify-content-center gap-2 mt-2 mb-2">
@@ -142,7 +143,7 @@
             </td>
             <td>
               <input *ngIf="producto.editando" [(ngModel)]="producto.cantidad" class="form-control" />
-              <span *ngIf="!producto.editando">{{ producto.cantidad }}</span>
+              <span *ngIf="!producto.editando">{{ (producto.cantidad || 0 ) | number: '1.0-2'}}</span>
             </td>
             <td>
               <div class="d-flex justify-content-center gap-2 mt-2 mb-2">

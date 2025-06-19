@@ -169,7 +169,7 @@
 
             <td>
               <input *ngIf="producto.editando" type="number" [(ngModel)]="producto.cantidad" class="form-control" />
-              <span *ngIf="!producto.editando">{{ producto.cantidad || 0}}</span>
+              <span *ngIf="!producto.editando">{{ (producto.cantidad || 0) | number: '1.0-2'}}</span>
             </td>
 
             <td class="acciones-cell">
